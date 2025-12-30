@@ -1,11 +1,17 @@
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-col items-center justify-center">
-        <h1 className="text-6xl font-bold tracking-tighter text-black dark:text-white sm:text-8xl">
-          caltAI
-        </h1>
-      </main>
-    </div>
+    <main className="relative min-h-screen bg-grid">
+      <Navbar />
+      <Hero />
+
+      {/* Decorative background elements */}
+      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+        <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-brand-orange/5 blur-[120px] rounded-full"></div>
+        <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-brand-orange/5 blur-[120px] rounded-full"></div>
+      </div>
+    </main>
   );
 }
