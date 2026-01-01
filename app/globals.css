@@ -7,6 +7,11 @@
   --color-brand-brown: #3d302a;
   --color-brand-cream: #fff5ec;
   --font-sans: var(--font-outfit);
+  --font-cal: var(--font-jakarta);
+}
+
+.font-cal {
+  font-family: var(--font-cal), system-ui, sans-serif;
 }
 
 :root {
@@ -23,10 +28,11 @@ body {
 
 /* Custom Utilities */
 .bg-grid {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-image: url('/background.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .orb-glow {
@@ -35,8 +41,15 @@ body {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .animate-float {
@@ -44,8 +57,13 @@ body {
 }
 
 @keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-spin-slow {
