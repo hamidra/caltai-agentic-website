@@ -23,12 +23,11 @@ export default function Home() {
       </SectionScroller>
 
       {/* Global "Scroll to explore" Indicator */}
-      <div className="fixed right-[-65px] top-1/2 -translate-y-1/2 z-50 overflow-visible hidden lg:block pointer-events-none">
-        <div className="rotate-90 flex items-center gap-6 text-brand-brown/30 pr-[40px]">
-          <span className="text-[11px] font-bold tracking-[0.3em] whitespace-nowrap uppercase">Scroll to explore</span>
-          <div className="w-6 h-10 border-2 border-brand-brown/20 rounded-full relative -rotate-90">
-            <div className="w-1 h-2 bg-brand-brown/40 rounded-full absolute top-2 left-1/2 -translate-x-1/2 animate-bounce"></div>
-          </div>
+      <div className="fixed right-0 w-20 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col items-center gap-6 text-brand-brown/30 pointer-events-none">
+        <div className="w-[1px] h-10 bg-brand-brown/30"></div>
+        <span className="text-[11px] font-bold tracking-[0.3em] whitespace-nowrap uppercase [writing-mode:vertical-lr]">Scroll to explore</span>
+        <div className="w-6 h-10 border-2 border-brand-brown/20 rounded-full relative">
+          <div className="w-1 h-2 bg-brand-brown/40 rounded-full absolute top-2 left-1/2 -translate-x-1/2 animate-bounce"></div>
         </div>
       </div>
 

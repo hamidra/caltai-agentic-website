@@ -54,14 +54,34 @@ export default function Hero() {
                     <button className="h-[36px] bg-brand-orange text-white px-8 rounded-full font-bold text-sm hover:bg-opacity-90 transition-all flex items-center">
                         Chat with CaltAI
                     </button>
-                    <div className="w-[36px] h-[36px] bg-brand-orange rounded-full flex items-center justify-center ml-2 shadow-md flex-shrink-0">
-                        <div className="flex items-center gap-0.5">
-                            <div className="w-[2px] h-2 bg-white rounded-full"></div>
-                            <div className="w-[2px] h-4 bg-white rounded-full"></div>
-                            <div className="w-[2px] h-3 bg-white rounded-full"></div>
-                            <div className="w-[2px] h-1.5 bg-white rounded-full"></div>
+                    <motion.div
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                        className="w-[36px] h-[36px] bg-brand-orange rounded-full flex items-center justify-center ml-2 shadow-md flex-shrink-0"
+                    >
+                        <div className="flex items-center gap-0.5 h-4">
+                            <motion.div
+                                animate={{ height: [6, 12, 6] }}
+                                transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+                                className="w-[2px] bg-white rounded-full"
+                            ></motion.div>
+                            <motion.div
+                                animate={{ height: [10, 16, 10] }}
+                                transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
+                                className="w-[2px] bg-white rounded-full"
+                            ></motion.div>
+                            <motion.div
+                                animate={{ height: [8, 14, 8] }}
+                                transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
+                                className="w-[2px] bg-white rounded-full"
+                            ></motion.div>
+                            <motion.div
+                                animate={{ height: [4, 10, 4] }}
+                                transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
+                                className="w-[2px] bg-white rounded-full"
+                            ></motion.div>
                         </div>
-                    </div>
+                    </motion.div>
                 </motion.div>
             </div>
 
