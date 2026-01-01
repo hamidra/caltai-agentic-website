@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
     return (
-        <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-12 bg-grid">
+        <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-4 bg-grid">
 
             <div className="z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center">
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-[60px] font-bold tracking-tight text-brand-brown mb-6 leading-[1.1] font-cal"
+                    className="text-5xl md:text-[60px] font-bold tracking-tight text-brand-brown mb-16 leading-[1.1] font-cal"
                 >
                     Stop Prompting, <span className="text-brand-orange">Start Scaling</span>
                 </motion.h1>
@@ -37,7 +37,7 @@ export default function Hero() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-6 mb-[50px] max-w-lg mx-auto shadow-sm"
+                    className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-6 mb-16 max-w-lg mx-auto shadow-sm"
                 >
                     <p className="text-[16px] leading-relaxed text-brand-brown font-medium">
                         Most AIs chat, but I'm executes. Replace fracturing manual processes with an autonomous operations layer capable of running a $10M business with just a 5-person team.

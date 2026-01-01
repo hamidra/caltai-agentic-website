@@ -5,6 +5,10 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProblemSection from "@/components/ProblemSection";
 import SectionScroller from "@/components/SectionScroller";
+import SolutionSection from "@/components/SolutionSection";
+import WhyCaltAI from "@/components/WhyCaltAI";
+import PilotSection from "@/components/PilotSection";
+import ROISection from "@/components/ROISection";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,10 +20,10 @@ export default function Home() {
       <SectionScroller onSectionChange={setCurrentIndex}>
         <Hero />
         <ProblemSection />
-        {/* Placeholder for future sections */}
-        <div className="w-full h-full flex items-center justify-center bg-brand-cream text-3xl font-bold">Solution Section Coming Soon</div>
-        <div className="w-full h-full flex items-center justify-center bg-white text-3xl font-bold">Pricing Section Coming Soon</div>
-        <div className="w-full h-full flex items-center justify-center bg-brand-cream text-3xl font-bold">About Section Coming Soon</div>
+        <SolutionSection />
+        <WhyCaltAI />
+        <PilotSection />
+        <ROISection />
       </SectionScroller>
 
       {/* Global "Scroll to explore" Indicator */}

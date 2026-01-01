@@ -60,25 +60,35 @@ export default function ProblemSection() {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col relative overflow-hidden group hover:border-brand-orange/30 transition-colors"
+                            className="relative flex flex-col p-8 min-h-[340px] group transition-all duration-300 hover:-translate-y-1"
                         >
-                            {/* Dotted border effect like in the screenshot */}
-                            <div className="absolute top-0 right-0 w-32 h-32 border-t-2 border-r-2 border-dashed border-gray-100 -mr-1 -mt-1 group-hover:border-brand-orange/20 transition-colors"></div>
-
-                            <div className="w-12 h-12 rounded-full bg-brand-orange flex items-center justify-center mb-6 shadow-lg shadow-brand-orange/20">
-                                {card.icon}
+                            {/* SVG Background Container */}
+                            <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
+                                <img
+                                    src="/box Orange.svg"
+                                    alt=""
+                                    className="w-full h-full object-fill opacity-100 transition-opacity"
+                                />
                             </div>
 
-                            <h3 className="text-xl font-bold text-brand-brown mb-4 font-cal">
-                                {card.title}
-                            </h3>
+                            <div className="flex items-center gap-6 mb-6">
+                                <div className="w-16 h-16 rounded-full bg-brand-orange flex items-center justify-center shadow-lg shadow-brand-orange/20 flex-shrink-0">
+                                    <div className="scale-125">
+                                        {card.icon}
+                                    </div>
+                                </div>
 
-                            <p className="text-brand-brown/70 leading-relaxed mb-8 flex-grow">
+                                <h3 className="text-2xl font-bold text-brand-brown font-cal leading-tight">
+                                    {card.title}
+                                </h3>
+                            </div>
+
+                            <p className="text-brand-brown/70 text-[15px] leading-relaxed mb-6 flex-grow">
                                 {card.description}
                             </p>
 
-                            <div className="pt-6 border-t border-gray-100 mt-auto">
-                                <p className="text-brand-orange font-bold text-sm uppercase tracking-wider">
+                            <div className="pt-4 border-t border-brand-brown/10 mt-auto">
+                                <p className="text-brand-orange font-bold text-[13px] uppercase tracking-wider">
                                     {card.stat.split(' ')[0]} <span className="text-brand-brown/50 font-medium lowercase italic">{card.stat.split(' ').slice(1).join(' ')}</span>
                                 </p>
                             </div>
