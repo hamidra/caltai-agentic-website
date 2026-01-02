@@ -119,12 +119,16 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
         if (!centers.length) return;
 
         const rawTargetCenter = centers[currentIndex] || 0;
+        if (rawTargetCenter === 0) return; // Ensure we have a valid measurement before moving
+
         // IMPORTANT: Snap the TARGET position to the grid. 
         // This ensures that when the animation settles, it lands EXACTLY on the ticks.
         const targetX = snapToGrid(rawTargetCenter, CONFIG.PYRAMID_HEIGHTS.length);
 
-        // Initial Snap or large jump
-        if (stateRef.current.x === 0 || Math.abs(stateRef.current.x - targetX) > width / 2) {
+        // Initial Snap Only
+        // We only snap if the marker has not been initialized (x=0).
+        // REMOVED distance check (Math.abs > width/2) so long jumps always animate.
+        if (stateRef.current.x === 0) {
             const snapState = { x: targetX, heights: CONFIG.PYRAMID_HEIGHTS, isAnimating: false };
             stateRef.current = snapState;
             setActiveState(snapState);
