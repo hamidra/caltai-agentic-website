@@ -8,7 +8,7 @@ interface NavbarProps {
 
 export default function Navbar({ currentIndex, onSectionChange }: NavbarProps) {
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-8 py-6">
+        <nav className="fixed top-0 left-0 right-0 z-50 flex items-start justify-between pl-20 pr-8 py-6 bg-[#FDFBF7]/80 backdrop-blur-md border-b border-[#FDFBF7]/20 transition-all duration-300">
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                     <div className="w-8 h-8 flex items-center justify-center">
