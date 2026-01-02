@@ -3,9 +3,10 @@ import NavbarTicks from "./NavbarTicks";
 
 interface NavbarProps {
     currentIndex: number;
+    onSectionChange: (index: number) => void;
 }
 
-export default function Navbar({ currentIndex }: NavbarProps) {
+export default function Navbar({ currentIndex, onSectionChange }: NavbarProps) {
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-8 py-6">
             <div className="flex items-center gap-4">
@@ -19,7 +20,7 @@ export default function Navbar({ currentIndex }: NavbarProps) {
             </div>
 
             <div className="absolute left-1/2 -translate-x-1/2 top-4">
-                <NavbarTicks currentIndex={currentIndex} />
+                <NavbarTicks currentIndex={currentIndex} onSectionChange={onSectionChange} />
             </div>
 
             <div className="hidden lg:flex items-center gap-8">

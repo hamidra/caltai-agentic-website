@@ -26,7 +26,7 @@ export default function FoundersNote() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="relative max-w-4xl text-center"
                     >
-                        <p className="font-serif italic text-[28px] lg:text-[28px] text-brand-brown leading-relaxed lg:leading-[1.6]">
+                        <p className="font-serif text-[28px] lg:text-[28px] text-brand-brown leading-relaxed lg:leading-[1.6]">
                             "We built CaltAI because we were tired of being a manual bridge between
                             our own tools. We saw the opportunities, but we lacked the operational
                             firepower to seize them. We are building this so you can finally stop

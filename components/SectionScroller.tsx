@@ -16,7 +16,7 @@ export default function SectionScroller({ children, onSectionChange }: SectionSc
     const touchStart = useRef(0);
 
     const scrollCooldown = 500; // ms between section changes
-    const scrollThreshold = 30; // minimum delta to trigger
+    const scrollThreshold = 5; // minimum delta to trigger
 
     const handleScroll = useCallback(
         (e: WheelEvent | TouchEvent) => {
