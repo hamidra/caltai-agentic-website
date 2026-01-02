@@ -15,58 +15,76 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
 
     const targetIndex = hoverIndex !== null ? hoverIndex : currentIndex;
 
-    // Percentage position for the marker (0 to 100%)
-    // sections are justified between, so 0 is left, 7 is right.
-    // 0/7 = 0%, 7/7 = 100%
-    const positionPercent = (targetIndex / (SECTIONS.length - 1)) * 100;
+    // Grid-based positioning:
+    // 8 columns. Each column is 12.5% wide.
+    // Center of column 0 is 6.25%. Center of column 1 is 18.75%, etc.
+    // Formula: (index * 12.5) + 6.25
 
     return (
         <div className="relative flex flex-col items-center w-[600px] lg:w-[800px]">
             {/* Tick Track Container */}
-            <div className="relative w-full h-[20px] mb-3">
+            <div className="relative w-full h-[24px] mb-1">
                 {/* 1. Static Gray Ticks Background */}
-                <div className="absolute inset-0 flex items-end justify-between px-[10px]">
+                <div className="absolute inset-0 flex items-center justify-between px-0">
                     {/* 
-                      Generating a lot of ticks to simulate the static track. 
-                      We use a simple array. density adjusted to visual match.
+                      Generating dense ticks across the full width. 
+                      Using a prime number or high count to avoid obvious grid alignment patterns with the labels 
+                      unless intended. 120 ticks gives a good dense Ruler look.
                     */}
-                    {Array.from({ length: 101 }).map((_, i) => (
+                    {Array.from({ length: 121 }).map((_, i) => (
                         <div
                             key={i}
-                            className="w-[2px] bg-[#A7A198] rounded-full"
+                            className="w-[1.5px] bg-[#A7A198] rounded-full"
                             style={{
-                                height: i % 2 === 0 ? '6px' : '10px',
-                                opacity: 0.5
+                                height: '8px',
+                                opacity: 0.4
                             }}
                         />
                     ))}
                 </div>
 
-                {/* 2. Animated Orange Marker */}
+                {/* 2. Hover Marker (3 lines: Long-Short-Long) */}
+                {hoverIndex !== null && hoverIndex !== currentIndex && (
+                    <motion.div
+                        className="absolute top-0 bottom-0 w-[20px] -ml-[10px] flex items-center justify-center gap-[3px] z-10"
+                        animate={{ left: `${(hoverIndex * 12.5) + 6.25}%` }}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    >
+                        <div className="w-[2px] bg-[#FB631C] rounded-full h-[12px] opacity-80" />
+                        <div className="w-[2px] bg-[#FB631C] rounded-full h-[8px] opacity-80" />
+                        <div className="w-[2px] bg-[#FB631C] rounded-full h-[12px] opacity-80" />
+                    </motion.div>
+                )}
+
+                {/* 3. Active Marker (7 lines: Pyramid/Mountain) */}
                 <motion.div
-                    className="absolute top-0 bottom-0 w-[40px] -ml-[20px] flex items-end justify-center gap-[5px]"
-                    animate={{ left: `${positionPercent}%` }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    className="absolute top-0 bottom-0 w-[60px] -ml-[30px] flex items-center justify-center gap-[4px] z-20"
+                    animate={{ left: `${(currentIndex * 12.5) + 6.25}%` }}
+                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
                 >
-                    {/* The V-Shape Orange Ticks */}
-                    {/* Left small */}
-                    <div className="w-[2px] h-[8px] bg-[#FB631C] rounded-full" />
-                    {/* Left medium */}
-                    <div className="w-[2px] h-[12px] bg-[#FB631C] rounded-full" />
-                    {/* Center tall */}
-                    <div className="w-[2px] h-[18px] bg-[#FB631C] rounded-full shadow-[0_0_8px_rgba(251,99,28,0.6)]" />
-                    {/* Right medium */}
-                    <div className="w-[2px] h-[12px] bg-[#FB631C] rounded-full" />
-                    {/* Right small */}
-                    <div className="w-[2px] h-[8px] bg-[#FB631C] rounded-full" />
+                    {/* 1 & 7: Short (match gray) */}
+                    <div className="w-[2px] bg-[#FB631C] rounded-full h-[8px]" />
+                    {/* 2 & 6: Med */}
+                    <div className="w-[2px] bg-[#FB631C] rounded-full h-[14px]" />
+                    {/* 3 & 5: Tall */}
+                    <div className="w-[2px] bg-[#FB631C] rounded-full h-[20px]" />
+                    {/* 4: Tallest (Mountain Peak) */}
+                    <div className="w-[2px] bg-[#FB631C] rounded-full h-[28px] shadow-[0_0_12px_rgba(251,99,28,0.6)]" />
+                    {/* 5 */}
+                    <div className="w-[2px] bg-[#FB631C] rounded-full h-[20px]" />
+                    {/* 6 */}
+                    <div className="w-[2px] bg-[#FB631C] rounded-full h-[14px]" />
+                    {/* 7 */}
+                    <div className="w-[2px] bg-[#FB631C] rounded-full h-[8px]" />
                 </motion.div>
             </div>
 
             {/* Labels */}
-            <div className="w-full flex justify-between items-center px-0 relative z-10">
+            <div className="w-full grid grid-cols-8 relative z-10">
                 {SECTIONS.map((label, index) => {
-                    const isActive = currentIndex === index;
-                    const isHovered = hoverIndex === index;
                     const isTarget = targetIndex === index;
 
                     return (
@@ -76,13 +94,10 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
                             onMouseEnter={() => setHoverIndex(index)}
                             onMouseLeave={() => setHoverIndex(null)}
                             className={`
-                                text-[10px] lg:text-[11px] uppercase tracking-[0.1em] transition-all duration-300 relative
-                                ${isTarget ? "text-brand-brown font-bold scale-110" : "text-brand-brown/40 font-medium"}
+                                flex justify-center items-center h-8
+                                text-[10px] lg:text-[11px] uppercase tracking-[0.1em] transition-all duration-300
+                                ${isTarget ? "text-brand-brown font-bold scale-110" : "text-brand-brown/40 font-medium hover:text-brand-brown/70"}
                             `}
-                            style={{
-                                width: '80px', // Fixed width for hit target consistency
-                                textAlign: 'center'
-                            }}
                         >
                             {label}
                         </button>

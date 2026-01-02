@@ -6,12 +6,20 @@ import { motion } from "framer-motion";
 interface SectionScrollerProps {
     children: React.ReactNode[];
     onSectionChange?: (index: number) => void;
+    selectedIndex?: number;
 }
 
-export default function SectionScroller({ children, onSectionChange }: SectionScrollerProps) {
-    const [index, setIndex] = useState(0);
+export default function SectionScroller({ children, onSectionChange, selectedIndex = 0 }: SectionScrollerProps) {
+    const [index, setIndex] = useState(selectedIndex);
     const lastScrollTime = useRef(0);
     const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+    // Sync internal state when external prop changes (e.g., from Navbar click)
+    useEffect(() => {
+        if (selectedIndex !== index) {
+            setIndex(selectedIndex);
+        }
+    }, [selectedIndex]);
 
     const touchStart = useRef(0);
 

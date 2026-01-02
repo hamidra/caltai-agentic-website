@@ -64,7 +64,7 @@ export default function FAQSection() {
                         The CaltAI FAQ
                     </motion.h2>
 
-                    <div className="flex flex-col border-t border-brand-brown/10">
+                    <div className="flex flex-col border-brand-brown/10">
                         {faqs.map((faq, index) => (
                             <motion.button
                                 key={index}
@@ -72,7 +72,7 @@ export default function FAQSection() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.05 }}
                                 onClick={() => setActiveIndex(index)}
-                                className={`text-left py-[12px] px-4 border-b border-brand-brown/10 flex items-center transition-all relative ${activeIndex === index ? 'text-brand-brown' : 'text-brand-brown/40 hover:text-brand-brown/60'
+                                className={`text-left py-[12px] px-4 border-brand-brown/10 flex items-center transition-all relative ${activeIndex === index ? 'text-brand-brown' : 'text-brand-brown/40 hover:text-brand-brown/60'
                                     }`}
                             >
                                 {activeIndex === index && (

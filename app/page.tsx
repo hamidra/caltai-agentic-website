@@ -19,7 +19,7 @@ export default function Home() {
     <main className="relative h-screen w-full bg-background overflow-hidden">
       <Navbar currentIndex={currentIndex} onSectionChange={setCurrentIndex} />
 
-      <SectionScroller onSectionChange={setCurrentIndex}>
+      <SectionScroller onSectionChange={setCurrentIndex} selectedIndex={currentIndex}>
         <Hero />
         <ProblemSection />
         <SolutionSection />
