@@ -19,7 +19,7 @@ export default function Navbar({ currentIndex, onSectionChange }: NavbarProps) {
                 </div>
             </div>
 
-            <div className="absolute left-1/2 -translate-x-1/2 top-4">
+            <div className="absolute left-1/2 -translate-x-1/2 top-[0px]">
                 <NavbarTicks currentIndex={currentIndex} onSectionChange={onSectionChange} />
             </div>
 

@@ -43,7 +43,7 @@ export default function FAQSection() {
     const [inputValue, setInputValue] = useState("");
 
     return (
-        <section className="relative w-full h-full flex flex-col items-center justify-start px-6 lg:px-24 pt-[122px] overflow-hidden bg-grid">
+        <section className="relative w-full h-full flex flex-col items-center justify-start px-6 lg:px-24 pt-[142px] overflow-hidden bg-grid">
             {/* Background Circular Lines */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
                 <div className="relative w-[120%] h-[120%] opacity-5">
