@@ -49,7 +49,7 @@ const steps = [
 
 export default function PilotSection() {
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 md:px-20 pt-32 pb-16 bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:px-20 pt-[122px] pb-16 bg-grid">
             <div className="max-w-7xl w-full text-left">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -60,10 +60,10 @@ export default function PilotSection() {
                     <span className="text-brand-brown/50 font-bold text-sm uppercase tracking-widest mb-4 block">
                         Human-in-the-Loop
                     </span>
-                    <h2 className="text-4xl md:text-[54px] font-bold text-brand-brown mb-8 font-cal leading-tight">
+                    <h2 className="text-[40px] font-bold text-brand-brown mb-8 font-cal leading-tight">
                         You're the Pilot, Not the Passenger
                     </h2>
-                    <p className="text-xl md:text-[22px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
+                    <p className="text-[20px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
                         We know you're worried about AI making wrong decisions. That's why CaltAI uses "Guided Autonomy", you maintain 100% control with 1% effort.
                     </p>
                 </motion.div>

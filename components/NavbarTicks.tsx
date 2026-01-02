@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-const SECTIONS = ["Home", "The Problem", "Solution", "Pricing", "About"];
+const SECTIONS = ["Home", "Problem", "Solution", "Comparison", "Pilot", "ROI", "Founders", "FAQ"];
 
 interface NavbarTicksProps {
     currentIndex: number;

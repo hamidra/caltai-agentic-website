@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const cards = [
     {
         icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
                 <circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />
             </svg>
         ),
@@ -15,7 +15,7 @@ const cards = [
     },
     {
         icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
                 <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
             </svg>
         ),
@@ -25,7 +25,7 @@ const cards = [
     },
     {
         icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
         ),
@@ -37,30 +37,30 @@ const cards = [
 
 export default function ProblemSection() {
     return (
-        <div className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 md:px-20 pt-32 pb-16 bg-grid">
+        <div className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[122px] pb-16 bg-grid">
             <div className="max-w-7xl w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="mb-10"
+                    className="mb-[30px]"
                 >
-                    <h2 className="text-4xl md:text-5xl font-bold text-brand-brown mb-6 font-cal">
+                    <h2 className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight">
                         You've Hit the "Scale Gap"
                     </h2>
-                    <p className="text-xl md:text-2xl text-brand-brown/70 font-medium">
+                    <p className="text-[20px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
                         You're too big for spreadsheets, too small for Oracle. Your complexity has outpaced your capacity. Sound familiar?
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-[40px]">
                     {cards.map((card, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="relative flex flex-col p-8 min-h-[340px] group transition-all duration-300 hover:-translate-y-1"
+                            className="relative flex flex-col pt-[44px] px-8 pb-0 min-h-[400px] group transition-all duration-300 hover:-translate-y-1"
                         >
                             {/* SVG Background Container */}
                             <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
@@ -71,23 +71,23 @@ export default function ProblemSection() {
                                 />
                             </div>
 
-                            <div className="flex items-center gap-6 mb-6">
-                                <div className="w-16 h-16 rounded-full bg-brand-orange flex items-center justify-center shadow-lg shadow-brand-orange/20 flex-shrink-0">
+                            <div className="flex items-center gap-5 mb-[40px] mt-[30px]">
+                                <div className="w-12 h-12 rounded-full bg-brand-orange flex items-center justify-center shadow-lg shadow-brand-orange/20 flex-shrink-0">
                                     <div className="scale-125">
                                         {card.icon}
                                     </div>
                                 </div>
 
-                                <h3 className="text-2xl font-bold text-brand-brown font-cal leading-tight">
+                                <h3 className="text-[20px] font-bold text-brand-brown font-cal leading-tight">
                                     {card.title}
                                 </h3>
                             </div>
 
-                            <p className="text-brand-brown/70 text-[15px] leading-relaxed mb-6 flex-grow">
+                            <p className="text-brand-brown/70 text-[15px] leading-relaxed mb-[36px] h-[100px]">
                                 {card.description}
                             </p>
 
-                            <div className="pt-4 border-t border-brand-brown/10 mt-auto">
+                            <div className="border-t border-brand-brown/10 h-[72px] flex items-center w-full">
                                 <p className="text-brand-orange font-bold text-[13px] uppercase tracking-wider">
                                     {card.stat.split(' ')[0]} <span className="text-brand-brown/50 font-medium lowercase italic">{card.stat.split(' ').slice(1).join(' ')}</span>
                                 </p>

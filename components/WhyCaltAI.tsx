@@ -46,7 +46,7 @@ const alternatives = [
 
 export default function WhyCaltAI() {
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 md:px-20 pt-32 pb-16 bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:px-20 pt-[122px] pb-16 bg-grid">
             <div className="max-w-7xl w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -54,10 +54,10 @@ export default function WhyCaltAI() {
                     transition={{ duration: 0.8 }}
                     className="mb-16"
                 >
-                    <h2 className="text-4xl md:text-[54px] font-bold text-brand-brown mb-8 font-cal leading-tight">
+                    <h2 className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight">
                         Why CaltAI vs. The Alternatives
                     </h2>
-                    <p className="text-xl md:text-[22px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
+                    <p className="text-[20px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
                         You've probably tried other solutions. Here's why they fall short.
                     </p>
                 </motion.div>

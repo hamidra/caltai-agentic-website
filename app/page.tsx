@@ -9,6 +9,8 @@ import SolutionSection from "@/components/SolutionSection";
 import WhyCaltAI from "@/components/WhyCaltAI";
 import PilotSection from "@/components/PilotSection";
 import ROISection from "@/components/ROISection";
+import FoundersNote from "@/components/FoundersNote";
+import FAQSection from "@/components/FAQSection";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -24,6 +26,8 @@ export default function Home() {
         <WhyCaltAI />
         <PilotSection />
         <ROISection />
+        <FoundersNote />
+        <FAQSection />
       </SectionScroller>
 
       {/* Global "Scroll to explore" Indicator */}

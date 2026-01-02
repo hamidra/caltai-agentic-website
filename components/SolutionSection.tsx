@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const solutionCards = [
     {
         icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
                 <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
                 <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
@@ -16,7 +16,7 @@ const solutionCards = [
     },
     {
         icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                 <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                 <line x1="9" y1="12" x2="15" y2="12"></line>
@@ -40,18 +40,18 @@ const solutionCards = [
 
 export default function SolutionSection() {
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-center px-8 md:px-20 pt-32 pb-16 bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[122px] pb-16 bg-grid">
             <div className="max-w-7xl w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="mb-16"
+                    className="mb-[30px]"
                 >
-                    <h2 className="text-4xl md:text-[54px] font-bold text-brand-brown mb-8 font-cal leading-tight">
+                    <h2 className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight">
                         Not Another Tool. An Operations Layer.
                     </h2>
-                    <p className="text-xl md:text-[22px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
+                    <p className="text-[20px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
                         CaltAI doesn't just connect your tools, it thinks, decides, and executes. It's the autonomous layer that sits on top of your Franken-stack and makes it actually work.
                     </p>
                 </motion.div>
@@ -63,19 +63,24 @@ export default function SolutionSection() {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="relative flex flex-col items-center text-center p-12 min-h-[400px] border border-[#9067ff]/30 bg-[#f8f6ff] group transition-all duration-300 hover:border-[#9067ff]/60"
+                            className="relative flex flex-col items-center text-center p-12 min-h-[400px] group transition-all duration-300 hover:-translate-y-1"
                         >
-                            {/* Decorative corner dot */}
-                            <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-[#9067ff] rounded-full translate-x-1/2 -translate-y-1/2"></div>
-                            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-[#9067ff]/30 transition-colors group-hover:border-[#9067ff]/60"></div>
+                            {/* SVG Background Container */}
+                            <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
+                                <img
+                                    src="/box blue.svg"
+                                    alt=""
+                                    className="w-full h-full object-fill opacity-100 transition-opacity"
+                                />
+                            </div>
 
-                            <div className="w-16 h-16 rounded-xl bg-[#9067ff] flex items-center justify-center mb-8 shadow-lg shadow-[#9067ff]/20 flex-shrink-0">
+                            <div className="w-14 h-14 rounded-xl bg-[#9067ff] flex items-center justify-center mb-8 mt-[30px] shadow-lg shadow-[#9067ff]/20 flex-shrink-0">
                                 <div className="scale-125">
                                     {card.icon}
                                 </div>
                             </div>
 
-                            <h3 className="text-2xl font-bold text-brand-brown mb-6 font-cal leading-tight px-2">
+                            <h3 className="text-[22px] font-bold text-brand-brown mb-6 font-cal leading-tight px-2">
                                 {card.title}
                             </h3>
 
