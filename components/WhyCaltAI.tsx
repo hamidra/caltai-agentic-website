@@ -6,7 +6,7 @@ const alternatives = [
     {
         badge: "Workflow Automation",
         badgeColor: "bg-brand-orange",
-        borderColor: "border-brand-orange/30",
+        borderColor: "border-brand-orange",
         title: '"Dumb Pipes"',
         description: "Reactive automation. If X happens, do Y. No memory, no context, no decisions.",
         points: [
@@ -19,7 +19,7 @@ const alternatives = [
     {
         badge: "Enterprise ERP",
         badgeColor: "bg-brand-brown",
-        borderColor: "border-brand-brown/30",
+        borderColor: "border-brand-brown",
         title: '"Heavy & Rigid"',
         description: "6-12 month implementation. $100K+ cost. Forces you to change your processes.",
         points: [
@@ -32,7 +32,7 @@ const alternatives = [
     {
         badge: "CaltAI",
         badgeColor: "bg-[#9067ff]",
-        borderColor: "border-[#9067ff]/30",
+        borderColor: "border-[#9067ff]",
         title: '"Brain of Your Business"',
         description: "Sits on top of your existing stack. Connects, thinks, decides, executes. Learns.",
         points: [
@@ -46,7 +46,7 @@ const alternatives = [
 
 export default function WhyCaltAI() {
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:px-20 pt-[122px] pb-16 bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[122px] pb-16 bg-grid">
             <div className="max-w-7xl w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -62,32 +62,29 @@ export default function WhyCaltAI() {
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {alternatives.map((alt, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className={`relative flex flex-col p-10 min-h-[450px] border-y border-x md:border-x-0 ${index === 0 ? 'md:border-l' : ''} ${index === alternatives.length - 1 ? 'md:border-r' : ''} border-brand-brown/10 bg-white/40 group`}
+                            className={`relative flex flex-col p-8 h-[352px] border ${alt.borderColor} bg-white group hover:-translate-y-1 transition-transform duration-300`}
                         >
                             {/* Top Badge */}
-                            <div className={`absolute top-0 right-0 h-10 px-6 ${alt.badgeColor} text-white font-bold text-sm flex items-center justify-center -translate-y-full`}>
+                            <div className={`absolute top-0 right-0 py-3 px-6 ${alt.badgeColor} text-white font-bold text-sm flex items-center justify-center`}>
                                 {alt.badge}
                             </div>
 
-                            {/* Decorative corner dot */}
-                            <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-brand-brown/20 rounded-full translate-x-1/2 -translate-y-1/2"></div>
-
-                            <h3 className="text-2xl font-bold text-brand-brown mb-6 font-cal leading-tight pt-4">
+                            <h3 className="text-[24px] font-bold text-brand-brown mb-4 font-cal leading-tight pt-8">
                                 {alt.title}
                             </h3>
 
-                            <p className="text-brand-brown/70 text-[16px] leading-[1.6] mb-8">
+                            <p className="text-brand-brown/70 text-[16px] leading-[1.5] mb-6">
                                 {alt.description}
                             </p>
 
-                            <ul className="space-y-4 flex-grow pt-4 border-t border-brand-brown/10">
+                            <ul className="space-y-2 mt-auto">
                                 {alt.points.map((point, i) => (
                                     <li key={i} className="flex items-start gap-3">
                                         <div className="flex-shrink-0 mt-1">
