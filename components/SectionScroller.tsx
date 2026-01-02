@@ -13,6 +13,8 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
     const [index, setIndex] = useState(selectedIndex);
     const lastScrollTime = useRef(0);
     const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const bottomReachedTime = useRef<number | null>(null);
+    const topReachedTime = useRef<number | null>(null);
 
     // Sync internal state when external prop changes (e.g., from Navbar click)
     useEffect(() => {
@@ -25,6 +27,7 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
 
     const scrollCooldown = 500; // ms between section changes
     const scrollThreshold = 5; // minimum delta to trigger
+    const edgeDelayMs = 300; // delay at bottom/top before transitioning
 
     const handleScroll = useCallback(
         (e: WheelEvent | TouchEvent) => {
@@ -56,15 +59,39 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
             // Intent: Scrolling Down
             if (delta > 0) {
                 if (isAtBottom && index < children.length - 1) {
-                    setIndex((prev) => prev + 1);
-                    lastScrollTime.current = now;
+                    // User is at bottom and scrolling down
+                    if (bottomReachedTime.current === null) {
+                        // First time reaching bottom
+                        bottomReachedTime.current = now;
+                    } else if (now - bottomReachedTime.current >= edgeDelayMs) {
+                        // Enough time has passed, transition to next section
+                        setIndex((prev) => prev + 1);
+                        lastScrollTime.current = now;
+                        bottomReachedTime.current = null;
+                        topReachedTime.current = null;
+                    }
+                } else {
+                    // Reset if not at bottom
+                    bottomReachedTime.current = null;
                 }
             }
             // Intent: Scrolling Up
             else if (delta < 0) {
                 if (isAtTop && index > 0) {
-                    setIndex((prev) => prev - 1);
-                    lastScrollTime.current = now;
+                    // User is at top and scrolling up
+                    if (topReachedTime.current === null) {
+                        // First time reaching top
+                        topReachedTime.current = now;
+                    } else if (now - topReachedTime.current >= edgeDelayMs) {
+                        // Enough time has passed, transition to previous section
+                        setIndex((prev) => prev - 1);
+                        lastScrollTime.current = now;
+                        topReachedTime.current = null;
+                        bottomReachedTime.current = null;
+                    }
+                } else {
+                    // Reset if not at top
+                    topReachedTime.current = null;
                 }
             }
         },
