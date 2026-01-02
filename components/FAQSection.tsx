@@ -40,6 +40,7 @@ const faqs = [
 
 export default function FAQSection() {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [inputValue, setInputValue] = useState("");
 
     return (
         <section className="relative w-full h-full flex flex-col items-center justify-start px-6 lg:px-24 pt-[122px] overflow-hidden bg-grid">
@@ -50,15 +51,15 @@ export default function FAQSection() {
                 </div>
             </div>
 
-            <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20">
 
                 {/* Left Side: Questions List */}
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-13">
                     <motion.h2
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="font-cal text-5xl lg:text-6xl text-brand-brown font-bold"
+                        className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight"
                     >
                         The CaltAI FAQ
                     </motion.h2>
@@ -71,7 +72,7 @@ export default function FAQSection() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.05 }}
                                 onClick={() => setActiveIndex(index)}
-                                className={`text-left py-5 px-4 border-b border-brand-brown/10 flex items-center transition-all relative ${activeIndex === index ? 'text-brand-brown' : 'text-brand-brown/40 hover:text-brand-brown/60'
+                                className={`text-left py-[12px] px-4 border-b border-brand-brown/10 flex items-center transition-all relative ${activeIndex === index ? 'text-brand-brown' : 'text-brand-brown/40 hover:text-brand-brown/60'
                                     }`}
                             >
                                 {activeIndex === index && (
@@ -80,7 +81,7 @@ export default function FAQSection() {
                                         className="absolute left-0 w-1 h-8 bg-brand-orange"
                                     />
                                 )}
-                                <span className="font-cal text-lg lg:text-xl font-bold ml-4">
+                                <span className="font-cal text-lg lg:text-xl font-medium ml-4">
                                     {faq.question}
                                 </span>
                             </motion.button>
@@ -89,10 +90,9 @@ export default function FAQSection() {
                 </div>
 
                 {/* Right Side: Answer Box & Assistant */}
-                <div className="relative flex flex-col items-center lg:items-end gap-12">
+                <div className="relative flex flex-col items-center justify-center gap-12">
                     {/* Assistant Orb */}
-                    <div className="relative w-40 h-40 lg:w-56 lg:h-56 -mb-8 lg:mr-24">
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#ff602e] via-[#9067ff] to-[#ff602e] rounded-full blur-[40px] opacity-40 animate-pulse"></div>
+                    <div className="relative w-40 h-40 lg:w-56 lg:h-56 -mb-12">
                         <div className="relative w-full h-full bg-white/20 backdrop-blur-xl rounded-full border border-white/30 flex items-center justify-center p-8 overflow-hidden">
                             <img
                                 src="/AI design.svg"
@@ -110,19 +110,21 @@ export default function FAQSection() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -20, scale: 0.95 }}
                             transition={{ duration: 0.4 }}
-                            className="bg-brand-cream border border-brand-brown/10 rounded-[32px] p-10 lg:p-12 max-w-xl shadow-sm relative"
+                            className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-8 max-w-lg w-full shadow-sm text-center"
                         >
-                            <p className="font-cal text-lg lg:text-xl text-brand-brown/80 leading-relaxed font-medium">
+                            <p className="text-[16px] leading-relaxed text-brand-brown font-medium">
                                 {faqs[activeIndex].answer}
                             </p>
                         </motion.div>
                     </AnimatePresence>
 
                     {/* Custom Input */}
-                    <div className="w-full max-w-md lg:mr-4">
+                    <div className="w-full max-w-md mt-4">
                         <div className="relative group">
                             <input
                                 type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
                                 placeholder="Ask your question"
                                 className="w-full h-16 bg-white border border-brand-brown/10 rounded-full px-8 pr-32 text-brand-brown font-cal font-medium focus:outline-none focus:ring-2 focus:ring-brand-orange/20 transition-all shadow-sm"
                             />
@@ -130,8 +132,36 @@ export default function FAQSection() {
                                 <button className="p-2 text-brand-brown/40 hover:text-brand-orange transition-colors">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="22" /></svg>
                                 </button>
-                                <button className="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-white shadow-lg shadow-brand-orange/20 hover:scale-105 transition-transform">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="2" height="2" /><rect x="7" y="11" width="2" height="2" /><rect x="11" y="11" width="2" height="2" /><rect x="15" y="11" width="2" height="2" /><rect x="19" y="11" width="2" height="2" /><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" /></svg>
+                                <button className="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-white shadow-lg shadow-brand-orange/20 hover:scale-105 transition-transform overflow-hidden">
+                                    {inputValue ? (
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12" />
+                                            <polyline points="12 5 19 12 12 19" />
+                                        </svg>
+                                    ) : (
+                                        <div className="flex items-center gap-0.5 h-3">
+                                            <motion.div
+                                                animate={{ height: [6, 12, 6] }}
+                                                transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+                                                className="w-[2px] bg-white rounded-full"
+                                            ></motion.div>
+                                            <motion.div
+                                                animate={{ height: [10, 16, 10] }}
+                                                transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
+                                                className="w-[2px] bg-white rounded-full"
+                                            ></motion.div>
+                                            <motion.div
+                                                animate={{ height: [8, 14, 8] }}
+                                                transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
+                                                className="w-[2px] bg-white rounded-full"
+                                            ></motion.div>
+                                            <motion.div
+                                                animate={{ height: [4, 10, 4] }}
+                                                transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
+                                                className="w-[2px] bg-white rounded-full"
+                                            ></motion.div>
+                                        </div>
+                                    )}
                                 </button>
                             </div>
                         </div>

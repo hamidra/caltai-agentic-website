@@ -4,23 +4,17 @@ import { motion } from "framer-motion";
 
 export default function FoundersNote() {
     return (
-        <section className="relative w-full h-full flex flex-col items-center justify-start px-6 lg:px-24 pt-[122px] overflow-hidden">
+        <section className="relative w-full h-full flex flex-col items-center justify-start px-6 lg:px-24 pt-[122px] overflow-hidden bg-grid">
             {/* Background Circular Lines */}
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
-                <div className="relative w-[120%] h-[120%] opacity-10">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-brand-brown rounded-full"></div>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-[40%] -translate-y-1/2 w-[900px] h-[900px] border border-brand-brown rounded-full"></div>
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[45%] w-[850px] h-[850px] border border-brand-brown rounded-full"></div>
-                </div>
-            </div>
+
 
             {/* Content Container */}
-            <div className="relative z-10 max-w-6xl w-full h-full flex flex-col pb-32 lg:pb-40">
+            <div className="relative z-10 max-w-6xl w-full h-full flex flex-col text-center pb-32 lg:pb-40">
                 <motion.h2
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="font-serif text-5xl lg:text-7xl text-brand-brown mb-auto"
+                    className="font-serif font-bold text-[48px] lg:text-[48px] text-brand-brown mb-[40px] mt-[40px]"
                 >
                     A Note From Our Founders
                 </motion.h2>
@@ -32,7 +26,7 @@ export default function FoundersNote() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="relative max-w-4xl text-center"
                     >
-                        <p className="font-serif italic text-2xl lg:text-4xl text-brand-brown leading-relaxed lg:leading-[1.6]">
+                        <p className="font-serif italic text-[28px] lg:text-[28px] text-brand-brown leading-relaxed lg:leading-[1.6]">
                             "We built CaltAI because we were tired of being a manual bridge between
                             our own tools. We saw the opportunities, but we lacked the operational
                             firepower to seize them. We are building this so you can finally stop
@@ -41,7 +35,7 @@ export default function FoundersNote() {
                         </p>
 
                         <div className="mt-16">
-                            <span className="font-cal text-xl lg:text-3xl text-brand-brown font-bold tracking-tight">
+                            <span className="font-cal text-xl lg:text-xl text-brand-brown font-bold tracking-tight">
                                 CaltAI Founders
                             </span>
                         </div>
