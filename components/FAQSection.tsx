@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
@@ -40,7 +40,30 @@ const faqs = [
 
 export default function FAQSection() {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [displayedText, setDisplayedText] = useState("");
+    const [isTyping, setIsTyping] = useState(false);
     const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        const fullText = faqs[activeIndex].answer;
+        setDisplayedText("");
+        setIsTyping(true);
+
+        let i = 0;
+        const typingSpeed = 20; // ms per char
+
+        const interval = setInterval(() => {
+            i++;
+            setDisplayedText(fullText.slice(0, i));
+
+            if (i >= fullText.length) {
+                setIsTyping(false);
+                clearInterval(interval);
+            }
+        }, typingSpeed);
+
+        return () => clearInterval(interval);
+    }, [activeIndex]);
 
     return (
         <section className="relative w-full h-full flex flex-col items-center justify-start px-6 lg:px-24 pt-[142px] overflow-hidden bg-grid">
@@ -54,7 +77,7 @@ export default function FAQSection() {
             <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20">
 
                 {/* Left Side: Questions List */}
-                <div className="flex flex-col gap-13">
+                <div className="flex flex-col gap-[18px]">
                     <motion.h2
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -78,10 +101,10 @@ export default function FAQSection() {
                                 {activeIndex === index && (
                                     <motion.div
                                         layoutId="faq-indicator"
-                                        className="absolute left-0 w-1 h-8 bg-brand-orange"
+                                        className="absolute left-[10px] w-[1.5px] h-[52px] bg-brand-orange"
                                     />
                                 )}
-                                <span className="font-cal text-lg lg:text-xl font-medium ml-4">
+                                <span className="font-cal text-lg lg:text-l font-medium ml-4">
                                     {faq.question}
                                 </span>
                             </motion.button>
@@ -110,10 +133,11 @@ export default function FAQSection() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -20, scale: 0.95 }}
                             transition={{ duration: 0.4 }}
-                            className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-8 max-w-lg w-full shadow-sm text-center"
+                            className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-8 max-w-lg w-full shadow-sm text-center min-h-[160px] flex items-center justify-center"
                         >
                             <p className="text-[16px] leading-relaxed text-brand-brown font-medium">
-                                {faqs[activeIndex].answer}
+                                {displayedText}
+                                {isTyping && <span className="animate-pulse text-brand-orange">|</span>}
                             </p>
                         </motion.div>
                     </AnimatePresence>
@@ -169,14 +193,6 @@ export default function FAQSection() {
                 </div>
             </div>
 
-            {/* Bottom Left Button */}
-            <div className="absolute bottom-8 left-8">
-                <div className="w-12 h-12 border border-brand-orange/30 rounded-lg flex items-center justify-center bg-white/50 backdrop-blur-sm shadow-sm group cursor-pointer hover:border-brand-orange transition-colors">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff602e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="rotate-0 transition-transform group-hover:scale-110">
-                        <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
-                    </svg>
-                </div>
-            </div>
         </section>
     );
 }

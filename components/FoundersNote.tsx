@@ -46,15 +46,6 @@ export default function FoundersNote() {
                 <div className="h-20 lg:h-32"></div>
             </div>
 
-            {/* Corner Decorative Elements */}
-            {/* Bottom Left Button */}
-            <div className="absolute bottom-8 left-8">
-                <div className="w-12 h-12 border border-brand-orange/30 rounded-lg flex items-center justify-center bg-white/50 backdrop-blur-sm shadow-sm group cursor-pointer hover:border-brand-orange transition-colors">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff602e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="rotate-0 transition-transform group-hover:scale-110">
-                        <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
-                    </svg>
-                </div>
-            </div>
 
             {/* Top Right Decorative Arrow (Down-Left) */}
             <div className="absolute top-8 right-8">

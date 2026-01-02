@@ -8,13 +8,13 @@ export default function ExpandableFooter() {
     const [isHovered, setIsHovered] = useState(false);
 
     // Matches the 80px grid/margin from other sections
-    const BTN_SIZE = 80;
+    const BTN_SIZE = 65;
 
     return (
         <>
             {/* Hover Trigger Zone & Visual Button */}
             <div
-                className="fixed bottom-0 left-0 z-50 flex items-end justify-start"
+                className="fixed bottom-0 left-0 z-[60] flex items-end justify-start"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
@@ -23,7 +23,7 @@ export default function ExpandableFooter() {
                     className="relative bg-white border-t border-r border-brand-orange/50 flex items-center justify-center cursor-pointer transition-colors hover:bg-orange-50"
                     style={{ width: BTN_SIZE, height: BTN_SIZE }}
                 >
-                    <ArrowUpRight className="text-brand-orange w-8 h-8" strokeWidth={2.5} />
+                    <ArrowUpRight className="text-brand-orange w-8 h-8" strokeWidth={2} />
                 </div>
             </div>
 
@@ -35,7 +35,7 @@ export default function ExpandableFooter() {
                         animate={{ y: 0 }}
                         exit={{ y: "100%" }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-brand-orange/20 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]"
+                        className="fixed bottom-0 left-0 right-0 z-[60] bg-white border-t border-brand-orange/20 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]"
                         onMouseEnter={() => setIsHovered(true)} // Keep open while hovering footer
                         onMouseLeave={() => setIsHovered(false)}
                     >
