@@ -17,7 +17,7 @@ export default function ROISection() {
                     </h2>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 mb-16 max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 mb-8 max-w-4xl mx-auto">
                     {/* Without CaltAI */}
                     <motion.div
                         initial={{ opacity: 0, x: -30 }}
@@ -27,7 +27,7 @@ export default function ROISection() {
                     >
                         {/* Background Frame */}
                         <div className="absolute inset-0 z-0">
-                            <img src="/box Orange.svg" alt="" className="w-full h-full" />
+                            <img src="/orange box ROI.svg" alt="" className="w-full h-full" />
                         </div>
 
                         {/* Content */}
@@ -71,7 +71,7 @@ export default function ROISection() {
                     >
                         {/* Background Frame */}
                         <div className="absolute inset-0 z-0">
-                            <img src="/box blue.svg" alt="" className="w-full h-full" />
+                            <img src="/ROI box.svg" alt="" className="w-full h-full" />
                         </div>
 
                         {/* Content */}
