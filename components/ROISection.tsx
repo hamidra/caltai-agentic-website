@@ -12,10 +12,7 @@ export default function ROISection() {
                     transition={{ duration: 0.8 }}
                     className="mb-12 text-left"
                 >
-                    <span className="text-brand-brown/50 font-bold text-sm uppercase tracking-widest mb-4 block">
-                        The math
-                    </span>
-                    <h2 className="text-4xl md:text-[54px] font-bold text-brand-brown mb-4 font-cal leading-tight">
+                    <h2 className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight">
                         The ROI is simple
                     </h2>
                 </motion.div>

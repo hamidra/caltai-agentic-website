@@ -15,7 +15,7 @@ export default function SectionScroller({ children, onSectionChange }: SectionSc
 
     const touchStart = useRef(0);
 
-    const scrollCooldown = 800; // ms between section changes
+    const scrollCooldown = 500; // ms between section changes
     const scrollThreshold = 30; // minimum delta to trigger
 
     const handleScroll = useCallback(
@@ -95,7 +95,7 @@ export default function SectionScroller({ children, onSectionChange }: SectionSc
                         visibility: Math.abs(index - i) <= 1 ? "visible" : "hidden" // Optimization: only render adjacent
                     }}
                     transition={{
-                        duration: 0.8,
+                        duration: 0.2,
                         ease: "easeOut"
                     }}
                     className="absolute inset-0 h-screen w-screen overflow-y-auto scroll-smooth hide-scrollbar transition-visibility"
