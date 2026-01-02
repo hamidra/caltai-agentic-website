@@ -88,6 +88,11 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
     const centerY = Math.round(height / 2);
     const totalBarStep = CONFIG.BAR_WIDTH + CONFIG.BAR_GAP;
 
+    // ALIGNMENT FIX: Top-align orange markers to the top of the grey ticks.
+    // Grey ticks are centered, so their top is at (centerY - TICK_HEIGHT / 2).
+    // Orange bars anchors to this Top Y and extends downwards.
+    const markerTopY = centerY - Math.round(CONFIG.TICK_HEIGHT / 2);
+
     // Calculates the "perfect" X position for a marker such that its bars align 
     // with the global grid starting at 0.
     const snapToGrid = useCallback((centerX: number, numBars: number) => {
@@ -186,7 +191,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
             <rect
                 key={`base-${i}`}
                 x={x}
-                y={centerY - CONFIG.TICK_HEIGHT / 2}
+                y={markerTopY} // Aligned to top constant (effectively centered for h=8)
                 width={CONFIG.BAR_WIDTH}
                 height={CONFIG.TICK_HEIGHT}
                 fill={CONFIG.COLOR_BASELINE}
@@ -212,7 +217,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                     <rect
                         key={`hover-${i}`}
                         x={hStartX + i * totalBarStep}
-                        y={centerY - h / 2}
+                        y={markerTopY} // Top-Aligned
                         width={CONFIG.BAR_WIDTH}
                         height={h}
                         fill={CONFIG.COLOR_ACTIVE}
@@ -249,7 +254,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                         // Use the interpolated 'x' directly.
                         // Since 'targetX' was snapped, the interpolation will land exactly on grid.
                         x={activeState.x + i * totalBarStep}
-                        y={centerY - h / 2}
+                        y={markerTopY} // Top-Aligned
                         width={CONFIG.BAR_WIDTH}
                         height={h}
                         fill={CONFIG.COLOR_ACTIVE}
@@ -270,7 +275,6 @@ interface NavbarTicksProps {
 
 export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTicksProps) {
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-    // Explicitly allow null for the ref type to match typical React useRef behavior for DOM elements
     const containerRef = useRef<HTMLDivElement>(null);
     const { metrics, itemsRef } = useDisplayMetrics(containerRef, SECTIONS.length);
 
