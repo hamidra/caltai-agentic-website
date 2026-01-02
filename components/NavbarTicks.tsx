@@ -1,45 +1,44 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // --- Configuration ---
-// Tweak these numbers to match your reference exactly.
+// Adjust these to match your design exactly.
 const CONFIG = {
-    // VISUALS
-    TICK_HEIGHT: 8,            // Height of static grey ticks (and pyramid base)
-    TICK_WIDTH: 2,             // Width of ticks (pixels)
-    TICK_SPACING: 4,           // Gap between ticks (pixels)
+    // Dimensions
+    BAR_WIDTH: 2,               // Width of both grey ticks and orange bars (px)
+    BAR_GAP: 4,                 // Gap between bars (px)
+    TICK_HEIGHT: 8,             // Height of background grey ticks (px)
 
-    // ACTIVE MARKER (Pyramid)
-    PYRAMID_HEIGHTS: [8, 14, 20, 32, 20, 14, 8], // [h1, h2, h3, h4, h3, h2, h1]
+    // Active Marker (Pyramid)
+    // h1 MUST equal TICK_HEIGHT for the "sit on baseline" visual.
+    PYRAMID_HEIGHTS: [8, 14, 20, 28, 20, 14, 8],
 
-    // HOVER MARKER (3 lines)
-    HOVER_HEIGHTS: [14, 10, 14], // Long-Short-Long
+    // Hover Marker
+    HOVER_HEIGHTS: [12, 8, 12], // [hSmall, hTiny, hSmall]
 
-    // WAVE ANIMATION PHYSICS
-    DURATION: 600,             // ms
-    WAVE_AMP: 12,              // Max height change pixels during travel
-    WAVE_CYCLES: 2,            // How many times the wave ripples through during travel
-    PHASE_STEP: 0.8,           // Phase offset per bar (controls ripple tightness)
+    // Wave Physics
+    DURATION: 600,              // ms
+    WAVE_AMP: 12,               // Max pixel change in height during ripple
+    WAVE_CYCLES: 2,             // Number of ripples
+    PHASE_STEP: 0.8,            // Phase offset between bars
 
-    // COLORS
-    COLOR_ACTIVE: "#FF7A00",   // Orange
-    COLOR_BASELINE: "#A7A198", // Grey
+    // Colors
+    COLOR_ACTIVE: "#FF7A00",
+    COLOR_BASELINE: "#E5E5E5",  // Light grey for baseline
 };
 
 const SECTIONS = ["Home", "Problem", "Solution", "Comparison", "Pilot", "ROI", "Founders", "FAQ"];
 
 // --- Helper: Easing ---
-// EaseInOutCubic for smooth start/end acceleration
 const easeInOutCubic = (t: number): number => {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 };
 
-// --- Hook: Measure Item Centers ---
-// Uses ResizeObserver to maintain accurate center positions relative to the container.
-const useItemCenters = (containerRef: React.RefObject<HTMLDivElement>, itemCount: number) => {
-    const [centers, setCenters] = useState<number[]>([]);
+// --- Hook: Display Metrics ---
+const useDisplayMetrics = (containerRef: React.RefObject<HTMLDivElement | null>, itemCount: number) => {
+    const [metrics, setMetrics] = useState({ centers: [] as number[], width: 0 });
     const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
 
     useEffect(() => {
@@ -50,195 +49,216 @@ const useItemCenters = (containerRef: React.RefObject<HTMLDivElement>, itemCount
             if (!container) return;
 
             const containerRect = container.getBoundingClientRect();
-            const newCenters: number[] = [];
+            const width = containerRect.width;
 
+            const newCenters: number[] = [];
             for (let i = 0; i < itemCount; i++) {
                 const item = itemsRef.current[i];
                 if (item) {
                     const rect = item.getBoundingClientRect();
-                    // Calculate center relative to container
+                    // Relative center X
                     const center = (rect.left - containerRect.left) + (rect.width / 2);
-                    newCenters.push(Math.round(center)); // Round to integer for crisp rendering
+                    newCenters.push(Math.round(center));
                 } else {
                     newCenters.push(0);
                 }
             }
-            setCenters(newCenters);
+            setMetrics({ centers: newCenters, width: Math.round(width) });
         };
 
-        // Initial measurement
         measure();
-
-        // Observe resize
         const observer = new ResizeObserver(measure);
         observer.observe(containerRef.current);
-
         return () => observer.disconnect();
     }, [itemCount]);
 
-    return { centers, itemsRef };
+    return { metrics, itemsRef };
 };
 
-// --- Component: Static Baseline Ticks ---
-const BaselineTicks = () => {
-    // Generate enough ticks to act as a dotted line. 
-    // We use a high count (e.g. 150) and let overflow:hidden handle cutoff.
-    // Ideally calculated based on width, but fixed dense count works for this UI.
-    const tickCount = 150;
-
-    return (
-        <div className="absolute inset-0 flex items-center justify-center opacity-40 pointer-events-none overflow-hidden">
-            <div className="flex" style={{ gap: `${CONFIG.TICK_SPACING}px` }}>
-                {Array.from({ length: tickCount }).map((_, i) => (
-                    <div
-                        key={i}
-                        className="rounded-full bg-[#A7A198]"
-                        style={{
-                            width: `${CONFIG.TICK_WIDTH}px`,
-                            height: `${CONFIG.TICK_HEIGHT}px`,
-                            flexShrink: 0
-                        }}
-                    />
-                ))}
-            </div>
-        </div>
-    );
-};
-
-// --- Component: Wave Marker (Active) ---
-interface WaveMarkerProps {
-    startX: number;
-    targetX: number;
-    isAnimating: boolean;
-    onAnimationComplete: () => void;
+// --- Component: Unified SVG Overlay ---
+interface SvgBaselineAndMarkerProps {
+    width: number;
+    height: number;
+    centers: number[];
+    currentIndex: number;
+    hoverIndex: number | null;
 }
 
-const WaveMarker = ({ startX, targetX, isAnimating, onAnimationComplete }: WaveMarkerProps) => {
-    const [currentX, setCurrentX] = useState(startX);
-    const [barHeights, setBarHeights] = useState(CONFIG.PYRAMID_HEIGHTS);
+const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex }: SvgBaselineAndMarkerProps) => {
+    const centerY = Math.round(height / 2);
+    const totalBarStep = CONFIG.BAR_WIDTH + CONFIG.BAR_GAP;
 
-    const startTimeRef = useRef<number | null>(null);
+    // Calculates the "perfect" X position for a marker such that its bars align 
+    // with the global grid starting at 0.
+    const snapToGrid = useCallback((centerX: number, numBars: number) => {
+        const markerWidth = (numBars * CONFIG.BAR_WIDTH) + ((numBars - 1) * CONFIG.BAR_GAP);
+        const naturalStartX = centerX - markerWidth / 2;
+        // Round to nearest grid step to ensure perfect overlap with baseline ticks
+        const snappedStartX = Math.round(naturalStartX / totalBarStep) * totalBarStep;
+        return snappedStartX;
+    }, [totalBarStep]);
+
+    // --- Active Marker State & Animation ---
+    const [activeState, setActiveState] = useState({
+        x: 0,
+        heights: CONFIG.PYRAMID_HEIGHTS,
+        isAnimating: false,
+    });
+
+    const stateRef = useRef(activeState);
     const reqRef = useRef<number | null>(null);
+    const startTimeRef = useRef<number | null>(null);
 
-    // Reset animation trigger
+    // Animation Loop
     useEffect(() => {
-        if (!isAnimating) {
-            // If not animating (initial load or resize), snap instantly
-            setCurrentX(targetX);
-            setBarHeights(CONFIG.PYRAMID_HEIGHTS);
+        if (!centers.length) return;
+
+        const rawTargetCenter = centers[currentIndex] || 0;
+        // IMPORTANT: Snap the TARGET position to the grid. 
+        // This ensures that when the animation settles, it lands EXACTLY on the ticks.
+        const targetX = snapToGrid(rawTargetCenter, CONFIG.PYRAMID_HEIGHTS.length);
+
+        // Initial Snap or large jump
+        if (stateRef.current.x === 0 || Math.abs(stateRef.current.x - targetX) > width / 2) {
+            const snapState = { x: targetX, heights: CONFIG.PYRAMID_HEIGHTS, isAnimating: false };
+            stateRef.current = snapState;
+            setActiveState(snapState);
             return;
         }
 
+        const startX = stateRef.current.x;
         startTimeRef.current = null;
+        if (reqRef.current) cancelAnimationFrame(reqRef.current);
 
-        const animate = (time: number) => {
+        const tick = (time: number) => {
             if (startTimeRef.current === null) startTimeRef.current = time;
             const elapsed = time - startTimeRef.current;
             const progress = Math.min(elapsed / CONFIG.DURATION, 1);
+            const eased = easeInOutCubic(progress);
 
-            // 1. Position Interpolation
-            const easedProgress = easeInOutCubic(progress);
-            const nextX = startX + (targetX - startX) * easedProgress;
-            setCurrentX(nextX);
+            // 1. Move X
+            const currentX = startX + (targetX - startX) * eased;
 
-            // 2. Wave Physics Calculation
-            // Envelope peaks at 0.5 (mid-travel)
+            // 2. Wave Heights
             const envelope = Math.sin(progress * Math.PI);
-
-            const nextHeights = CONFIG.PYRAMID_HEIGHTS.map((baseHeight, i) => {
-                // Wave term: sin(2π * (progress * cycles - i * phaseStep))
+            const currentHeights = CONFIG.PYRAMID_HEIGHTS.map((h, i) => {
                 const phase = i * CONFIG.PHASE_STEP;
-                const waveTerm = Math.sin(2 * Math.PI * (progress * CONFIG.WAVE_CYCLES - phase));
-
-                // Calculate modulated height
-                const delta = waveTerm * CONFIG.WAVE_AMP * envelope;
-                let h = baseHeight + delta;
-
-                // Clamp to prevent disappearing or exploding bars
-                h = Math.max(4, Math.min(h, baseHeight + CONFIG.WAVE_AMP * 1.5));
-
-                return h;
+                const wave = Math.sin(2 * Math.PI * (progress * CONFIG.WAVE_CYCLES - phase));
+                const delta = wave * CONFIG.WAVE_AMP * envelope;
+                return Math.max(CONFIG.BAR_WIDTH, h + delta);
             });
 
-            setBarHeights(nextHeights);
+            const nextState = {
+                x: currentX,
+                heights: currentHeights,
+                isAnimating: progress < 1
+            };
+
+            stateRef.current = nextState;
+            setActiveState(nextState);
 
             if (progress < 1) {
-                reqRef.current = requestAnimationFrame(animate);
+                reqRef.current = requestAnimationFrame(tick);
             } else {
-                // Settled
-                setCurrentX(targetX);
-                setBarHeights(CONFIG.PYRAMID_HEIGHTS);
-                onAnimationComplete();
+                // Settle
+                const finalState = { x: targetX, heights: CONFIG.PYRAMID_HEIGHTS, isAnimating: false };
+                stateRef.current = finalState;
+                setActiveState(finalState);
             }
         };
 
-        reqRef.current = requestAnimationFrame(animate);
+        reqRef.current = requestAnimationFrame(tick);
 
         return () => {
             if (reqRef.current) cancelAnimationFrame(reqRef.current);
         };
-    }, [isAnimating, startX, targetX, onAnimationComplete]);
+    }, [currentIndex, centers, width, snapToGrid]);
 
-    const totalWidth = (CONFIG.PYRAMID_HEIGHTS.length * CONFIG.TICK_WIDTH) +
-        ((CONFIG.PYRAMID_HEIGHTS.length - 1) * CONFIG.TICK_SPACING);
 
-    return (
-        <div
-            className="absolute top-0 bottom-0 pointer-events-none z-20 flex items-center justify-center will-change-transform"
-            style={{
-                left: 0,
-                // Using transform for performant sub-pixel positioning animation
-                transform: `translateX(${currentX}px) translateX(-50%)`,
-                width: totalWidth
-            }}
-        >
-            <div className="flex items-center justify-center" style={{ gap: `${CONFIG.TICK_SPACING}px` }}>
-                {barHeights.map((h, i) => (
-                    <div
-                        key={i}
-                        className="rounded-full will-change-transform"
-                        style={{
-                            width: `${CONFIG.TICK_WIDTH}px`,
-                            height: `${h}px`,
-                            backgroundColor: CONFIG.COLOR_ACTIVE,
-                            // Subtle brightness ripple during motion
-                            filter: isAnimating ? `brightness(${1 + Math.sin(i + performance.now() * 0.01) * 0.15})` : 'none'
-                        }}
+    // --- Render Logic ---
+
+    // 1. Baseline Ticks
+    const baselineTicks = [];
+    const numTicks = Math.ceil(width / totalBarStep);
+    for (let i = 0; i < numTicks; i++) {
+        const x = i * totalBarStep;
+        baselineTicks.push(
+            <rect
+                key={`base-${i}`}
+                x={x}
+                y={centerY - CONFIG.TICK_HEIGHT / 2}
+                width={CONFIG.BAR_WIDTH}
+                height={CONFIG.TICK_HEIGHT}
+                fill={CONFIG.COLOR_BASELINE}
+                rx={1}
+            />
+        );
+    }
+
+    // 2. Hover Marker
+    let hoverGroup = null;
+    if (hoverIndex !== null && hoverIndex !== currentIndex && centers[hoverIndex] !== undefined) {
+        // Also snap hover marker to grid for consistency
+        const hStartX = snapToGrid(centers[hoverIndex], CONFIG.HOVER_HEIGHTS.length);
+
+        hoverGroup = (
+            <motion.g
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+            >
+                {CONFIG.HOVER_HEIGHTS.map((h, i) => (
+                    <rect
+                        key={`hover-${i}`}
+                        x={hStartX + i * totalBarStep}
+                        y={centerY - h / 2}
+                        width={CONFIG.BAR_WIDTH}
+                        height={h}
+                        fill={CONFIG.COLOR_ACTIVE}
+                        opacity={0.6}
+                        rx={1}
                     />
                 ))}
-            </div>
-        </div>
-    );
-};
+            </motion.g>
+        );
+    }
 
-// --- Component: Hover Marker ---
-const HoverMarker = ({ centerX }: { centerX: number }) => {
+    // 3. Active Marker
     return (
-        <motion.div
-            className="absolute top-0 bottom-0 z-10 flex items-center justify-center pointer-events-none"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
-            style={{
-                left: 0,
-                x: centerX, // Using Framer Motion 'x' which maps to transform: translateX
-                translateX: "-50%",
-                gap: `${CONFIG.TICK_SPACING}px`
-            }}
+        <svg
+            width={width}
+            height={height}
+            className="absolute top-0 left-0 pointer-events-none z-20"
+            style={{ width: '100%', height: '100%' }}
+            shapeRendering="crispEdges"
         >
-            {CONFIG.HOVER_HEIGHTS.map((h, i) => (
-                <div
-                    key={i}
-                    className="rounded-full opacity-80"
-                    style={{
-                        width: `${CONFIG.TICK_WIDTH}px`,
-                        height: `${h}px`,
-                        backgroundColor: CONFIG.COLOR_ACTIVE
-                    }}
-                />
-            ))}
-        </motion.div>
+            {/* Background Layer (Grey Ticks) */}
+            <g>{baselineTicks}</g>
+
+            {/* Hover Layer */}
+            <AnimatePresence>
+                {hoverGroup}
+            </AnimatePresence>
+
+            {/* Active Marker Layer */}
+            <g>
+                {activeState.heights.map((h, i) => (
+                    <rect
+                        key={`active-${i}`}
+                        // Use the interpolated 'x' directly.
+                        // Since 'targetX' was snapped, the interpolation will land exactly on grid.
+                        x={activeState.x + i * totalBarStep}
+                        y={centerY - h / 2}
+                        width={CONFIG.BAR_WIDTH}
+                        height={h}
+                        fill={CONFIG.COLOR_ACTIVE}
+                        rx={1}
+                        filter={activeState.isAnimating ? `brightness(${1 + Math.sin(i + performance.now() * 0.01) * 0.15})` : 'none'}
+                    />
+                ))}
+            </g>
+        </svg>
     );
 };
 
@@ -250,58 +270,24 @@ interface NavbarTicksProps {
 
 export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTicksProps) {
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+    // Explicitly allow null for the ref type to match typical React useRef behavior for DOM elements
     const containerRef = useRef<HTMLDivElement>(null);
-    const { centers, itemsRef } = useItemCenters(containerRef, SECTIONS.length);
+    const { metrics, itemsRef } = useDisplayMetrics(containerRef, SECTIONS.length);
 
-    // Animation State
-    const [animState, setAnimState] = useState({
-        startX: 0,
-        targetX: 0,
-        isAnimating: false
-    });
-
-    // Handle Active Index Change
-    useEffect(() => {
-        if (centers.length === 0) return;
-
-        const target = centers[currentIndex] || 0;
-
-        setAnimState(prev => {
-            const isFirstLoad = prev.targetX === 0 && prev.startX === 0;
-            // Snap on first load, animate subsequent changes
-            return {
-                startX: isFirstLoad ? target : prev.targetX,
-                targetX: target,
-                isAnimating: !isFirstLoad
-            };
-        });
-
-    }, [currentIndex, centers]);
-
-    const handleAnimationComplete = useCallback(() => {
-        setAnimState(prev => ({ ...prev, isAnimating: false, startX: prev.targetX }));
-    }, []);
+    // Height of the SVG area 
+    const SVG_HEIGHT = 40;
 
     return (
         <div className="relative flex flex-col items-center w-[600px] lg:w-[800px]" ref={containerRef}>
-            {/* 1. Track Area (Baseline + Markers) */}
-            <div className="relative w-full h-[40px] mb-1 overflow-visible">
-                <BaselineTicks />
-
-                {/* Hover Marker */}
-                <AnimatePresence>
-                    {hoverIndex !== null && hoverIndex !== currentIndex && centers[hoverIndex] && (
-                        <HoverMarker centerX={centers[hoverIndex]} />
-                    )}
-                </AnimatePresence>
-
-                {/* Active Wave Marker */}
-                {centers.length > 0 && (
-                    <WaveMarker
-                        startX={animState.startX}
-                        targetX={animState.targetX}
-                        isAnimating={animState.isAnimating}
-                        onAnimationComplete={handleAnimationComplete}
+            {/* 1. Unified SVG Overlay */}
+            <div className="relative w-full mb-1" style={{ height: SVG_HEIGHT }}>
+                {metrics.width > 0 && (
+                    <SvgBaselineAndMarker
+                        width={metrics.width}
+                        height={SVG_HEIGHT}
+                        centers={metrics.centers}
+                        currentIndex={currentIndex}
+                        hoverIndex={hoverIndex}
                     />
                 )}
             </div>
