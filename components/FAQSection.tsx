@@ -66,7 +66,7 @@ export default function FAQSection() {
     }, [activeIndex]);
 
     return (
-        <section className="relative w-full h-full flex flex-col items-center justify-start px-6 lg:px-24 pt-[142px] overflow-hidden bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid">
             {/* Background Circular Lines */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
                 <div className="relative w-[120%] h-[120%] opacity-5">
