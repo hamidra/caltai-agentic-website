@@ -6,6 +6,7 @@ import { X, Plus, Mic } from 'lucide-react';
 
 const AIChatBox = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [inputValue, setInputValue] = useState("");
     const chatRef = useRef<HTMLDivElement>(null);
 
     // Close on click outside
@@ -129,36 +130,49 @@ const AIChatBox = () => {
 
 
                                         {/* Capsule Input Bar */}
-                                        <div className="flex-1 relative">
-                                            <div className="w-full h-12 bg-white rounded-full border border-black/[0.06] shadow-sm px-5 flex items-center justify-between group focus-within:border-black/10 transition-all">
-                                                <div className="flex items-center gap-1">
-                                                    <span className="text-black/10 text-[18px] font-medium mb-1">...</span>
-                                                </div>
-
-                                                <div className="flex items-center gap-3">
-                                                    <button className="p-1 hover:bg-black/5 rounded-full transition-colors active:scale-90">
-                                                        <Mic className="w-5 h-5 text-black/40" />
+                                        <div className="w-full max-w-md mt-4">
+                                            <div className="relative group">
+                                                <input
+                                                    type="text"
+                                                    value={inputValue}
+                                                    onChange={(e) => setInputValue(e.target.value)}
+                                                    placeholder="Ask your question"
+                                                    className="w-full h-16 bg-white border border-brand-brown/10 rounded-full px-8 pr-32 text-brand-brown font-cal font-medium focus:outline-none focus:ring-2 focus:ring-brand-orange/20 transition-all shadow-sm"
+                                                />
+                                                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3">
+                                                    <button className="p-2 text-brand-brown/40 hover:text-brand-orange transition-colors">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="22" /></svg>
                                                     </button>
-
-                                                    {/* Voice Animation Button */}
-                                                    <button className="w-9 h-9 rounded-full bg-[#FF602E] flex items-center justify-center shadow-[0_4px_12px_rgba(255,96,46,0.3)] active:scale-95 transition-transform">
-                                                        <div className="flex items-center gap-[2.2px] h-3.5">
-                                                            {[1, 2, 3, 4].map((i) => (
+                                                    <button className="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-white shadow-lg shadow-brand-orange/20 hover:scale-105 transition-transform overflow-hidden">
+                                                        {inputValue ? (
+                                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                                <line x1="5" y1="12" x2="19" y2="12" />
+                                                                <polyline points="12 5 19 12 12 19" />
+                                                            </svg>
+                                                        ) : (
+                                                            <div className="flex items-center gap-0.5 h-3">
                                                                 <motion.div
-                                                                    key={i}
-                                                                    animate={{
-                                                                        height: [6, 14, 10, 16][i % 4],
-                                                                        scaleY: [1, 1.4, 0.9, 1.1][i % 4]
-                                                                    }}
-                                                                    transition={{
-                                                                        repeat: Infinity,
-                                                                        duration: 0.5 + i * 0.12,
-                                                                        ease: "easeInOut"
-                                                                    }}
-                                                                    className="w-[1.8px] bg-white rounded-full bg-opacity-95"
-                                                                />
-                                                            ))}
-                                                        </div>
+                                                                    animate={{ height: [6, 12, 6] }}
+                                                                    transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
+                                                                    className="w-[2px] bg-white rounded-full"
+                                                                ></motion.div>
+                                                                <motion.div
+                                                                    animate={{ height: [10, 16, 10] }}
+                                                                    transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
+                                                                    className="w-[2px] bg-white rounded-full"
+                                                                ></motion.div>
+                                                                <motion.div
+                                                                    animate={{ height: [8, 14, 8] }}
+                                                                    transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
+                                                                    className="w-[2px] bg-white rounded-full"
+                                                                ></motion.div>
+                                                                <motion.div
+                                                                    animate={{ height: [4, 10, 4] }}
+                                                                    transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
+                                                                    className="w-[2px] bg-white rounded-full"
+                                                                ></motion.div>
+                                                            </div>
+                                                        )}
                                                     </button>
                                                 </div>
                                             </div>
