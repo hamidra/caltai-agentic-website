@@ -56,17 +56,6 @@ export default function FoundersNote() {
                 </div>
             </div>
 
-            {/* Bottom Right Orb Indicator */}
-            <div className="absolute bottom-8 right-8">
-                <div className="relative w-16 h-16 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#ff602e] via-[#9067ff] to-[#ff602e] rounded-full blur-md opacity-20 animate-pulse"></div>
-                    <img
-                        src="/AI design.svg"
-                        alt="AI Assistant"
-                        className="w-12 h-12 relative z-10 animate-float"
-                    />
-                </div>
-            </div>
         </section>
     );
 }

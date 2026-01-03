@@ -2,6 +2,11 @@
 
 import { motion } from "framer-motion";
 
+interface SolutionSectionProps {
+    direction?: "down" | "up";
+    isCurrent?: boolean;
+}
+
 const solutionCards = [
     {
         icon: (
@@ -38,14 +43,39 @@ const solutionCards = [
     }
 ];
 
-export default function SolutionSection() {
+export default function SolutionSection({ direction = "down", isCurrent = true }: SolutionSectionProps) {
+    const containerVariants = {
+        initial: { opacity: 0 },
+        animate: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+        },
+        exit: {
+            opacity: 0,
+            transition: { staggerChildren: 0.05, staggerDirection: -1 }
+        }
+    };
+
+    const itemVariants = {
+        initial: { opacity: 0, y: direction === "down" ? 20 : -20 },
+        animate: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6 }
+        }
+    };
+
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid">
+        <motion.section
+            variants={containerVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid"
+        >
             <div className="max-w-7xl w-full">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    variants={itemVariants}
                     className="mb-[30px]"
                 >
                     <h2 className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight">
@@ -60,9 +90,7 @@ export default function SolutionSection() {
                     {solutionCards.map((card, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                            variants={itemVariants}
                             className="relative flex flex-col items-center text-center p-12 min-h-[400px] group transition-all duration-300 hover:-translate-y-1"
                         >
                             {/* SVG Background Container */}
@@ -92,8 +120,21 @@ export default function SolutionSection() {
                 </div>
             </div>
 
-            {/* Floating orb in corner */}
-            <div className="absolute bottom-10 right-10 w-24 h-24 rounded-full bg-[#9067ff]/40 blur-2xl opacity-40 pointer-events-none"></div>
-        </section>
+            {/* Bottom Right Orb Indicator */}
+            <div className="absolute bottom-8 right-8 z-20 pointer-events-none">
+                <div className="relative w-[76px] h-[76px] flex items-center justify-center">
+                    {/* Layered Energy Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-brand-orange via-[#9067ff] to-brand-orange rounded-full blur-[100px] opacity-25 animate-pulse"></div>
+                    <div className="absolute inset-[15%] bg-brand-orange/20 rounded-full blur-[60px] opacity-30"></div>
+
+                    <img
+                        src="/AI design.svg"
+                        alt="AI Assistant"
+                        className="w-[76px] h-[76px] relative z-10 animate-float drop-shadow-[0_35px_60px_rgba(255,96,46,0.4)] opacity-90"
+                    />
+                </div>
+            </div>
+
+        </motion.section>
     );
 }
