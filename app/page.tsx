@@ -12,6 +12,7 @@ import ROISection from "@/components/ROISection";
 import FoundersNote from "@/components/FoundersNote";
 import FAQSection from "@/components/FAQSection";
 import AIChatBox from "@/components/AIChatBox";
+import ExpandableFooter from "@/components/ExpandableFooter";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,12 +20,13 @@ export default function Home() {
   return (
     <main className="relative h-screen w-full bg-background overflow-hidden">
       <Navbar currentIndex={currentIndex} onSectionChange={setCurrentIndex} />
+      <ExpandableFooter isDark={currentIndex === 2} />
 
       <SectionScroller onSectionChange={setCurrentIndex} selectedIndex={currentIndex}>
         <Hero />
         <ProblemSection />
         <SolutionSection />
-        <WhyCaltAI />
+        <WhyCaltAI isActive={currentIndex === 3} />
         <PilotSection />
         <ROISection />
         <FoundersNote />

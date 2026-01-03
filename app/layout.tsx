@@ -34,7 +34,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${outfit.variable} ${jakarta.variable} ${instrumentSerif.variable} antialiased font-sans`}>
         {children}
-        <ExpandableFooter />
       </body>
     </html>
   );
