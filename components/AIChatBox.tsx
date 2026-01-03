@@ -33,7 +33,7 @@ const AIChatBox = () => {
                         initial={{ scale: 0, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0, opacity: 0, y: 20 }}
-                        className="fixed bottom-10 right-10 z-[100]"
+                        className="fixed bottom-2 right-2 z-[100]"
                     >
                         <motion.button
                             whileHover={{ scale: 1.1, rotate: 5 }}
@@ -42,15 +42,13 @@ const AIChatBox = () => {
                                 e.stopPropagation();
                                 setIsOpen(true);
                             }}
-                            className="group relative w-16 h-16 rounded-full flex items-center justify-center cursor-pointer shadow-[0_20px_50px_rgba(255,96,46,0.3)]"
+                            className="group relative w-18 h-18 rounded-full flex items-center justify-center cursor-pointer bg-[rgba(251, 247, 242)]"
                         >
                             <img
                                 src="/AI design.svg"
                                 alt="AI Assistant"
                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
-                            {/* Animated ring around orb */}
-                            <div className="absolute inset-[-4px] rounded-full border border-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-110 group-hover:scale-100" />
                         </motion.button>
                     </motion.div>
                 )}
