@@ -111,20 +111,6 @@ export default function WhyCaltAI() {
                 </div>
             </div>
 
-            {/* Bottom Right Orb Indicator */}
-            <div className="absolute bottom-8 right-8 z-20 pointer-events-none">
-                <div className="relative w-[76px] h-[76px] flex items-center justify-center">
-                    {/* Layered Energy Glow */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-brand-orange via-[#9067ff] to-brand-orange rounded-full blur-[100px] opacity-25 animate-pulse"></div>
-                    <div className="absolute inset-[15%] bg-brand-orange/20 rounded-full blur-[60px] opacity-30"></div>
-
-                    <img
-                        src="/AI design.svg"
-                        alt="AI Assistant"
-                        className="w-[76px] h-[76px] relative z-10 animate-float drop-shadow-[0_35px_60px_rgba(255,96,46,0.4)] opacity-90"
-                    />
-                </div>
-            </div>
         </section>
     );
 }

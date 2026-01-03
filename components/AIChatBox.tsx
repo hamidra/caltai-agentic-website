@@ -42,7 +42,7 @@ const AIChatBox = () => {
                                 e.stopPropagation();
                                 setIsOpen(true);
                             }}
-                            className="group relative w-16 h-16 rounded-full flex items-center justify-center cursor-pointer shadow-[0_20px_50px_rgba(255,96,46,0.3)] bg-white overflow-hidden"
+                            className="group relative w-16 h-16 rounded-full flex items-center justify-center cursor-pointer shadow-[0_20px_50px_rgba(255,96,46,0.3)]"
                         >
                             <img
                                 src="/AI design.svg"
