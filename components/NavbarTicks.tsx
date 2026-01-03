@@ -82,11 +82,15 @@ interface SvgBaselineAndMarkerProps {
     centers: number[];
     currentIndex: number;
     hoverIndex: number | null;
+    isDark?: boolean;
 }
 
-const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex }: SvgBaselineAndMarkerProps) => {
+const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex, isDark }: SvgBaselineAndMarkerProps) => {
     const centerY = Math.round(height / 2);
     const totalBarStep = CONFIG.BAR_WIDTH + CONFIG.BAR_GAP;
+
+    const baselineColor = isDark ? "rgba(255, 255, 255, 0.2)" : CONFIG.COLOR_BASELINE;
+    const activeColor = isDark ? "#FFAB5E" : CONFIG.COLOR_ACTIVE; // Slightly brighter orange for dark mode visibility
 
     // ALIGNMENT FIX: Top-align orange markers to the top of the grey ticks.
     // Grey ticks are centered, so their top is at (centerY - TICK_HEIGHT / 2).
@@ -198,7 +202,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                 y={markerTopY} // Aligned to top constant (effectively centered for h=8)
                 width={CONFIG.BAR_WIDTH}
                 height={CONFIG.TICK_HEIGHT}
-                fill={CONFIG.COLOR_BASELINE}
+                fill={baselineColor}
                 rx={1}
             />
         );
@@ -224,7 +228,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                         y={markerTopY} // Top-Aligned
                         width={CONFIG.BAR_WIDTH}
                         height={h}
-                        fill={CONFIG.COLOR_ACTIVE}
+                        fill={activeColor}
                         opacity={0.6}
                         rx={1}
                     />
@@ -261,7 +265,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                         y={markerTopY} // Top-Aligned
                         width={CONFIG.BAR_WIDTH}
                         height={h}
-                        fill={CONFIG.COLOR_ACTIVE}
+                        fill={activeColor}
                         rx={1}
                         filter={activeState.isAnimating ? `brightness(${1 + Math.sin(i + performance.now() * 0.01) * 0.15})` : 'none'}
                     />
@@ -281,6 +285,7 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const { metrics, itemsRef } = useDisplayMetrics(containerRef, SECTIONS.length);
+    const isDark = currentIndex === 2;
 
     // Height of the SVG area 
     const SVG_HEIGHT = 40;
@@ -296,6 +301,7 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
                         centers={metrics.centers}
                         currentIndex={currentIndex}
                         hoverIndex={hoverIndex}
+                        isDark={isDark}
                     />
                 )}
             </div>
@@ -315,7 +321,9 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
                             className={`
                                 flex justify-center items-center h-8
                                 text-[10px] lg:text-[11px] uppercase tracking-[0.1em] transition-all duration-300
-                                ${isTarget ? "text-brand-brown font-bold scale-110" : "text-brand-brown/40 font-medium hover:text-brand-brown/70"}
+                                ${isTarget
+                                    ? (isDark ? "text-white font-bold scale-110" : "text-brand-brown font-bold scale-110")
+                                    : (isDark ? "text-white/40 font-medium hover:text-white/70" : "text-brand-brown/40 font-medium hover:text-brand-brown/70")}
                             `}
                         >
                             {label}

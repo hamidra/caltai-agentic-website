@@ -16,7 +16,8 @@ const solutionCards = [
                 <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
             </svg>
         ),
-        title: "Context Graph (The Brain)",
+        title: "Context Graph",
+        subtitle: "(The Brain)",
         description: "Builds a living record of your business rules, decisions, and institutional knowledge. Finally, a \"single source of truth\" that actually works."
     },
     {
@@ -29,7 +30,8 @@ const solutionCards = [
                 <line x1="12" y1="8" x2="12" y2="8"></line>
             </svg>
         ),
-        title: "Proactive Decisions",
+        title: "Proactive Actions",
+        subtitle: "(The Logic)",
         description: "Doesn't wait for you to ask. Detects signals, makes recommendations, and surfaces what matters, before you even know to look."
     },
     {
@@ -39,6 +41,7 @@ const solutionCards = [
             </svg>
         ),
         title: "Autonomous Execution",
+        subtitle: "(The Engine)",
         description: "Takes action on your behalf, pausing ads, creating tasks, triggering workflows. The feedback loop: Action → Measurement → Learning."
     }
 ];
@@ -71,17 +74,20 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
             initial="initial"
             animate="animate"
             exit="exit"
-            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid"
+            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-[#0a0a0b]"
         >
-            <div className="max-w-7xl w-full">
+            {/* Dark Mode Grid Overlay */}
+            <div className="absolute inset-0 opacity-[0.15] bg-[url('/background.svg')] bg-cover bg-center pointer-events-none invert grayscale" />
+
+            <div className="max-w-7xl w-full relative z-10">
                 <motion.div
                     variants={itemVariants}
                     className="mb-[30px]"
                 >
-                    <h2 className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight">
+                    <h2 className="text-[40px] font-bold text-white mb-5 font-cal leading-tight">
                         Not Another Tool. An Operations Layer.
                     </h2>
-                    <p className="text-[20px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
+                    <p className="text-[20px] text-white/70 font-medium max-w-4xl leading-relaxed">
                         CaltAI doesn't just connect your tools, it thinks, decides, and executes. It's the autonomous layer that sits on top of your Franken-stack and makes it actually work.
                     </p>
                 </motion.div>
@@ -93,35 +99,62 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                             variants={itemVariants}
                             className="relative flex flex-col items-center text-center p-12 min-h-[400px] group transition-all duration-300 hover:-translate-y-1"
                         >
-                            {/* SVG Background Container */}
+                            {/* SVG Background Container - Adjusted for Dark Mode */}
                             <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
                                 <img
                                     src="/box blue.svg"
                                     alt=""
-                                    className="w-full h-full object-fill opacity-100 transition-opacity"
+                                    className="w-full h-full object-fill opacity-[0.9] brightness-[0.2] contrast-[1.5] transition-opacity"
                                 />
                             </div>
 
-                            <div className="w-14 h-14 rounded-xl bg-[#9067ff] flex items-center justify-center mb-8 mt-[30px] shadow-lg shadow-[#9067ff]/20 flex-shrink-0">
+                            <div className="w-14 h-14 rounded-xl bg-[#9067ff] flex items-center justify-center mb-8 mt-[30px] shadow-lg shadow-[#9067ff]/40 flex-shrink-0 transition-transform group-hover:scale-110">
                                 <div className="scale-125">
                                     {card.icon}
                                 </div>
                             </div>
 
-                            <h3 className="text-[22px] font-bold text-brand-brown mb-6 font-cal leading-tight px-2">
+                            <h3 className="text-[22px] font-bold text-white mb-2 font-cal leading-tight px-2">
                                 {card.title}
                             </h3>
+                            <span className="text-[#9067ff] font-bold text-xs uppercase tracking-widest mb-6 block">
+                                {card.subtitle}
+                            </span>
 
-                            <p className="text-brand-brown/70 text-[16px] leading-[1.6] flex-grow">
+                            <p className="text-white/60 text-[16px] leading-[1.6] flex-grow">
                                 {card.description}
                             </p>
                         </motion.div>
                     ))}
                 </div>
+
+                {/* Bottom Highlight Section */}
+                <motion.div
+                    variants={itemVariants}
+                    className="mt-20 flex flex-col md:flex-row items-center gap-10 p-10 rounded-3xl bg-white/[0.03] border border-white/[0.05] backdrop-blur-sm"
+                >
+                    <div className="flex-1">
+                        <h4 className="text-[#9067ff] font-bold text-sm uppercase tracking-[0.2em] mb-4">The Result</h4>
+                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 font-cal uppercase italic font-medium">
+                            A Single Source of Knowledge
+                        </h3>
+                        <p className="text-white/50 text-base leading-relaxed">
+                            CaltAI creates a unified "Brain" for your business. It captures every decision, learns from every result, and ensures your team is always moving in the same direction.
+                        </p>
+                    </div>
+                    <div className="flex-shrink-0 flex items-center gap-4">
+                        <div className="flex flex-col items-end">
+                            <span className="text-white font-bold text-4xl font-cal">11 min</span>
+                            <span className="text-white/40 text-xs uppercase tracking-widest">Setup Time</span>
+                        </div>
+                        <div className="w-[1px] h-12 bg-white/10" />
+                        <div className="flex flex-col items-start">
+                            <span className="text-[#9067ff] font-bold text-4xl font-cal">90 days</span>
+                            <span className="text-white/40 text-xs uppercase tracking-widest">ROI Positive</span>
+                        </div>
+                    </div>
+                </motion.div>
             </div>
-
-
-
         </motion.section>
     );
 }
