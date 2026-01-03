@@ -135,9 +135,9 @@ const AIChatBox = () => {
                                                     value={inputValue}
                                                     onChange={(e) => setInputValue(e.target.value)}
                                                     placeholder="Ask your question"
-                                                    className="w-full h-16 bg-white border border-brand-brown/10 rounded-full px-8 pr-32 text-brand-brown font-cal font-medium focus:outline-none focus:ring-2 focus:ring-brand-orange/20 transition-all shadow-sm"
+                                                    className="w-full h-14 bg-white border border-brand-brown/10 rounded-full px-8 pr-32 text-brand-brown font-cal font-medium focus:outline-none focus:ring-2 focus:ring-brand-orange/20 transition-all shadow-sm"
                                                 />
-                                                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3">
+                                                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-3">
                                                     <button className="p-2 text-brand-brown/40 hover:text-brand-orange transition-colors">
                                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="22" /></svg>
                                                     </button>
