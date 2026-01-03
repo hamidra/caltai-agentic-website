@@ -11,6 +11,7 @@ import PilotSection from "@/components/PilotSection";
 import ROISection from "@/components/ROISection";
 import FoundersNote from "@/components/FoundersNote";
 import FAQSection from "@/components/FAQSection";
+import AIChatBox from "@/components/AIChatBox";
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,6 +41,7 @@ export default function Home() {
       </div>
 
       {/* Persistent Background Elements */}
+      {currentIndex !== 0 && currentIndex !== 7 && <AIChatBox />}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-grid">
         <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-brand-orange/5 blur-[120px] rounded-full"></div>
         <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-brand-orange/5 blur-[120px] rounded-full"></div>

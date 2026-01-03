@@ -25,8 +25,6 @@ export const metadata: Metadata = {
   description: "CaltAI is an autonomous engine that turns business objectives into execution.",
 };
 
-import AIChatBox from "@/components/AIChatBox";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,7 +35,6 @@ export default function RootLayout({
       <body className={`${outfit.variable} ${jakarta.variable} ${instrumentSerif.variable} antialiased font-sans`}>
         {children}
         <ExpandableFooter />
-        <AIChatBox />
       </body>
     </html>
   );
