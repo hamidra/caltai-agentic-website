@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const cards = [
     {
         icon: (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
                 <circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />
             </svg>
         ),
@@ -15,7 +15,7 @@ const cards = [
     },
     {
         icon: (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
                 <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
             </svg>
         ),
@@ -25,7 +25,7 @@ const cards = [
     },
     {
         icon: (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
         ),
@@ -45,10 +45,10 @@ export default function ProblemSection() {
                     transition={{ duration: 0.8 }}
                     className="mb-[30px]"
                 >
-                    <h2 className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight">
+                    <h2 className="text-[40px] font-bold text-secondary mb-5 font-cal leading-tight">
                         You've Hit the "Scale Gap"
                     </h2>
-                    <p className="text-[20px] text-brand-brown/70 font-medium max-w-4xl leading-relaxed">
+                    <p className="text-[20px] text-muted font-medium max-w-4xl leading-relaxed">
                         You're too big for spreadsheets, too small for Oracle. Your complexity has outpaced your capacity. Sound familiar?
                     </p>
                 </motion.div>
@@ -67,29 +67,29 @@ export default function ProblemSection() {
                                 <img
                                     src="/box Orange.svg"
                                     alt=""
-                                    className="w-full h-full object-fill opacity-100 transition-opacity"
+                                    className="w-full h-full object-fill opacity-100 transition-opacity dark:opacity-80"
                                 />
                             </div>
 
                             <div className="flex items-center gap-5 mb-[40px] mt-[30px]">
-                                <div className="w-12 h-12 rounded-full bg-brand-orange flex items-center justify-center shadow-lg shadow-brand-orange/20 flex-shrink-0">
+                                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20 flex-shrink-0">
                                     <div className="scale-125">
                                         {card.icon}
                                     </div>
                                 </div>
 
-                                <h3 className="text-[20px] font-bold text-brand-brown font-cal leading-tight">
+                                <h3 className="text-[20px] font-bold text-secondary font-cal leading-tight">
                                     {card.title}
                                 </h3>
                             </div>
 
-                            <p className="text-brand-brown/70 text-[15px] leading-relaxed mb-[36px] h-[100px]">
+                            <p className="text-muted text-[15px] leading-relaxed mb-[36px] h-[100px]">
                                 {card.description}
                             </p>
 
-                            <div className="border-t border-brand-brown/10 h-[72px] flex items-center w-full">
-                                <p className="text-brand-orange font-bold text-[13px] uppercase tracking-wider">
-                                    {card.stat.split(' ')[0]} <span className="text-brand-brown/50 font-medium lowercase italic">{card.stat.split(' ').slice(1).join(' ')}</span>
+                            <div className="border-t border-border h-[72px] flex items-center w-full">
+                                <p className="text-primary font-bold text-[13px] uppercase tracking-wider">
+                                    {card.stat.split(' ')[0]} <span className="text-muted-foreground font-medium lowercase italic">{card.stat.split(' ').slice(1).join(' ')}</span>
                                 </p>
                             </div>
                         </motion.div>

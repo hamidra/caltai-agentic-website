@@ -53,9 +53,9 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-[60px] font-bold tracking-tight text-brand-brown mt-8 mb-8 leading-[1.1] font-cal"
+                    className="text-5xl md:text-[60px] font-bold tracking-tight text-secondary mt-8 mb-8 leading-[1.1] font-cal"
                 >
-                    Stop Prompting, <span className="text-brand-orange">Start Scaling</span>
+                    Stop Prompting, <span className="text-primary">Start Scaling</span>
                 </motion.h1>
 
                 <div className="relative mb-4 flex justify-center">
@@ -79,16 +79,16 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-6 mb-8 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
+                    className="bg-surface-alt border border-border rounded-[24px] p-6 mb-8 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
                 >
                     {/* Ghost text to fix dimensions */}
-                    <p className="text-[17px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">
+                    <p className="text-[17px] leading-relaxed text-secondary font-medium text-left opacity-0 pointer-events-none">
                         {fullText}
                     </p>
 
                     {/* Visible Typing Text */}
                     <div className="absolute inset-0 p-6 flex items-start">
-                        <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                        <p className="text-[16px] leading-relaxed text-secondary font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
                             {words.slice(0, visibleWordsCount).map((word, index) => (
                                 <motion.span
                                     key={index}
@@ -112,7 +112,7 @@ export default function Hero({ isActive }: HeroProps) {
                                         repeat: Infinity,
                                         ease: "linear"
                                     }}
-                                    className="inline-block w-[3px] h-[18px] bg-brand-orange ml-1"
+                                    className="inline-block w-[3px] h-[18px] bg-primary ml-1"
                                 />
                             )}
                         </p>
@@ -129,38 +129,38 @@ export default function Hero({ isActive }: HeroProps) {
                                 animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                                 exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                                 transition={{ duration: 0.6, delay: 0.8 }}
-                                className="h-[58px] flex items-center px-3 bg-background rounded-full border border-gray-300 shadow-[0_10px_40px_rgba(0,0,0,0.06)] inline-flex mx-auto cursor-pointer hover:border-brand-orange/30 transition-colors"
+                                className="h-[58px] flex items-center px-3 bg-surface rounded-full border border-border shadow-[0_10px_40px_rgba(0,0,0,0.06)] inline-flex mx-auto cursor-pointer hover:border-primary/30 transition-colors"
                                 onClick={() => setIsChatOpen(true)}
                                 layoutId="chat-container"
                             >
-                                <button className="h-[36px] bg-brand-orange text-white px-8 rounded-full font-bold text-sm hover:bg-opacity-90 transition-all flex items-center">
+                                <button className="h-[36px] bg-primary text-primary-foreground px-8 rounded-full font-bold text-sm hover:bg-primary-hover transition-all flex items-center">
                                     Chat with CaltAI
                                 </button>
                                 <motion.div
                                     animate={{ scale: [1, 1.05, 1] }}
                                     transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                                    className="w-[36px] h-[36px] bg-brand-orange rounded-full flex items-center justify-center ml-2 shadow-md flex-shrink-0"
+                                    className="w-[36px] h-[36px] bg-primary rounded-full flex items-center justify-center ml-2 shadow-md flex-shrink-0"
                                 >
                                     <div className="flex items-center gap-0.5 h-4">
                                         <motion.div
                                             animate={{ height: [6, 12, 6] }}
                                             transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                                            className="w-[2px] bg-white rounded-full"
+                                            className="w-[2px] bg-primary-foreground rounded-full"
                                         ></motion.div>
                                         <motion.div
                                             animate={{ height: [10, 16, 10] }}
                                             transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
-                                            className="w-[2px] bg-white rounded-full"
+                                            className="w-[2px] bg-primary-foreground rounded-full"
                                         ></motion.div>
                                         <motion.div
                                             animate={{ height: [8, 14, 8] }}
                                             transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
-                                            className="w-[2px] bg-white rounded-full"
+                                            className="w-[2px] bg-primary-foreground rounded-full"
                                         ></motion.div>
                                         <motion.div
                                             animate={{ height: [4, 10, 4] }}
                                             transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
-                                            className="w-[2px] bg-white rounded-full"
+                                            className="w-[2px] bg-primary-foreground rounded-full"
                                         ></motion.div>
                                     </div>
                                 </motion.div>
@@ -180,13 +180,13 @@ export default function Hero({ isActive }: HeroProps) {
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
                                     placeholder="Ask your question"
-                                    className="w-full h-16 bg-white border border-brand-brown/10 rounded-full px-8 pr-32 text-brand-brown font-cal font-medium focus:outline-none focus:ring-2 focus:ring-brand-orange/20 transition-all shadow-sm"
+                                    className="w-full h-16 bg-input-bg border border-input-border rounded-full px-8 pr-32 text-foreground font-cal font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
                                 />
                                 <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3">
-                                    <button className="p-2 text-brand-brown/40 hover:text-brand-orange transition-colors">
+                                    <button className="p-2 text-muted-foreground hover:text-primary transition-colors">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="22" /></svg>
                                     </button>
-                                    <button className="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center text-white shadow-lg shadow-brand-orange/20 hover:scale-105 transition-transform overflow-hidden">
+                                    <button className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 transition-transform overflow-hidden">
                                         {inputValue ? (
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                                                 <line x1="5" y1="12" x2="19" y2="12" />
@@ -197,22 +197,22 @@ export default function Hero({ isActive }: HeroProps) {
                                                 <motion.div
                                                     animate={{ height: [6, 12, 6] }}
                                                     transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                                                    className="w-[2px] bg-white rounded-full"
+                                                    className="w-[2px] bg-primary-foreground rounded-full"
                                                 ></motion.div>
                                                 <motion.div
                                                     animate={{ height: [10, 16, 10] }}
                                                     transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
-                                                    className="w-[2px] bg-white rounded-full"
+                                                    className="w-[2px] bg-primary-foreground rounded-full"
                                                 ></motion.div>
                                                 <motion.div
                                                     animate={{ height: [8, 14, 8] }}
                                                     transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
-                                                    className="w-[2px] bg-white rounded-full"
+                                                    className="w-[2px] bg-primary-foreground rounded-full"
                                                 ></motion.div>
                                                 <motion.div
                                                     animate={{ height: [4, 10, 4] }}
                                                     transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
-                                                    className="w-[2px] bg-white rounded-full"
+                                                    className="w-[2px] bg-primary-foreground rounded-full"
                                                 ></motion.div>
                                             </div>
                                         )}

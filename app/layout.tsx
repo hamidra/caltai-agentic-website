@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import ExpandableFooter from "@/components/ExpandableFooter";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -31,9 +31,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="no-transitions" suppressHydrationWarning>
+      <head>
+        {/* Script to prevent FOUC (Flash of Unstyled Content) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={`${outfit.variable} ${jakarta.variable} ${instrumentSerif.variable} antialiased font-sans`}>
-        {children}
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

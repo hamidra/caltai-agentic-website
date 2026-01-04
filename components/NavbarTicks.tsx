@@ -23,10 +23,6 @@ const CONFIG = {
     WAVE_AMP: 12,               // Max pixel change in height during ripple
     WAVE_CYCLES: 2,             // Number of ripples
     PHASE_STEP: 0.8,            // Phase offset between bars
-
-    // Colors
-    COLOR_ACTIVE: "#FF7A00",
-    COLOR_BASELINE: "#E5E5E5",  // Light grey for baseline
 };
 
 const SECTIONS = ["Home", "Problem", "Solution", "Comparison", "Pilot", "ROI", "Founders", "FAQ"];
@@ -82,15 +78,11 @@ interface SvgBaselineAndMarkerProps {
     centers: number[];
     currentIndex: number;
     hoverIndex: number | null;
-    isDark?: boolean;
 }
 
-const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex, isDark }: SvgBaselineAndMarkerProps) => {
+const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex }: SvgBaselineAndMarkerProps) => {
     const centerY = Math.round(height / 2);
     const totalBarStep = CONFIG.BAR_WIDTH + CONFIG.BAR_GAP;
-
-    const baselineColor = isDark ? "rgba(255, 255, 255, 0.2)" : CONFIG.COLOR_BASELINE;
-    const activeColor = isDark ? "#FFAB5E" : CONFIG.COLOR_ACTIVE; // Slightly brighter orange for dark mode visibility
 
     // ALIGNMENT FIX: Top-align orange markers to the top of the grey ticks.
     // Grey ticks are centered, so their top is at (centerY - TICK_HEIGHT / 2).
@@ -202,7 +194,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                 y={markerTopY} // Aligned to top constant (effectively centered for h=8)
                 width={CONFIG.BAR_WIDTH}
                 height={CONFIG.TICK_HEIGHT}
-                fill={baselineColor}
+                className="fill-border-strong"
                 rx={1}
             />
         );
@@ -228,7 +220,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                         y={markerTopY} // Top-Aligned
                         width={CONFIG.BAR_WIDTH}
                         height={h}
-                        fill={activeColor}
+                        className="fill-primary"
                         opacity={0.6}
                         rx={1}
                     />
@@ -265,7 +257,7 @@ const SvgBaselineAndMarker = ({ width, height, centers, currentIndex, hoverIndex
                         y={markerTopY} // Top-Aligned
                         width={CONFIG.BAR_WIDTH}
                         height={h}
-                        fill={activeColor}
+                        className="fill-primary"
                         rx={1}
                         filter={activeState.isAnimating ? `brightness(${1 + Math.sin(i + performance.now() * 0.01) * 0.15})` : 'none'}
                     />
@@ -285,7 +277,6 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
     const [hoverIndex, setHoverIndex] = useState<number | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const { metrics, itemsRef } = useDisplayMetrics(containerRef, SECTIONS.length);
-    const isDark = currentIndex === 2;
 
     // Height of the SVG area 
     const SVG_HEIGHT = 40;
@@ -301,7 +292,6 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
                         centers={metrics.centers}
                         currentIndex={currentIndex}
                         hoverIndex={hoverIndex}
-                        isDark={isDark}
                     />
                 )}
             </div>
@@ -322,8 +312,8 @@ export default function NavbarTicks({ currentIndex, onSectionChange }: NavbarTic
                                 flex justify-center items-center h-8
                                 text-[10px] lg:text-[11px] uppercase tracking-[0.1em] transition-all duration-300
                                 ${isTarget
-                                    ? (isDark ? "text-white font-bold scale-110" : "text-brand-brown font-bold scale-110")
-                                    : (isDark ? "text-white/40 font-medium hover:text-white/70" : "text-brand-brown/40 font-medium hover:text-brand-brown/70")}
+                                    ? "text-secondary font-bold scale-110"
+                                    : "text-muted-foreground font-medium hover:text-muted"}
                             `}
                         >
                             {label}

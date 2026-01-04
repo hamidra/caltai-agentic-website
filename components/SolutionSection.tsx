@@ -10,7 +10,7 @@ interface SolutionSectionProps {
 const solutionCards = [
     {
         icon: (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
                 <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
                 <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
@@ -22,7 +22,7 @@ const solutionCards = [
     },
     {
         icon: (
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                 <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                 <line x1="9" y1="12" x2="15" y2="12"></line>
@@ -36,7 +36,7 @@ const solutionCards = [
     },
     {
         icon: (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
             </svg>
         ),
@@ -74,20 +74,20 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
             initial="initial"
             animate="animate"
             exit="exit"
-            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-[#0a0a0b]"
+            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-background"
         >
-            {/* Dark Mode Grid Overlay */}
-            <div className="absolute inset-0 opacity-[0.15] bg-[url('/background.svg')] bg-cover bg-center pointer-events-none invert grayscale" />
+            {/* Grid Overlay */}
+            <div className="absolute inset-0 opacity-[0.15] bg-[url('/background.svg')] bg-cover bg-center pointer-events-none dark:invert dark:grayscale" />
 
             <div className="max-w-7xl w-full relative z-10">
                 <motion.div
                     variants={itemVariants}
                     className="mb-[30px]"
                 >
-                    <h2 className="text-[40px] font-bold text-white mb-5 font-cal leading-tight">
+                    <h2 className="text-[40px] font-bold text-foreground mb-5 font-cal leading-tight">
                         Not Another Tool. An Operations Layer.
                     </h2>
-                    <p className="text-[20px] text-white/70 font-medium max-w-4xl leading-relaxed">
+                    <p className="text-[20px] text-muted font-medium max-w-4xl leading-relaxed">
                         CaltAI doesn't just connect your tools, it thinks, decides, and executes. It's the autonomous layer that sits on top of your Franken-stack and makes it actually work.
                     </p>
                 </motion.div>
@@ -97,31 +97,31 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                         <motion.div
                             key={index}
                             variants={itemVariants}
-                            className="relative flex flex-col items-center text-center p-12 min-h-[400px] group transition-all duration-300 hover:-translate-y-1"
+                            className="relative flex flex-col items-center text-center p-12 min-h-[400px] border border-border bg-surface shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] group hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 rounded-2xl overflow-hidden"
                         >
-                            {/* SVG Background Container - Adjusted for Dark Mode */}
+                            {/* SVG Background Container */}
                             <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
                                 <img
                                     src="/box blue.svg"
                                     alt=""
-                                    className="w-full h-full object-fill opacity-[0.9] brightness-[0.2] contrast-[1.5] transition-opacity"
+                                    className="w-full h-full object-fill opacity-[0.9] dark:brightness-[0.2] brightness-[0.95] contrast-[1.5] transition-opacity"
                                 />
                             </div>
 
-                            <div className="w-14 h-14 rounded-xl bg-[#9067ff] flex items-center justify-center mb-8 mt-[30px] shadow-lg shadow-[#9067ff]/40 flex-shrink-0 transition-transform group-hover:scale-110">
+                            <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center mb-8 mt-[30px] shadow-lg shadow-accent/40 flex-shrink-0 transition-transform group-hover:scale-110 text-accent-foreground">
                                 <div className="scale-125">
                                     {card.icon}
                                 </div>
                             </div>
 
-                            <h3 className="text-[22px] font-bold text-white mb-2 font-cal leading-tight px-2">
+                            <h3 className="text-[22px] font-bold text-foreground mb-2 font-cal leading-tight px-2">
                                 {card.title}
                             </h3>
-                            <span className="text-[#9067ff] font-bold text-xs uppercase tracking-widest mb-6 block">
+                            <span className="text-accent font-bold text-xs uppercase tracking-widest mb-6 block">
                                 {card.subtitle}
                             </span>
 
-                            <p className="text-white/60 text-[16px] leading-[1.6] flex-grow">
+                            <p className="text-muted text-[16px] leading-[1.6] flex-grow">
                                 {card.description}
                             </p>
                         </motion.div>
@@ -131,26 +131,26 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                 {/* Bottom Highlight Section */}
                 <motion.div
                     variants={itemVariants}
-                    className="mt-20 flex flex-col md:flex-row items-center gap-10 p-10 rounded-3xl bg-white/[0.03] border border-white/[0.05] backdrop-blur-sm"
+                    className="mt-20 flex flex-col md:flex-row items-center gap-10 p-10 rounded-3xl bg-card-bg border border-card-border backdrop-blur-sm"
                 >
                     <div className="flex-1">
-                        <h4 className="text-[#9067ff] font-bold text-sm uppercase tracking-[0.2em] mb-4">The Result</h4>
-                        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 font-cal uppercase italic font-medium">
+                        <h4 className="text-accent font-bold text-sm uppercase tracking-[0.2em] mb-4">The Result</h4>
+                        <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 font-cal uppercase italic font-medium">
                             A Single Source of Knowledge
                         </h3>
-                        <p className="text-white/50 text-base leading-relaxed">
+                        <p className="text-muted text-base leading-relaxed">
                             CaltAI creates a unified "Brain" for your business. It captures every decision, learns from every result, and ensures your team is always moving in the same direction.
                         </p>
                     </div>
                     <div className="flex-shrink-0 flex items-center gap-4">
                         <div className="flex flex-col items-end">
-                            <span className="text-white font-bold text-4xl font-cal">11 min</span>
-                            <span className="text-white/40 text-xs uppercase tracking-widest">Setup Time</span>
+                            <span className="text-foreground font-bold text-4xl font-cal">11 min</span>
+                            <span className="text-muted-foreground text-xs uppercase tracking-widest">Setup Time</span>
                         </div>
-                        <div className="w-[1px] h-12 bg-white/10" />
+                        <div className="w-[1px] h-12 bg-border" />
                         <div className="flex flex-col items-start">
-                            <span className="text-[#9067ff] font-bold text-4xl font-cal">90 days</span>
-                            <span className="text-white/40 text-xs uppercase tracking-widest">ROI Positive</span>
+                            <span className="text-accent font-bold text-4xl font-cal">90 days</span>
+                            <span className="text-muted-foreground text-xs uppercase tracking-widest">ROI Positive</span>
                         </div>
                     </div>
                 </motion.div>
