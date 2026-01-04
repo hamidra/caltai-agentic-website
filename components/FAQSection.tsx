@@ -38,32 +38,47 @@ const faqs = [
     }
 ];
 
-export default function FAQSection() {
+interface FAQSectionProps {
+    isActive?: boolean;
+}
+
+export default function FAQSection({ isActive }: FAQSectionProps) {
     const [activeIndex, setActiveIndex] = useState(0);
-    const [displayedText, setDisplayedText] = useState("");
+    const [visibleWordsCount, setVisibleWordsCount] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
     const [inputValue, setInputValue] = useState("");
 
+    const currentAnswer = faqs[activeIndex].answer;
+    const words = currentAnswer.split(" ");
+
     useEffect(() => {
-        const fullText = faqs[activeIndex].answer;
-        setDisplayedText("");
-        setIsTyping(true);
+        if (isActive) {
+            setVisibleWordsCount(0);
+            setIsTyping(true); // Show cursor immediately
+            let i = 0;
+            const typingSpeed = 80;
 
-        let i = 0;
-        const typingSpeed = 20; // ms per char
+            // Longer 'thinking' delay: 2.4s (3 blinks of 800ms each)
+            const startTimeout = setTimeout(() => {
+                const interval = setInterval(() => {
+                    i++;
+                    setVisibleWordsCount(i);
 
-        const interval = setInterval(() => {
-            i++;
-            setDisplayedText(fullText.slice(0, i));
+                    if (i >= words.length) {
+                        setIsTyping(false);
+                        clearInterval(interval);
+                    }
+                }, typingSpeed);
 
-            if (i >= fullText.length) {
-                setIsTyping(false);
-                clearInterval(interval);
-            }
-        }, typingSpeed);
+                return () => clearInterval(interval);
+            }, 2400);
 
-        return () => clearInterval(interval);
-    }, [activeIndex]);
+            return () => clearTimeout(startTimeout);
+        } else {
+            setVisibleWordsCount(0);
+            setIsTyping(false);
+        }
+    }, [activeIndex, isActive, currentAnswer]);
 
     return (
         <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid">
@@ -129,16 +144,48 @@ export default function FAQSection() {
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeIndex}
-                            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                            transition={{ duration: 0.4 }}
-                            className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-8 max-w-lg w-full shadow-sm text-center min-h-[160px] flex items-center justify-center"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.6 }}
+                            className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-8 max-w-[550px] w-full shadow-sm min-h-[160px] flex items-start justify-center relative overflow-hidden"
                         >
-                            <p className="text-[16px] leading-relaxed text-brand-brown font-medium">
-                                {displayedText}
-                                {isTyping && <span className="animate-pulse text-brand-orange">|</span>}
+                            {/* Ghost text for layout stability */}
+                            <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">
+                                {currentAnswer}
                             </p>
+
+                            {/* Visible Typing Text */}
+                            <div className="absolute inset-0 p-8 flex items-start">
+                                <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                                    {words.slice(0, visibleWordsCount).map((word, index) => (
+                                        <motion.span
+                                            key={index}
+                                            initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                                            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                            transition={{
+                                                duration: 0.8,
+                                                ease: [0.22, 1, 0.36, 1] // Premium quintic ease-out
+                                            }}
+                                            className="inline-block"
+                                        >
+                                            {word}&nbsp;
+                                        </motion.span>
+                                    ))}
+                                    {isTyping && (
+                                        <motion.span
+                                            initial={{ opacity: 1 }}
+                                            animate={{ opacity: [1, 0, 1] }}
+                                            transition={{
+                                                duration: 0.8, // Slower blink
+                                                repeat: Infinity,
+                                                ease: "linear"
+                                            }}
+                                            className="inline-block w-[2.5px] h-[18px] bg-brand-orange ml-1"
+                                        />
+                                    )}
+                                </p>
+                            </div>
                         </motion.div>
                     </AnimatePresence>
 
