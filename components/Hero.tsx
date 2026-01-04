@@ -53,7 +53,7 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-[60px] font-bold tracking-tight text-brand-brown mb-16 leading-[1.1] font-cal"
+                    className="text-5xl md:text-[60px] font-bold tracking-tight text-brand-brown mt-8 mb-8 leading-[1.1] font-cal"
                 >
                     Stop Prompting, <span className="text-brand-orange">Start Scaling</span>
                 </motion.h1>
@@ -79,7 +79,7 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-6 mb-16 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
+                    className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-6 mb-8 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
                 >
                     {/* Ghost text to fix dimensions */}
                     <p className="text-[17px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">
@@ -88,7 +88,7 @@ export default function Hero({ isActive }: HeroProps) {
 
                     {/* Visible Typing Text */}
                     <div className="absolute inset-0 p-6 flex items-start">
-                        <p className="text-[17px] leading-relaxed text-brand-brown font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                        <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
                             {words.slice(0, visibleWordsCount).map((word, index) => (
                                 <motion.span
                                     key={index}
