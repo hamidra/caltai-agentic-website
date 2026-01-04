@@ -23,14 +23,14 @@ export default function Home() {
       <ExpandableFooter isDark={currentIndex === 2} />
 
       <SectionScroller onSectionChange={setCurrentIndex} selectedIndex={currentIndex}>
-        <Hero />
+        <Hero isActive={currentIndex === 0} />
         <ProblemSection />
         <SolutionSection />
         <WhyCaltAI isActive={currentIndex === 3} />
         <PilotSection />
         <ROISection />
-        <FoundersNote />
-        <FAQSection />
+        <FoundersNote isActive={currentIndex === 6} />
+        <FAQSection isActive={currentIndex === 7} />
       </SectionScroller>
 
       {/* Global "Scroll to explore" Indicator */}

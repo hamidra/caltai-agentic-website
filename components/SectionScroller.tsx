@@ -10,39 +10,39 @@ interface SectionScrollerProps {
 }
 
 export default function SectionScroller({ children, onSectionChange, selectedIndex = 0 }: SectionScrollerProps) {
-    const [index, setIndex] = useState(selectedIndex);
     const lastScrollTime = useRef(0);
     const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
     const bottomReachedTime = useRef<number | null>(null);
     const topReachedTime = useRef<number | null>(null);
 
-    // Sync internal state when external prop changes (e.g., from Navbar click)
+    const prevIndex = useRef(selectedIndex);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+    // Sync prevIndex after animation
     useEffect(() => {
-        if (selectedIndex !== index) {
-            setIndex(selectedIndex);
-        }
+        const timer = setTimeout(() => {
+            prevIndex.current = selectedIndex;
+            setIsTransitioning(false);
+        }, 800);
+        setIsTransitioning(true);
+        return () => clearTimeout(timer);
     }, [selectedIndex]);
 
     const touchStart = useRef(0);
-
-    const scrollCooldown = 500; // ms between section changes
-    const scrollThreshold = 5; // minimum delta to trigger
-    const edgeDelayMs = 300; // delay at bottom/top before transitioning
+    const scrollCooldown = 900;
+    const scrollThreshold = 10;
+    const edgeDelayMs = 150;
 
     const handleScroll = useCallback(
         (e: WheelEvent | TouchEvent) => {
             const now = Date.now();
             if (now - lastScrollTime.current < scrollCooldown) return;
 
-            const currentSection = sectionRefs.current[index];
+            const currentSection = sectionRefs.current[selectedIndex];
             if (!currentSection) return;
 
             const { scrollTop, scrollHeight, clientHeight } = currentSection;
-
-            // Check if the section is actually scrollable
-            const isScrollable = scrollHeight > clientHeight + 5; // 5px buffer for tiny overflows
-
-            // Calculate boundaries with a 5px buffer for rounding errors and better feel
+            const isScrollable = scrollHeight > clientHeight + 5;
             const isAtBottom = isScrollable ? Math.ceil(scrollTop + clientHeight) >= scrollHeight - 5 : true;
             const isAtTop = isScrollable ? scrollTop <= 5 : true;
 
@@ -56,46 +56,35 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
 
             if (Math.abs(delta) < scrollThreshold) return;
 
-            // Intent: Scrolling Down
             if (delta > 0) {
-                if (isAtBottom && index < children.length - 1) {
-                    // User is at bottom and scrolling down
+                if (isAtBottom && selectedIndex < children.length - 1) {
                     if (bottomReachedTime.current === null) {
-                        // First time reaching bottom
                         bottomReachedTime.current = now;
                     } else if (now - bottomReachedTime.current >= edgeDelayMs) {
-                        // Enough time has passed, transition to next section
-                        setIndex((prev) => prev + 1);
+                        onSectionChange?.(selectedIndex + 1);
                         lastScrollTime.current = now;
                         bottomReachedTime.current = null;
                         topReachedTime.current = null;
                     }
                 } else {
-                    // Reset if not at bottom
                     bottomReachedTime.current = null;
                 }
-            }
-            // Intent: Scrolling Up
-            else if (delta < 0) {
-                if (isAtTop && index > 0) {
-                    // User is at top and scrolling up
+            } else if (delta < 0) {
+                if (isAtTop && selectedIndex > 0) {
                     if (topReachedTime.current === null) {
-                        // First time reaching top
                         topReachedTime.current = now;
                     } else if (now - topReachedTime.current >= edgeDelayMs) {
-                        // Enough time has passed, transition to previous section
-                        setIndex((prev) => prev - 1);
+                        onSectionChange?.(selectedIndex - 1);
                         lastScrollTime.current = now;
                         topReachedTime.current = null;
                         bottomReachedTime.current = null;
                     }
                 } else {
-                    // Reset if not at top
                     topReachedTime.current = null;
                 }
             }
         },
-        [index, children.length]
+        [selectedIndex, children.length, onSectionChange]
     );
 
     const handleTouchStart = (e: TouchEvent) => {
@@ -103,9 +92,9 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
     };
 
     useEffect(() => {
-        window.addEventListener("wheel", handleScroll);
-        window.addEventListener("touchstart", handleTouchStart);
-        window.addEventListener("touchmove", handleScroll);
+        window.addEventListener("wheel", handleScroll, { passive: false });
+        window.addEventListener("touchstart", handleTouchStart, { passive: true });
+        window.addEventListener("touchmove", handleScroll, { passive: false });
         return () => {
             window.removeEventListener("wheel", handleScroll);
             window.removeEventListener("touchstart", handleTouchStart);
@@ -113,41 +102,66 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
         };
     }, [handleScroll]);
 
-    useEffect(() => {
-        onSectionChange?.(index);
-    }, [index, onSectionChange]);
-
     return (
         <div className="fixed inset-0 overflow-hidden bg-background">
-            {children.map((child, i) => (
-                <motion.div
-                    key={i}
-                    ref={(el) => { if (el) sectionRefs.current[i] = el; }}
-                    initial={false}
-                    animate={{
-                        opacity: index === i ? 1 : 0,
-                        pointerEvents: index === i ? "auto" : "none",
-                        visibility: Math.abs(index - i) <= 1 ? "visible" : "hidden" // Optimization: only render adjacent
-                    }}
-                    transition={{
-                        duration: 0.2,
-                        ease: "easeOut"
-                    }}
-                    className="absolute inset-0 h-screen w-screen overflow-y-auto scroll-smooth hide-scrollbar transition-visibility"
-                >
-                    {child}
-                </motion.div>
-            ))}
+            {children.map((child, i) => {
+                const isCurrent = selectedIndex === i;
+
+                let y = "0%";
+                let scale = 1;
+                let opacity = 0;
+                let blur = "0px";
+
+                if (isCurrent) {
+                    opacity = 1;
+                    y = "0%";
+                    scale = 1;
+                    blur = "0px";
+                } else if (i < selectedIndex) {
+                    opacity = 0;
+                    y = "-30%";
+                    scale = 0.9;
+                    blur = "15px";
+                } else {
+                    opacity = 0;
+                    y = "30%";
+                    scale = 0.9;
+                    blur = "15px";
+                }
+
+                return (
+                    <motion.div
+                        key={i}
+                        ref={(el) => { if (el) sectionRefs.current[i] = el; }}
+                        initial={false}
+                        animate={{
+                            opacity,
+                            y,
+                            scale,
+                            filter: `blur(${blur})`,
+                            pointerEvents: isCurrent ? "auto" : "none",
+                            zIndex: isCurrent ? 20 : 10,
+                        }}
+                        transition={{
+                            duration: 0.8,
+                            ease: [0.22, 1, 0.36, 1]
+                        }}
+                        className="absolute inset-0 h-screen w-screen overflow-y-auto hide-scrollbar"
+                    >
+                        {child}
+                    </motion.div>
+                );
+            })}
 
             <style jsx global>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+                .hide-scrollbar::-webkit-scrollbar {
+                  display: none;
+                }
+                .hide-scrollbar {
+                  -ms-overflow-style: none;
+                  scrollbar-width: none;
+                }
+            `}</style>
         </div>
     );
 }
