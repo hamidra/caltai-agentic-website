@@ -207,8 +207,3 @@ body {
   transition-timing-function: ease;
   transition-duration: 0.15s;
 }
-
-/* Disable transitions on page load to prevent flash */
-.no-transitions * {
-  transition: none !important;
-}

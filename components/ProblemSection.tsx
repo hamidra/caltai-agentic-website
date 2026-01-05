@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import TechnicalCard from "./TechnicalCard";
 
 const cards = [
     {
@@ -43,7 +44,7 @@ export default function ProblemSection() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="mb-[30px]"
+                    className="mb-[80px]"
                 >
                     <h2 className="text-[40px] font-bold text-secondary mb-5 font-cal leading-tight">
                         You've Hit the "Scale Gap"
@@ -60,38 +61,33 @@ export default function ProblemSection() {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="relative flex flex-col pt-[44px] px-8 pb-0 min-h-[400px] group transition-all duration-300 hover:-translate-y-1"
                         >
-                            {/* SVG Background Container */}
-                            <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
-                                <img
-                                    src="/box Orange.svg"
-                                    alt=""
-                                    className="w-full h-full object-fill opacity-100 transition-opacity dark:opacity-80"
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-5 mb-[40px] mt-[30px]">
-                                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20 flex-shrink-0">
-                                    <div className="scale-125">
-                                        {card.icon}
+                            <TechnicalCard
+                                variant="orange"
+                                className="pt-[10px] px-8 pb-0 min-h-[300px] h-full group"
+                            >
+                                <div className="flex items-center gap-5 mb-[40px] mt-[30px]">
+                                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20 flex-shrink-0">
+                                        <div className="scale-125">
+                                            {card.icon}
+                                        </div>
                                     </div>
+
+                                    <h3 className="text-[20px] font-bold text-secondary font-cal leading-tight">
+                                        {card.title}
+                                    </h3>
                                 </div>
 
-                                <h3 className="text-[20px] font-bold text-secondary font-cal leading-tight">
-                                    {card.title}
-                                </h3>
-                            </div>
-
-                            <p className="text-muted text-[15px] leading-relaxed mb-[36px] h-[100px]">
-                                {card.description}
-                            </p>
-
-                            <div className="border-t border-border h-[72px] flex items-center w-full">
-                                <p className="text-primary font-bold text-[13px] uppercase tracking-wider">
-                                    {card.stat.split(' ')[0]} <span className="text-muted-foreground font-medium lowercase italic">{card.stat.split(' ').slice(1).join(' ')}</span>
+                                <p className="text-muted text-[15px] leading-relaxed mb-[36px] h-[100px]">
+                                    {card.description}
                                 </p>
-                            </div>
+
+                                <div className="border-t border-border h-[72px] flex items-center w-full">
+                                    <p className="text-primary font-bold text-[13px] uppercase tracking-wider">
+                                        {card.stat.split(' ')[0]} <span className="text-muted-foreground font-medium lowercase italic">{card.stat.split(' ').slice(1).join(' ')}</span>
+                                    </p>
+                                </div>
+                            </TechnicalCard>
                         </motion.div>
                     ))}
                 </div>

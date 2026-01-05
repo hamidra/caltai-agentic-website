@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import TechnicalCard from "./TechnicalCard";
 
 const alternatives = [
     {
@@ -18,7 +19,7 @@ const alternatives = [
     },
     {
         badge: "Enterprise ERP",
-        badgeColor: "bg-secondary",
+        badgeColor: "bg-primary",
         borderColor: "border-secondary",
         title: '"Heavy & Rigid"',
         description: "6-12 month implementation. $100K+ cost. Forces you to change your processes.",
@@ -108,49 +109,53 @@ export default function WhyCaltAI({ isActive = false }: WhyCaltAIProps) {
                     <motion.div
                         key={index}
                         variants={cardVariants}
-                        className={`relative flex flex-col p-8 h-[370px] border ${alt.borderColor} bg-surface shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] group hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 rounded-2xl overflow-hidden`}
                     >
-                        {/* Top Badge */}
-                        <div className={`absolute top-0 right-0 py-3 px-6 ${alt.badgeColor} text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center rounded-bl-xl`}>
-                            {alt.badge}
-                        </div>
+                        <TechnicalCard
+                            variant={alt.type === 'positive' ? 'blue' : 'orange'}
+                            className="pl-8 h-[340px] overflow-hidden group"
+                        >
+                            {/* Top Badge */}
+                            <div className={`absolute top-0 right-0 py-3 px-6 ${alt.badgeColor} text-white font-bold text-[10px] uppercase tracking-widest flex items-center justify-center rounded-bl-xl`}>
+                                {alt.badge}
+                            </div>
 
-                        <h3 className="text-[24px] font-bold text-secondary mb-4 font-cal leading-tight pt-8">
-                            {alt.title}
-                        </h3>
+                            <h3 className="text-[24px] font-bold text-secondary mb-4 font-cal leading-tight pt-20">
+                                {alt.title}
+                            </h3>
 
-                        <p className="text-muted text-[15px] leading-[1.5] mb-6">
-                            {alt.description}
-                        </p>
+                            <p className="text-muted text-[15px] leading-[1.5] mb-6">
+                                {alt.description}
+                            </p>
 
-                        <ul className="space-y-3 mt-auto">
-                            {alt.points.map((point, i) => (
-                                <li key={i} className="flex items-start gap-3">
-                                    <div className="flex-shrink-0 mt-1">
-                                        {alt.type === "positive" ? (
-                                            <div className="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center">
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="text-success">
-                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                </svg>
-                                            </div>
-                                        ) : (
-                                            <div className="w-5 h-5 rounded-full bg-error/10 flex items-center justify-center">
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-error">
-                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                                                </svg>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <span className={`text-[14px] leading-snug ${alt.type === 'positive' ? 'text-secondary font-medium' : 'text-muted italic'}`}>
-                                        {point}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
+                            <ul className="space-y-3 mt-auto">
+                                {alt.points.map((point, i) => (
+                                    <li key={i} className="flex items-start gap-3">
+                                        <div className="flex-shrink-0 mt-1">
+                                            {alt.type === "positive" ? (
+                                                <div className="w-5 h-5 rounded-full bg-success/25 flex items-center justify-center">
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" className="text-success">
+                                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                                    </svg>
+                                                </div>
+                                            ) : (
+                                                <div className="w-5 h-5 rounded-full bg-error/25 flex items-center justify-center">
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-error">
+                                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                    </svg>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <span className={`text-[14px] leading-snug ${alt.type === 'positive' ? 'text-secondary font-medium' : 'text-muted italic'}`}>
+                                            {point}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
 
-                        {/* Decorative element */}
-                        <div className={`absolute -bottom-12 -right-12 w-24 h-24 rounded-full opacity-[0.03] ${alt.type === 'positive' ? 'bg-accent' : 'bg-secondary'} group-hover:scale-150 transition-transform duration-700`} />
+                            {/* Decorative element */}
+                            <div className={`absolute -bottom-12 -right-12 w-24 h-24 rounded-full opacity-[0.03] ${alt.type === 'positive' ? 'bg-accent' : 'bg-secondary'} group-hover:scale-150 transition-transform duration-700`} />
+                        </TechnicalCard>
                     </motion.div>
                 ))}
             </div>

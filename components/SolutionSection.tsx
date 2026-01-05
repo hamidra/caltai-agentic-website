@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import TechnicalCard from "./TechnicalCard";
 
 interface SolutionSectionProps {
     direction?: "down" | "up";
@@ -42,7 +43,8 @@ const solutionCards = [
         ),
         title: "Autonomous Execution",
         subtitle: "(The Engine)",
-        description: "Takes action on your behalf, pausing ads, creating tasks, triggering workflows. The feedback loop: Action → Measurement → Learning."
+        description: `Takes action on your behalf, pausing ads, creating tasks, triggering workflows.The feedback loop: 
+        Action → Measurement → Learning.`
     }
 ];
 
@@ -97,33 +99,28 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                         <motion.div
                             key={index}
                             variants={itemVariants}
-                            className="relative flex flex-col items-center text-center p-12 min-h-[400px] border border-border bg-surface shadow-[0_10px_30px_-10px_rgba(0,0,0,0.05)] group hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 rounded-2xl overflow-hidden"
                         >
-                            {/* SVG Background Container */}
-                            <div className="absolute inset-0 -z-10 w-full h-full pointer-events-none">
-                                <img
-                                    src="/box blue.svg"
-                                    alt=""
-                                    className="w-full h-full object-fill opacity-[0.9] dark:brightness-[0.2] brightness-[0.95] contrast-[1.5] transition-opacity"
-                                />
-                            </div>
-
-                            <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center mb-8 mt-[30px] shadow-lg shadow-accent/40 flex-shrink-0 transition-transform group-hover:scale-110 text-accent-foreground">
-                                <div className="scale-125">
-                                    {card.icon}
+                            <TechnicalCard
+                                variant="blue"
+                                className="flex flex-col items-center text-center px-12 py-8 min-h-[300px] group"
+                            >
+                                <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center mb-8 mx-auto shadow-lg shadow-accent/40 flex-shrink-0 transition-transform group-hover:scale-110 text-accent-foreground">
+                                    <div className="scale-125">
+                                        {card.icon}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <h3 className="text-[22px] font-bold text-foreground mb-2 font-cal leading-tight px-2">
-                                {card.title}
-                            </h3>
-                            <span className="text-accent font-bold text-xs uppercase tracking-widest mb-6 block">
-                                {card.subtitle}
-                            </span>
+                                <h3 className="text-[22px] font-bold text-foreground mb-2 font-cal leading-tight px-2">
+                                    {card.title}
+                                </h3>
+                                <span className="text-accent font-bold text-xs uppercase tracking-widest mb-6 block">
+                                    {card.subtitle}
+                                </span>
 
-                            <p className="text-muted text-[16px] leading-[1.6] flex-grow">
-                                {card.description}
-                            </p>
+                                <p className="text-muted text-[16px] leading-[1.6] flex-grow whitespace-pre-line">
+                                    {card.description}
+                                </p>
+                            </TechnicalCard>
                         </motion.div>
                     ))}
                 </div>
@@ -144,12 +141,12 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                     </div>
                     <div className="flex-shrink-0 flex items-center gap-4">
                         <div className="flex flex-col items-end">
-                            <span className="text-foreground font-bold text-4xl font-cal">11 min</span>
+                            <span className="text-foreground font-bold text-4xl mb-[10px] font-cal">11 min</span>
                             <span className="text-muted-foreground text-xs uppercase tracking-widest">Setup Time</span>
                         </div>
                         <div className="w-[1px] h-12 bg-border" />
                         <div className="flex flex-col items-start">
-                            <span className="text-accent font-bold text-4xl font-cal">90 days</span>
+                            <span className="text-accent font-bold text-4xl mb-[10px] font-cal">90 days</span>
                             <span className="text-muted-foreground text-xs uppercase tracking-widest">ROI Positive</span>
                         </div>
                     </div>
