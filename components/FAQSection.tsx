@@ -131,7 +131,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                 <div className="relative flex flex-col items-center justify-center gap-12">
                     {/* Assistant Orb */}
                     <div className="relative w-40 h-40 lg:w-56 lg:h-56 -mb-12">
-                        <div className="relative w-full h-full bg-white/20 backdrop-blur-xl rounded-full border border-white/30 flex items-center justify-center p-8 overflow-hidden">
+                        <div className="relative w-full h-full  backdrop-blur-xl rounded-full border-white/30 flex items-center justify-center p-8 overflow-hidden">
                             <img
                                 src="/AI design.svg"
                                 alt="AI Assistant"
@@ -148,7 +148,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.6 }}
-                            className="bg-brand-cream border border-[#f0e4d7] rounded-[24px] p-8 max-w-[550px] w-full shadow-sm min-h-[160px] flex items-start justify-center relative overflow-hidden"
+                            className="bg-brand-cream rounded-[24px] p-8 max-w-[550px] w-full shadow-sm min-h-[160px] flex items-start justify-center relative overflow-hidden"
                         >
                             {/* Ghost text for layout stability */}
                             <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">
