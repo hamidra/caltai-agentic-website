@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import TechnicalCard from "./TechnicalCard";
 
 interface SolutionSectionProps {
     direction?: "down" | "up";
@@ -99,28 +98,27 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                         <motion.div
                             key={index}
                             variants={itemVariants}
+                            className="bg-white border border-[#E3DFD9] rounded-[24px] p-8 md:p-10 backdrop-blur-sm flex flex-col h-full hover:shadow-lg transition-all duration-300"
                         >
-                            <TechnicalCard
-                                variant="blue"
-                                className="flex flex-col items-center text-center px-12 py-8 min-h-[300px] group"
-                            >
-                                <div className="w-14 h-14 rounded-xl bg-accent flex items-center justify-center mb-8 mx-auto shadow-lg shadow-accent/40 flex-shrink-0 transition-transform group-hover:scale-110 text-accent-foreground">
-                                    <div className="scale-125">
+                            <div className="flex items-center gap-5 mb-8">
+                                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20 flex-shrink-0">
+                                    <div className="scale-125 text-white">
                                         {card.icon}
                                     </div>
                                 </div>
+                                <div className="flex flex-col">
+                                    <h3 className="text-[20px] font-bold text-secondary leading-tight">
+                                        {card.title}
+                                    </h3>
+                                    <span className="text-[12px] text-primary font-bold uppercase tracking-wider mt-1 opacity-70">
+                                        {card.subtitle}
+                                    </span>
+                                </div>
+                            </div>
 
-                                <h3 className="text-[22px] font-bold text-foreground mb-2 font-cal leading-tight px-2">
-                                    {card.title}
-                                </h3>
-                                <span className="text-accent font-bold text-xs uppercase tracking-widest mb-6 block">
-                                    {card.subtitle}
-                                </span>
-
-                                <p className="text-muted text-[16px] leading-[1.6] flex-grow whitespace-pre-line">
-                                    {card.description}
-                                </p>
-                            </TechnicalCard>
+                            <p className="text-muted text-[16px] leading-relaxed flex-grow">
+                                {card.description}
+                            </p>
                         </motion.div>
                     ))}
                 </div>
@@ -128,7 +126,7 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                 {/* Bottom Highlight Section */}
                 <motion.div
                     variants={itemVariants}
-                    className="mt-[32px] flex flex-col md:flex-row items-center gap-10 p-10 rounded-3xl bg-card-bg border border-[#E3DFD9] backdrop-blur-sm"
+                    className="mt-[32px] flex flex-col md:flex-row items-center gap-10 p-10 rounded-3xl bg-white border border-[#E3DFD9] backdrop-blur-sm"
                 >
                     <div className="flex-1">
                         <h4 className="text-accent font-bold text-sm uppercase tracking-[0.2em] mb-4">The Result</h4>
