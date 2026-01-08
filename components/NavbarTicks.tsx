@@ -25,7 +25,7 @@ const CONFIG = {
     PHASE_STEP: 0.8,            // Phase offset between bars
 };
 
-const SECTIONS = ["Home", "Problem", "Solution", "Comparison", "Pilot", "ROI", "Founders", "FAQ"];
+const SECTIONS = ["Home", "Problem", "Solution", "Comparison", "HITL", "ROI", "Founders", "FAQ"];
 
 // --- Helper: Easing ---
 const easeInOutCubic = (t: number): number => {

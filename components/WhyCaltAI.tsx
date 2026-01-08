@@ -96,7 +96,7 @@ export default function WhyCaltAI({ isActive = false }: WhyCaltAIProps) {
                 variants={cardVariants}
                 className="mb-16 max-w-7xl w-full"
             >
-                <h2 className="text-[40px] font-bold text-secondary mb-5 font-cal leading-tight">
+                <h2 className="text-[40px] text-secondary mb-5 font-cal leading-tight">
                     Why CaltAI vs. The Alternatives
                 </h2>
                 <p className="text-[20px] text-muted font-medium max-w-4xl leading-relaxed">

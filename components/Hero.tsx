@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import LLMMarqueeSide from "./LLMMarqueeSide";
 
 interface HeroProps {
     isActive?: boolean;
@@ -47,13 +48,14 @@ export default function Hero({ isActive }: HeroProps) {
 
     return (
         <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-4 bg-grid">
+            <LLMMarqueeSide />
 
             <div className="z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center">
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-[60px] font-bold tracking-tight text-secondary mt-8 mb-8 leading-[1.1] font-cal"
+                    className="text-5xl md:text-[60px] tracking-tight text-secondary mt-8 mb-8 leading-[1.1] font-cal"
                 >
                     Stop Prompting, <span className="text-primary">Start Scaling</span>
                 </motion.h1>
@@ -79,7 +81,7 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="bg-surface-alt border border-border rounded-[24px] p-6 mb-8 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
+                    className="bg-[#FFFEFC] border border-[#E3DFD9] rounded-[20px] p-6 mb-8 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
                 >
                     {/* Ghost text to fix dimensions */}
                     <p className="text-[17px] leading-relaxed text-secondary font-medium text-left opacity-0 pointer-events-none">

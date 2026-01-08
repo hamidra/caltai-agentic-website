@@ -30,9 +30,9 @@ const cards = [
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
             </svg>
         ),
-        title: '"Zapiers Are Held Together with Duct Tape"',
+        title: '"My Automations Are Held Together with Duct Tape"',
         description: "You've built a Franken-stack of integrations. Only one person understands how it works. And you're terrified to touch it.",
-        stat: "$800+/month on Zapier—and it still breaks"
+        stat: "$800+/month on automation tools and they still break"
     }
 ];
 
@@ -46,7 +46,7 @@ export default function ProblemSection() {
                     transition={{ duration: 0.8 }}
                     className="mb-[80px]"
                 >
-                    <h2 className="text-[40px] font-bold text-secondary mb-5 font-cal leading-tight">
+                    <h2 className="text-[40px] text-secondary mb-5 font-cal leading-tight">
                         You've Hit the "Scale Gap"
                     </h2>
                     <p className="text-[20px] text-muted font-medium max-w-4xl leading-relaxed">

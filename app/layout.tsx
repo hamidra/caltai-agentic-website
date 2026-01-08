@@ -33,16 +33,23 @@ export default function RootLayout({
   return (
     <html lang="en" className="no-transitions" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Onest:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
         {/* Script to prevent FOUC (Flash of Unstyled Content) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
+                  // Force light mode for now
+                  document.documentElement.classList.remove('dark');
+                  /*
                   var theme = localStorage.getItem('theme');
                   if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     document.documentElement.classList.add('dark');
                   }
+                  */
                 } catch (e) {}
               })();
             `,

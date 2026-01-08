@@ -97,7 +97,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                         initial={{ opacity: 0, x: -20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="text-[40px] font-bold text-brand-brown mb-5 font-cal leading-tight"
+                        className="text-[40px] text-brand-brown mb-5 font-cal leading-tight"
                     >
                         The CaltAI FAQ
                     </motion.h2>
@@ -148,7 +148,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ duration: 0.6 }}
-                            className="bg-brand-cream rounded-[24px] p-8 max-w-[550px] w-full shadow-sm min-h-[160px] flex items-start justify-center relative overflow-hidden"
+                            className="bg-[#FFFEFC] rounded-[20px] border border-[#E3DFD9] p-8 max-w-[550px] w-full shadow-sm min-h-[160px] flex items-start justify-center relative overflow-hidden"
                         >
                             {/* Ghost text for layout stability */}
                             <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">

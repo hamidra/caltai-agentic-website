@@ -119,7 +119,7 @@
 
   /* Fonts */
   --font-sans: var(--font-outfit);
-  --font-cal: var(--font-jakarta);
+  --font-cal: "Cal Sans", sans-serif;
 }
 
 /* ================================
@@ -157,6 +157,12 @@ body {
 /* Dark mode background adjustment */
 :root.dark .bg-grid {
   background-image: url('/background-dark.svg');
+}
+
+.cal-sans-regular {
+  font-family: "Cal Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .orb-glow {

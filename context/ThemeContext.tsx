@@ -19,6 +19,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         setMounted(true);
 
+        // Force light mode for now
+        setTheme('light');
+        applyTheme('light');
+
+        /*
         // Check for saved preference first
         const savedTheme = localStorage.getItem('theme') as Theme | null;
 
@@ -32,6 +37,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             setTheme(initialTheme);
             applyTheme(initialTheme);
         }
+        */
 
         // Remove no-transitions class after initial load
         setTimeout(() => {
@@ -39,7 +45,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }, 100);
     }, []);
 
-    // Listen for system theme changes (only if no saved preference)
+    // Listen for system theme changes disabled for now
+    /*
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
@@ -56,6 +63,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         mediaQuery.addEventListener('change', handleChange);
         return () => mediaQuery.removeEventListener('change', handleChange);
     }, []);
+    */
 
     const applyTheme = (newTheme: Theme) => {
         if (newTheme === 'dark') {

@@ -31,7 +31,7 @@ const solutionCards = [
                 <line x1="12" y1="8" x2="12" y2="8"></line>
             </svg>
         ),
-        title: "Proactive Actions",
+        title: "Proactive decisions",
         subtitle: "(The Logic)",
         description: "Doesn't wait for you to ask. Detects signals, makes recommendations, and surfaces what matters, before you even know to look."
     },
@@ -86,7 +86,7 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                     variants={itemVariants}
                     className="mb-[30px]"
                 >
-                    <h2 className="text-[40px] font-bold text-foreground mb-5 font-cal leading-tight">
+                    <h2 className="text-[40px] text-foreground mb-5 font-cal leading-tight">
                         Not Another Tool. An Operations Layer.
                     </h2>
                     <p className="text-[20px] text-muted font-medium max-w-4xl leading-relaxed">
@@ -128,7 +128,7 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
                 {/* Bottom Highlight Section */}
                 <motion.div
                     variants={itemVariants}
-                    className="mt-20 flex flex-col md:flex-row items-center gap-10 p-10 rounded-3xl bg-card-bg border border-card-border backdrop-blur-sm"
+                    className="mt-[32px] flex flex-col md:flex-row items-center gap-10 p-10 rounded-3xl bg-card-bg border border-[#E3DFD9] backdrop-blur-sm"
                 >
                     <div className="flex-1">
                         <h4 className="text-accent font-bold text-sm uppercase tracking-[0.2em] mb-4">The Result</h4>

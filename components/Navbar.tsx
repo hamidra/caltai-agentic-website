@@ -28,8 +28,8 @@ export default function Navbar({ currentIndex, onSectionChange }: NavbarProps) {
                 <NavbarTicks currentIndex={currentIndex} onSectionChange={onSectionChange} />
             </div>
 
-            {/* Theme Toggle - Top Right */}
-            <div className="flex items-center">
+            {/* Theme Toggle - Top Right (Hidden for now) */}
+            <div className="hidden items-center">
                 <ThemeToggle />
             </div>
         </nav>

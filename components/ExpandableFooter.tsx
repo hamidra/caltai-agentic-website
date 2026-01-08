@@ -18,12 +18,39 @@ export default function ExpandableFooter() {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             >
-                {/* The square corner button (Always visible) */}
+                {/* The vertical rectangular button (Always visible) */}
                 <div
-                    className="relative flex items-center justify-center cursor-pointer transition-all duration-500 border-t border-r bg-surface border-border-strong hover:bg-surface-alt"
-                    style={{ width: BTN_SIZE, height: BTN_SIZE }}
+                    className="relative flex flex-col items-center justify-start gap-4 cursor-pointer transition-all duration-500 border-t border-r bg-surface border-primary hover:bg-surface-alt py-6"
+                    style={{ width: '72px', height: '152px' }}
                 >
-                    <ArrowUpRight className="w-8 h-8 transition-colors duration-500 text-primary" strokeWidth={2} />
+                    <motion.div
+                        animate={{ y: [0, -4, 0] }}
+                        transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                    >
+                        <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="text-primary"
+                        >
+                            <line x1="12" y1="19" x2="12" y2="5"></line>
+                            <polyline points="5 12 12 5 19 12"></polyline>
+                        </svg>
+                    </motion.div>
+                    <span
+                        className="text-primary font-bold text-[15px] tracking-widest uppercase mb-2"
+                        style={{
+                            writingMode: 'vertical-rl',
+                            transform: 'rotate(180deg)',
+                        }}
+                    >
+                        Footer
+                    </span>
                 </div>
             </div>
 

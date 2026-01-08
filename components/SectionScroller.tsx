@@ -91,16 +91,72 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
         touchStart.current = e.touches[0].clientY;
     };
 
+    const handleKeyDown = useCallback(
+        (e: KeyboardEvent) => {
+            const now = Date.now();
+            if (now - lastScrollTime.current < scrollCooldown) return;
+
+            const currentSection = sectionRefs.current[selectedIndex];
+            if (!currentSection) return;
+
+            const { scrollTop, scrollHeight, clientHeight } = currentSection;
+            const isScrollable = scrollHeight > clientHeight + 5;
+            const isAtBottom = isScrollable ? Math.ceil(scrollTop + clientHeight) >= scrollHeight - 5 : true;
+            const isAtTop = isScrollable ? scrollTop <= 5 : true;
+
+            let direction = 0; // 1 for down, -1 for up
+            const stepMultiplier = 1.2; // Increase scroll step for keyboard if needed
+
+            if (e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey)) {
+                direction = 1;
+            } else if (e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey)) {
+                direction = -1;
+            }
+
+            if (direction === 0) return;
+
+            // Manual internal scroll if we're not at the edges
+            const scrollStep = 100; // pxl for arrows
+            const pageStep = 400;  // px for page up/down/space
+            const step = (e.key === "PageDown" || e.key === "PageUp" || e.key === " ") ? pageStep : scrollStep;
+
+            if (direction === 1) {
+                if (isAtBottom && selectedIndex < children.length - 1) {
+                    e.preventDefault();
+                    onSectionChange?.(selectedIndex + 1);
+                    lastScrollTime.current = now;
+                } else if (!isAtBottom) {
+                    // Manually scroll internal content if browser doesn't catch it
+                    e.preventDefault();
+                    currentSection.scrollBy({ top: step, behavior: "smooth" });
+                }
+            } else if (direction === -1) {
+                if (isAtTop && selectedIndex > 0) {
+                    e.preventDefault();
+                    onSectionChange?.(selectedIndex - 1);
+                    lastScrollTime.current = now;
+                } else if (!isAtTop) {
+                    // Manually scroll internal content if browser doesn't catch it
+                    e.preventDefault();
+                    currentSection.scrollBy({ top: -step, behavior: "smooth" });
+                }
+            }
+        },
+        [selectedIndex, children.length, onSectionChange]
+    );
+
     useEffect(() => {
         window.addEventListener("wheel", handleScroll, { passive: false });
         window.addEventListener("touchstart", handleTouchStart, { passive: true });
         window.addEventListener("touchmove", handleScroll, { passive: false });
+        window.addEventListener("keydown", handleKeyDown);
         return () => {
             window.removeEventListener("wheel", handleScroll);
             window.removeEventListener("touchstart", handleTouchStart);
             window.removeEventListener("touchmove", handleScroll);
+            window.removeEventListener("keydown", handleKeyDown);
         };
-    }, [handleScroll]);
+    }, [handleScroll, handleKeyDown]);
 
     return (
         <div className="fixed inset-0 overflow-hidden bg-background">

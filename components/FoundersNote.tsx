@@ -35,7 +35,7 @@ export default function FoundersNote() {
                         </p>
 
                         <div className="mt-16">
-                            <span className="font-cal text-xl lg:text-xl text-brand-brown font-bold tracking-tight">
+                            <span className="font-cal text-xl lg:text-xl text-brand-brown tracking-tight">
                                 CaltAI Founders
                             </span>
                         </div>
