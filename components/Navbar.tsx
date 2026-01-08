@@ -12,15 +12,17 @@ export default function Navbar({ currentIndex, onSectionChange }: NavbarProps) {
         <nav className="fixed top-0 left-0 right-0 z-50 flex items-start justify-between pl-20 pr-8 py-6 transition-all duration-500 bg-navbar-bg backdrop-blur-xl border-b border-navbar-border">
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 flex items-center justify-center">
+                    <button
+                        onClick={() => onSectionChange(0)}
+                        className="h-[24px] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity outline-none"
+                        aria-label="Return to Home"
+                    >
                         <img
-                            src="/logo.svg"
+                            src="/long Logo.svg"
                             alt="CaltAI Logo"
-                            className="w-full h-auto transition-all dark:brightness-[100] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                            className="h-full w-auto transition-all dark:brightness-[100] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
                         />
-                    </div>
-                    <div className="h-6 w-[1px] mx-1 transition-colors bg-border-strong"></div>
-                    <span className="text-xl font-bold tracking-tight transition-colors text-secondary">CaltAI</span>
+                    </button>
                 </div>
             </div>
 

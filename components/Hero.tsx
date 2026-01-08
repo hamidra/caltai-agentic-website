@@ -9,46 +9,120 @@ interface HeroProps {
 }
 
 export default function Hero({ isActive }: HeroProps) {
-    const [isChatOpen, setIsChatOpen] = useState(false);
-    const [inputValue, setInputValue] = useState("");
-    const fullText = "Most AIs chat, but I'm executes. Replace fracturing manual processes with an autonomous operations layer capable of running a $10M business with just a 5-person team.";
-    const words = fullText.split(" ");
+    const [isRegistered, setIsRegistered] = useState(false);
+
+    const MESSAGES = [
+        "Hi, I’m CaltAI. I run business decisions, workflows, and follow-ups autonomously.",
+        "I connect to your tools, understand your context, and act on signals as they appear.",
+        isRegistered
+            ? "Perfect! You're on the list. I'll reach out as soon as we're ready for more pilots."
+            : "If you’d like early access, you can join the waiting list."
+    ];
+    const [currentMsgIndex, setCurrentMsgIndex] = useState(0);
     const [visibleWordsCount, setVisibleWordsCount] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
+    const [isBlinking, setIsBlinking] = useState(false);
+    const [email, setEmail] = useState("");
+    const [showsWaitingList, setShowsWaitingList] = useState(false);
 
+    const currentWords = MESSAGES[currentMsgIndex].split(" ");
+    // Use the longest message for ghost text to maintain fixed height
+    const longestMessage = MESSAGES.reduce((a, b) => a.length > b.length ? a : b);
+
+    const handleRegister = () => {
+        if (!email || !email.includes("@")) return;
+        setIsRegistered(true);
+        setCurrentMsgIndex(2);
+        setVisibleWordsCount(0);
+        setIsTyping(true);
+        setIsBlinking(true);
+    };
 
     useEffect(() => {
-        if (isActive) {
-            setVisibleWordsCount(0);
-            setIsTyping(true); // Show cursor immediately
-            let i = 0;
-            const typingSpeed = 80;
-
-            // Longer 'thinking' delay: 2.4s (3 blinks of 800ms each)
-            const startTimeout = setTimeout(() => {
-                const interval = setInterval(() => {
-                    i++;
-                    setVisibleWordsCount(i);
-
-                    if (i >= words.length) {
-                        setIsTyping(false);
-                        clearInterval(interval);
-                    }
-                }, typingSpeed);
-
-                return () => clearInterval(interval);
-            }, 2400);
-
-            return () => clearTimeout(startTimeout);
-        } else {
+        if (!isActive) {
+            setCurrentMsgIndex(0);
             setVisibleWordsCount(0);
             setIsTyping(false);
+            setIsBlinking(false);
+            setIsRegistered(false);
+            setShowsWaitingList(false);
+            return;
         }
-    }, [isActive, words.length]);
+
+        let isMounted = true;
+
+        const runSequence = async () => {
+            if (isRegistered) {
+                // If registered, type confirmation message immediately
+                const msgWords = MESSAGES[2].split(" ");
+                for (let i = 1; i <= msgWords.length; i++) {
+                    await new Promise(r => setTimeout(r, 60));
+                    if (!isMounted) return;
+                    setVisibleWordsCount(i);
+                }
+                setIsTyping(false);
+                setIsBlinking(true);
+                return;
+            }
+
+            // Initial delay
+            await new Promise(r => setTimeout(r, 1000));
+            if (!isMounted) return;
+
+            // Only run first two messages automatically
+            for (let m = 0; m < 2; m++) {
+                if (!isMounted || isRegistered) return;
+                setCurrentMsgIndex(m);
+                setVisibleWordsCount(0);
+                setIsTyping(true);
+                setIsBlinking(true);
+
+                const msgWords = MESSAGES[m].split(" ");
+                for (let i = 1; i <= msgWords.length; i++) {
+                    await new Promise(r => setTimeout(r, 80));
+                    if (!isMounted || isRegistered) return;
+                    setVisibleWordsCount(i);
+                }
+
+                setIsTyping(false);
+
+                if (m === 0) {
+                    setIsBlinking(true);
+                    await new Promise(r => setTimeout(r, 3200));
+                } else if (m === 1) {
+                    setIsBlinking(false);
+                    await new Promise(r => setTimeout(r, 3200));
+                }
+
+                if (!isMounted || isRegistered) return;
+            }
+
+            // Msg 3: Invitation
+            if (!isRegistered && isMounted) {
+                setCurrentMsgIndex(2);
+                setVisibleWordsCount(0);
+                setIsTyping(true);
+                setIsBlinking(true);
+                setShowsWaitingList(true);
+
+                const msgWords = MESSAGES[2].split(" ");
+                for (let i = 1; i <= msgWords.length; i++) {
+                    await new Promise(r => setTimeout(r, 80));
+                    if (!isMounted || isRegistered) return;
+                    setVisibleWordsCount(i);
+                }
+                setIsTyping(false);
+            }
+        };
+
+        runSequence();
+
+        return () => { isMounted = false; };
+    }, [isActive, isRegistered]);
 
     return (
         <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-4 bg-grid">
-            <LLMMarqueeSide />
+            {/* <LLMMarqueeSide /> */}
 
             <div className="z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center">
                 <motion.h1
@@ -81,19 +155,19 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="bg-[#FFFEFC] border border-[#E3DFD9] rounded-[20px] p-6 mb-8 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
+                    className="bg-[#FFFEFC] border border-[#E3DFD9] rounded-[20px] p-6 mb-12 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
                 >
                     {/* Ghost text to fix dimensions */}
                     <p className="text-[17px] leading-relaxed text-secondary font-medium text-left opacity-0 pointer-events-none">
-                        {fullText}
+                        {longestMessage}
                     </p>
 
                     {/* Visible Typing Text */}
                     <div className="absolute inset-0 p-6 flex items-start">
                         <p className="text-[16px] leading-relaxed text-secondary font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
-                            {words.slice(0, visibleWordsCount).map((word, index) => (
+                            {currentWords.slice(0, visibleWordsCount).map((word, index) => (
                                 <motion.span
-                                    key={index}
+                                    key={`${currentMsgIndex}-${index}`}
                                     initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
                                     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                                     transition={{
@@ -105,10 +179,10 @@ export default function Hero({ isActive }: HeroProps) {
                                     {word}&nbsp;
                                 </motion.span>
                             ))}
-                            {isTyping && (
+                            {(isTyping || isBlinking) && (
                                 <motion.span
                                     initial={{ opacity: 1 }}
-                                    animate={{ opacity: [1, 0, 1] }}
+                                    animate={isBlinking ? { opacity: [1, 0, 1] } : { opacity: 1 }}
                                     transition={{
                                         duration: 0.8,
                                         repeat: Infinity,
@@ -121,105 +195,55 @@ export default function Hero({ isActive }: HeroProps) {
                     </div>
                 </motion.div>
 
-                {/* CTA Button / Input Area */}
-                <div className="h-[70px] flex items-center justify-center w-full max-w-md mx-auto relative perspective-1000">
+                {/* Waiting List Registration Area */}
+                <div className="h-[70px] flex items-center justify-center w-full max-w-lg mx-auto relative overflow-visible">
                     <AnimatePresence mode="wait">
-                        {!isChatOpen ? (
+                        {!isRegistered ? (
                             <motion.div
-                                key="button"
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-                                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-                                transition={{ duration: 0.6, delay: 0.8 }}
-                                className="h-[58px] flex items-center px-3 bg-surface rounded-full border border-border shadow-[0_10px_40px_rgba(0,0,0,0.06)] inline-flex mx-auto cursor-pointer hover:border-primary/30 transition-colors"
-                                onClick={() => setIsChatOpen(true)}
-                                layoutId="chat-container"
+                                key="input"
+                                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                transition={{
+                                    duration: 0.6,
+                                    ease: [0.22, 1, 0.36, 1]
+                                }}
+                                className="w-full relative group"
                             >
-                                <button className="h-[36px] bg-primary text-primary-foreground px-8 rounded-full font-bold text-sm hover:bg-primary-hover transition-all flex items-center">
-                                    Chat with CaltAI
-                                </button>
-                                <motion.div
-                                    animate={{ scale: [1, 1.05, 1] }}
-                                    transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-                                    className="w-[36px] h-[36px] bg-primary rounded-full flex items-center justify-center ml-2 shadow-md flex-shrink-0"
-                                >
-                                    <div className="flex items-center gap-0.5 h-4">
-                                        <motion.div
-                                            animate={{ height: [6, 12, 6] }}
-                                            transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                                            className="w-[2px] bg-primary-foreground rounded-full"
-                                        ></motion.div>
-                                        <motion.div
-                                            animate={{ height: [10, 16, 10] }}
-                                            transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
-                                            className="w-[2px] bg-primary-foreground rounded-full"
-                                        ></motion.div>
-                                        <motion.div
-                                            animate={{ height: [8, 14, 8] }}
-                                            transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
-                                            className="w-[2px] bg-primary-foreground rounded-full"
-                                        ></motion.div>
-                                        <motion.div
-                                            animate={{ height: [4, 10, 4] }}
-                                            transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
-                                            className="w-[2px] bg-primary-foreground rounded-full"
-                                        ></motion.div>
-                                    </div>
-                                </motion.div>
+                                {showsWaitingList && (
+                                    <>
+                                        <div className="absolute inset-0 bg-primary/5 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
+                                        <div className="relative flex items-center bg-[#FFFEFC] border border-[#E3DFD9] rounded-full p-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.04)] focus-within:border-primary/30 focus-within:shadow-[0_15px_60px_rgba(0,0,0,0.08)] transition-all duration-300">
+                                            <input
+                                                type="email"
+                                                placeholder="Enter your email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                onKeyDown={(e) => e.key === 'Enter' && handleRegister()}
+                                                className="flex-1 bg-transparent px-6 py-3 text-secondary rounded-[30px] font-medium placeholder:text-muted/40 outline-none w-full"
+                                            />
+                                            <button
+                                                onClick={handleRegister}
+                                                className="h-[44px] bg-primary text-primary-foreground px-8 rounded-full font-bold text-sm hover:bg-primary-hover active:scale-95 transition-all shadow-md shadow-primary/20 flex items-center gap-2"
+                                            >
+                                                Join Waitlist
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
                             </motion.div>
                         ) : (
                             <motion.div
-                                key="input"
-                                initial={{ opacity: 0, scale: 0.95, width: "200px" }}
-                                animate={{ opacity: 1, scale: 1, width: "100%" }}
-                                transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}
-                                layoutId="chat-container"
-                                className="w-full relative group"
+                                key="success"
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="flex items-center gap-3 bg-primary/10 border border-primary/20 px-8 py-4 rounded-full"
                             >
-                                <input
-                                    type="text"
-                                    autoFocus
-                                    value={inputValue}
-                                    onChange={(e) => setInputValue(e.target.value)}
-                                    placeholder="Ask your question"
-                                    className="w-full h-16 bg-input-bg border border-input-border rounded-full px-8 pr-32 text-foreground font-cal font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
-                                />
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3">
-                                    <button className="p-2 text-muted-foreground hover:text-primary transition-colors">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="22" /></svg>
-                                    </button>
-                                    <button className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 transition-transform overflow-hidden">
-                                        {inputValue ? (
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                                <line x1="5" y1="12" x2="19" y2="12" />
-                                                <polyline points="12 5 19 12 12 19" />
-                                            </svg>
-                                        ) : (
-                                            <div className="flex items-center gap-0.5 h-3">
-                                                <motion.div
-                                                    animate={{ height: [6, 12, 6] }}
-                                                    transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                                                    className="w-[2px] bg-primary-foreground rounded-full"
-                                                ></motion.div>
-                                                <motion.div
-                                                    animate={{ height: [10, 16, 10] }}
-                                                    transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
-                                                    className="w-[2px] bg-primary-foreground rounded-full"
-                                                ></motion.div>
-                                                <motion.div
-                                                    animate={{ height: [8, 14, 8] }}
-                                                    transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
-                                                    className="w-[2px] bg-primary-foreground rounded-full"
-                                                ></motion.div>
-                                                <motion.div
-                                                    animate={{ height: [4, 10, 4] }}
-                                                    transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
-                                                    className="w-[2px] bg-primary-foreground rounded-full"
-                                                ></motion.div>
-                                            </div>
-                                        )}
-                                    </button>
+                                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-primary-foreground">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </div>
+                                <span className="text-primary font-bold text-lg">You're on the list!</span>
                             </motion.div>
                         )}
                     </AnimatePresence>

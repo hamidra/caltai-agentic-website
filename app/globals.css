@@ -208,6 +208,24 @@ body {
    THEME TRANSITION
    ================================ */
 
+/* ================================
+   AUTOFILL RESET
+   ================================ */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:autofill {
+  -webkit-box-shadow: 0 0 0 1000px #FFFEFC inset !important;
+  box-shadow: 0 0 0 1000px #FFFEFC inset !important;
+  -webkit-text-fill-color: var(--secondary) !important;
+  color: var(--secondary) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  caret-color: var(--primary) !important;
+}
+
 * {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-timing-function: ease;

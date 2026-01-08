@@ -115,9 +115,17 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
 
             let direction = 0; // 1 for down, -1 for up
 
-            if (e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey)) {
+            if (e.key === " ") {
+                const target = e.target as HTMLElement;
+                if (target.tagName !== "INPUT" && target.tagName !== "TEXTAREA") {
+                    e.preventDefault();
+                }
+                return;
+            }
+
+            if (e.key === "ArrowDown" || e.key === "PageDown") {
                 direction = 1;
-            } else if (e.key === "ArrowUp" || e.key === "PageUp" || (e.key === " " && e.shiftKey)) {
+            } else if (e.key === "ArrowUp" || e.key === "PageUp") {
                 direction = -1;
             }
 
@@ -126,7 +134,7 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
             // Manual internal scroll if we're not at the edges
             const scrollStep = 100; // pxl for arrows
             const pageStep = 400;  // px for page up/down/space
-            const step = (e.key === "PageDown" || e.key === "PageUp" || e.key === " ") ? pageStep : scrollStep;
+            const step = (e.key === "PageDown" || e.key === "PageUp") ? pageStep : scrollStep;
 
             if (direction === 1) {
                 if (isAtBottom && selectedIndex < children.length - 1) {

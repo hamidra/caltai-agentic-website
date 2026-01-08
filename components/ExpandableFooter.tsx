@@ -71,14 +71,13 @@ export default function ExpandableFooter() {
                             {/* Brand Column */}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 flex items-center justify-center">
+                                    <div className="h-[22px] flex items-center justify-center">
                                         <img
-                                            src="/logo.svg"
+                                            src="/long Logo.svg"
                                             alt="CaltAI Logo"
-                                            className="w-full h-auto transition-all dark:brightness-[100]"
+                                            className="h-full w-auto transition-all dark:brightness-[100]"
                                         />
                                     </div>
-                                    <span className="text-2xl font-bold tracking-tight transition-colors text-secondary">CaltAI</span>
                                 </div>
                                 <p className="text-sm max-w-xs leading-relaxed transition-colors text-muted">
                                     Revolutionizing calendar management with AI-driven scheduling that adapts to your life.
