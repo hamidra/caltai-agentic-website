@@ -121,10 +121,12 @@ export default function ExpandableFooter() {
                                     </button>
                                 </div>
                                 <div className="flex gap-4 pt-4">
-                                    <a href="#" className="transition-colors text-muted-foreground hover:text-primary"><Twitter size={20} /></a>
-                                    <a href="#" className="transition-colors text-muted-foreground hover:text-primary"><Linkedin size={20} /></a>
-                                    <a href="#" className="transition-colors text-muted-foreground hover:text-primary"><Facebook size={20} /></a>
-                                    <a href="#" className="transition-colors text-muted-foreground hover:text-primary"><Instagram size={20} /></a>
+                                    <a href="https://x.com/AI_Calt" target="_blank" rel="noopener noreferrer" className="transition-colors text-muted-foreground hover:text-primary">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+                                        </svg>
+                                    </a>
+                                    <a href="https://www.linkedin.com/company/calt-ai" target="_blank" rel="noopener noreferrer" className="transition-colors text-muted-foreground hover:text-primary"><Linkedin size={20} /></a>
                                 </div>
                             </div>
 

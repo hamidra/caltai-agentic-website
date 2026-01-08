@@ -17,19 +17,28 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
 
     const prevIndex = useRef(selectedIndex);
     const [isTransitioning, setIsTransitioning] = useState(false);
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        setPrefersReducedMotion(mediaQuery.matches);
+        const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+        mediaQuery.addEventListener("change", handler);
+        return () => mediaQuery.removeEventListener("change", handler);
+    }, []);
 
     // Sync prevIndex after animation
     useEffect(() => {
         const timer = setTimeout(() => {
             prevIndex.current = selectedIndex;
             setIsTransitioning(false);
-        }, 800);
+        }, 200);
         setIsTransitioning(true);
         return () => clearTimeout(timer);
     }, [selectedIndex]);
 
     const touchStart = useRef(0);
-    const scrollCooldown = 900;
+    const scrollCooldown = 300;
     const scrollThreshold = 10;
     const edgeDelayMs = 150;
 
@@ -105,7 +114,6 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
             const isAtTop = isScrollable ? scrollTop <= 5 : true;
 
             let direction = 0; // 1 for down, -1 for up
-            const stepMultiplier = 1.2; // Increase scroll step for keyboard if needed
 
             if (e.key === "ArrowDown" || e.key === "PageDown" || (e.key === " " && !e.shiftKey)) {
                 direction = 1;
@@ -162,27 +170,22 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
         <div className="fixed inset-0 overflow-hidden bg-background">
             {children.map((child, i) => {
                 const isCurrent = selectedIndex === i;
+                const isPrevious = prevIndex.current === i;
 
-                let y = "0%";
-                let scale = 1;
+                let y = 0;
                 let opacity = 0;
-                let blur = "0px";
 
                 if (isCurrent) {
                     opacity = 1;
-                    y = "0%";
-                    scale = 1;
-                    blur = "0px";
+                    y = 0;
                 } else if (i < selectedIndex) {
+                    // Outgoing content (moved to top)
                     opacity = 0;
-                    y = "-30%";
-                    scale = 0.9;
-                    blur = "15px";
+                    y = prefersReducedMotion ? 0 : -2;
                 } else {
+                    // Incoming content (moving from bottom)
                     opacity = 0;
-                    y = "30%";
-                    scale = 0.9;
-                    blur = "15px";
+                    y = prefersReducedMotion ? 0 : 6;
                 }
 
                 return (
@@ -192,15 +195,13 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
                         initial={false}
                         animate={{
                             opacity,
-                            y,
-                            scale,
-                            filter: `blur(${blur})`,
+                            y: `${y}px`,
                             pointerEvents: isCurrent ? "auto" : "none",
                             zIndex: isCurrent ? 20 : 10,
                         }}
                         transition={{
-                            duration: 0.8,
-                            ease: [0.22, 1, 0.36, 1]
+                            duration: prefersReducedMotion ? 0.1 : 0.15,
+                            ease: [0.2, 0.8, 0.2, 1]
                         }}
                         className="absolute inset-0 h-screen w-screen overflow-y-auto hide-scrollbar"
                     >
