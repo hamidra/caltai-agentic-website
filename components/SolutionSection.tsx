@@ -75,7 +75,7 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
             initial="initial"
             animate="animate"
             exit="exit"
-            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-background"
+            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[71px] lg:pt-[142px] pb-16 bg-background"
         >
             {/* Grid Overlay */}
             <div className="absolute inset-0 opacity-[0.15] bg-[url('/background.svg')] bg-cover bg-center pointer-events-none dark:invert dark:grayscale" />

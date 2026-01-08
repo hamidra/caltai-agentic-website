@@ -81,7 +81,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
     }, [activeIndex, isActive, currentAnswer]);
 
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[71px] lg:pt-[142px] pb-16 bg-grid">
             {/* Background Circular Lines */}
             <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
                 <div className="relative w-[120%] h-[120%] opacity-5">
@@ -189,8 +189,10 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                         </motion.div>
                     </AnimatePresence>
 
+                    {/* TODO: Add back when we add Agent in the landind the page
                     <div className="w-full max-w-md mt-4">
                         <div className="relative group">
+                            
                             <input
                                 type="text"
                                 value={inputValue}
@@ -236,6 +238,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                             </div>
                         </div>
                     </div>
+                    */}
                 </div>
             </div>
 

@@ -7,7 +7,6 @@ export default function FoundersNote() {
         <section className="relative w-full h-full flex flex-col items-center justify-start  px-6 lg:px-24 pt-[172px] overflow-hidden bg-grid">
             {/* Background Circular Lines */}
 
-
             {/* Content Container */}
             <div className="relative z-10 max-w-6xl w-full h-full flex flex-col text-center pb-32 lg:pb-40">
                 <motion.h2
@@ -45,17 +44,6 @@ export default function FoundersNote() {
                 {/* Bottom spacer to push content up slightly */}
                 <div className="h-20 lg:h-32"></div>
             </div>
-
-
-            {/* Top Right Decorative Arrow (Down-Left) */}
-            <div className="absolute top-8 right-8">
-                <div className="w-12 h-12 border border-brand-orange/30 rounded-lg flex items-center justify-center bg-white/50 backdrop-blur-sm shadow-sm">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff602e" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="rotate-180">
-                        <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
-                    </svg>
-                </div>
-            </div>
-
         </section>
     );
 }

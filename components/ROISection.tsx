@@ -5,7 +5,7 @@ import TechnicalCard from "./TechnicalCard";
 
 export default function ROISection() {
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:px-20 pt-[142px] pb-[52px] bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:px-20 pt-[71px] lg:pt-[142px] pb-[52px] bg-grid">
             <div className="max-w-7xl w-full">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

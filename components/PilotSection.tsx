@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function PilotSection() {
     return (
-        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid">
+        <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[71px] lg:pt-[142px] pb-16 bg-grid">
             <div className="max-w-7xl w-full text-left">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

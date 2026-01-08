@@ -86,7 +86,7 @@ export default function WhyCaltAI({ isActive = false }: WhyCaltAIProps) {
 
     return (
         <motion.section
-            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[142px] pb-16 bg-grid perspective-1000"
+            className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[71px] lg:pt-[142px] pb-16 bg-grid perspective-1000"
             variants={containerVariants}
             initial="initial"
             animate={isActive ? "animate" : "initial"}

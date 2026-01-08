@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <main className="relative h-screen w-full bg-background overflow-hidden">
-      <Navbar currentIndex={currentIndex} onSectionChange={setCurrentIndex} />
+      <Navbar className="hidden lg:flex" currentIndex={currentIndex} onSectionChange={setCurrentIndex} />
 
       <SectionScroller onSectionChange={setCurrentIndex} selectedIndex={currentIndex}>
         <Hero isActive={currentIndex === 0} />
@@ -28,7 +28,7 @@ export default function Home() {
         <WhyCaltAI isActive={currentIndex === 3} />
         <PilotSection />
         <ROISection />
-        <FoundersNote isActive={currentIndex === 6} />
+        <FoundersNote />
         <FAQSection isActive={currentIndex === 7} />
       </SectionScroller>
 

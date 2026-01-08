@@ -1,15 +1,17 @@
 import { Linkedin } from "lucide-react";
 import NavbarTicks from "./NavbarTicks";
 import ThemeToggle from "./ThemeToggle";
+import { cn } from "@/utils/tw";
 
 interface NavbarProps {
+    className: string;
     currentIndex: number;
     onSectionChange: (index: number) => void;
 }
 
-export default function Navbar({ currentIndex, onSectionChange }: NavbarProps) {
+export default function Navbar({ className, currentIndex, onSectionChange }: NavbarProps) {
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 flex items-start justify-between pl-20 pr-8 py-6 transition-all duration-500 bg-navbar-bg backdrop-blur-xl border-b border-navbar-border">
+        <nav className={cn("fixed top-0 left-0 right-0 z-50 flex items-start justify-between pl-20 pr-8 py-6 transition-all duration-500 bg-navbar-bg backdrop-blur-xl border-b border-navbar-border", className)}>
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                     <button
@@ -20,7 +22,7 @@ export default function Navbar({ currentIndex, onSectionChange }: NavbarProps) {
                         <img
                             src="/long Logo.svg"
                             alt="CaltAI Logo"
-                            className="h-full w-auto transition-all dark:brightness-[100] dark:drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]"
+                            className="h-full w-auto transition-all"
                         />
                     </button>
                 </div>
