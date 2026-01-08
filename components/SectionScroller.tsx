@@ -34,6 +34,13 @@ export default function SectionScroller({ children, onSectionChange, selectedInd
             setIsTransitioning(false);
         }, 200);
         setIsTransitioning(true);
+
+        // Reset scroll position of the new section to top
+        const currentSection = sectionRefs.current[selectedIndex];
+        if (currentSection) {
+            currentSection.scrollTo({ top: 0, behavior: "instant" });
+        }
+
         return () => clearTimeout(timer);
     }, [selectedIndex]);
 

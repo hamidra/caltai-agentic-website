@@ -10,7 +10,7 @@ export default function PilotSection() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="mb-28"
+                    className="mb-20"
                 >
                     <h2 className="text-[40px] text-secondary mb-5 font-cal leading-tight">
                         You're the Pilot, Not the Passenger
