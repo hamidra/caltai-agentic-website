@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import LLMMarqueeSide from "./LLMMarqueeSide";
 
 interface HeroProps {
     isActive?: boolean;
@@ -33,43 +32,38 @@ const MSG_3_POOL = [
     "Early access is offered through the waiting list, if you want to join."
 ];
 
-const COOLDOWN_MS = 3000; // Lowered to 3s for easier testing (anti-jitter still active)
+const COOLDOWN_MS = 3000;
 
 export default function Hero({ isActive }: HeroProps) {
     const [selectedMessages, setSelectedMessages] = useState<string[]>([]);
     const [isRegistered, setIsRegistered] = useState(false);
+    const [visibleMsgIndex, setVisibleMsgIndex] = useState(-1); // -1: none, 0, 1, 2
+    const [visibleWordsCount, setVisibleWordsCount] = useState([0, 0, 0]);
+    const [isThinking, setIsThinking] = useState(false);
+    const [blinkKey, setBlinkKey] = useState(0); // To reset/control blinks
+    const [email, setEmail] = useState("");
+    const [showsWaitingList, setShowsWaitingList] = useState(false);
 
+    // Random selection on entrance
     useEffect(() => {
         if (!isActive) return;
-
         const now = Date.now();
         const stored = sessionStorage.getItem("hero_variant_set");
-
         if (stored) {
             try {
                 const { variants, timestamp } = JSON.parse(stored);
-                // If the user returns within 3 seconds, keep the same variants (anti-jitter)
-                // If it's been more than 3 seconds, pick fresh ones
                 if (now - timestamp < COOLDOWN_MS) {
                     setSelectedMessages(variants);
                     return;
                 }
-            } catch (e) {
-                console.error("Failed to parse hero_variant_set", e);
-            }
+            } catch (e) { }
         }
-
-        // Generate a fresh random set
         const newVariants = [
             MSG_1_POOL[Math.floor(Math.random() * MSG_1_POOL.length)],
             MSG_2_POOL[Math.floor(Math.random() * MSG_2_POOL.length)],
             MSG_3_POOL[Math.floor(Math.random() * MSG_3_POOL.length)]
         ];
-
-        sessionStorage.setItem("hero_variant_set", JSON.stringify({
-            variants: newVariants,
-            timestamp: now
-        }));
+        sessionStorage.setItem("hero_variant_set", JSON.stringify({ variants: newVariants, timestamp: now }));
         setSelectedMessages(newVariants);
     }, [isActive]);
 
@@ -81,106 +75,71 @@ export default function Hero({ isActive }: HeroProps) {
             : selectedMessages[2] || MSG_3_POOL[0]
     ];
 
-    const [currentMsgIndex, setCurrentMsgIndex] = useState(0);
-    const [visibleWordsCount, setVisibleWordsCount] = useState(0);
-    const [isTyping, setIsTyping] = useState(false);
-    const [isBlinking, setIsBlinking] = useState(false);
-    const [email, setEmail] = useState("");
-    const [showsWaitingList, setShowsWaitingList] = useState(false);
-
-    const currentWords = MESSAGES[currentMsgIndex].split(" ");
-    const longestMessage = MESSAGES.reduce((a, b) => a.length > b.length ? a : b);
-
-    const handleRegister = () => {
-        if (!email || !email.includes("@")) return;
-        setIsRegistered(true);
-        setCurrentMsgIndex(2);
-        setVisibleWordsCount(0);
-        setIsTyping(true);
-        setIsBlinking(true);
-    };
-
     useEffect(() => {
         if (!isActive) {
-            setCurrentMsgIndex(0);
-            setVisibleWordsCount(0);
-            setIsTyping(false);
-            setIsBlinking(false);
-            setIsRegistered(false);
+            setVisibleMsgIndex(-1);
+            setVisibleWordsCount([0, 0, 0]);
+            setIsThinking(false);
             setShowsWaitingList(false);
             return;
         }
 
         let isMounted = true;
+        const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
         const runSequence = async () => {
-            if (isRegistered) {
-                const msgWords = MESSAGES[2].split(" ");
-                for (let i = 1; i <= msgWords.length; i++) {
-                    await new Promise(r => setTimeout(r, 60));
-                    if (!isMounted) return;
-                    setVisibleWordsCount(i);
-                }
-                setIsTyping(false);
-                setIsBlinking(true);
-                return;
-            }
-
-            await new Promise(r => setTimeout(r, 1000));
+            // Initial calm delay
+            await sleep(1000);
             if (!isMounted) return;
 
-            for (let m = 0; m < 2; m++) {
-                if (!isMounted || isRegistered) return;
-                setCurrentMsgIndex(m);
-                setVisibleWordsCount(0);
-                setIsTyping(true);
-                setIsBlinking(true);
+            for (let i = 0; i < 3; i++) {
+                if (!isMounted) return;
 
-                const msgWords = MESSAGES[m].split(" ");
-                for (let i = 1; i <= msgWords.length; i++) {
-                    await new Promise(r => setTimeout(r, 80));
-                    if (!isMounted || isRegistered) return;
-                    setVisibleWordsCount(i);
+                // 1. "Thinking" marker phase (except for the first message)
+                if (i > 0) {
+                    setIsThinking(true);
+                    setVisibleMsgIndex(i);
+                    // 3 blinks = ~900ms (150ms on/off cycle * 3)
+                    await sleep(900);
+                    if (!isMounted) return;
+                    setIsThinking(false);
+                } else {
+                    setVisibleMsgIndex(0);
                 }
 
-                setIsTyping(false);
-
-                if (m === 0) {
-                    setIsBlinking(true);
-                    await new Promise(r => setTimeout(r, 3200));
-                } else if (m === 1) {
-                    setIsBlinking(false);
-                    await new Promise(r => setTimeout(r, 3200));
+                // 2. Typing phase
+                const words = MESSAGES[i].split(" ");
+                for (let w = 1; w <= words.length; w++) {
+                    setVisibleWordsCount(prev => {
+                        const next = [...prev];
+                        next[i] = w;
+                        return next;
+                    });
+                    await sleep(80);
+                    if (!isMounted) return;
                 }
 
-                if (!isMounted || isRegistered) return;
+                // 3. Pause after line finishes
+                await sleep(600);
             }
 
+            // Reveal waiting list input slowly
+            await sleep(500);
             if (!isRegistered && isMounted) {
-                setCurrentMsgIndex(2);
-                setVisibleWordsCount(0);
-                setIsTyping(true);
-                setIsBlinking(true);
-
-                const msgWords = MESSAGES[2].split(" ");
-                for (let i = 1; i <= msgWords.length; i++) {
-                    await new Promise(r => setTimeout(r, 80));
-                    if (!isMounted || isRegistered) return;
-                    setVisibleWordsCount(i);
-                }
-                setIsTyping(false);
-
-                await new Promise(r => setTimeout(r, 1100));
-                if (isMounted && !isRegistered) {
-                    setShowsWaitingList(true);
-                }
+                setShowsWaitingList(true);
             }
         };
 
         runSequence();
-
         return () => { isMounted = false; };
-    }, [isActive, isRegistered, selectedMessages]); // Added selectedMessages to ensure stable sequence start
+    }, [isActive, isRegistered, selectedMessages]);
+
+    const handleRegister = () => {
+        if (!email || !email.includes("@")) return;
+        setIsRegistered(true);
+        // The component will re-render and useEffect will run again because of deps.
+        // This causes the sequence to play again including the new success message at slot 3.
+    };
 
     return (
         <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-4 bg-grid">
@@ -209,48 +168,48 @@ export default function Hero({ isActive }: HeroProps) {
                     </motion.div>
                 </div>
 
+                {/* Chat Bubble - Reserved height for 3 cumulative messages */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="bg-[#FFFEFC] border border-[#E3DFD9] rounded-[20px] p-6 mb-12 max-w-lg mx-auto shadow-sm min-h-[160px] flex items-start justify-center relative"
+                    className="bg-[#FFFEFC] border border-[#E3DFD9] rounded-[24px] p-8 mb-12 w-full max-w-lg mx-auto shadow-sm min-h-[220px] flex flex-col justify-start relative text-left gap-4"
                 >
-                    <p className="text-[17px] leading-relaxed text-secondary font-medium text-left opacity-0 pointer-events-none">
-                        {longestMessage}
-                    </p>
+                    {MESSAGES.map((fullText, idx) => {
+                        const words = fullText.split(" ");
+                        const visibleCount = visibleWordsCount[idx];
+                        const showLine = visibleMsgIndex >= idx;
 
-                    <div className="absolute inset-0 p-6 flex items-start">
-                        <p className="text-[16px] leading-relaxed text-secondary font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
-                            {currentWords.slice(0, visibleWordsCount).map((word, index) => (
-                                <motion.span
-                                    key={`${currentMsgIndex}-${index}`}
-                                    initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                    transition={{
-                                        duration: 0.8,
-                                        ease: [0.22, 1, 0.36, 1]
-                                    }}
-                                    className="inline-block"
-                                >
-                                    {word}&nbsp;
-                                </motion.span>
-                            ))}
-                            {(isTyping || isBlinking) && (
-                                <motion.span
-                                    initial={{ opacity: 1 }}
-                                    animate={isBlinking ? { opacity: [1, 0, 1] } : { opacity: 1 }}
-                                    transition={{
-                                        duration: 0.8,
-                                        repeat: Infinity,
-                                        ease: "linear"
-                                    }}
-                                    className="inline-block w-[3px] h-[18px] bg-primary ml-1"
-                                />
-                            )}
-                        </p>
-                    </div>
+                        return (
+                            <div key={idx} className="min-h-[1.5em] relative">
+                                {showLine && (
+                                    <p className="text-[15.5px] leading-[1.6] text-secondary font-medium flex flex-wrap items-center gap-x-[0.3em]">
+                                        {words.slice(0, visibleCount).map((word, wIdx) => (
+                                            <motion.span
+                                                key={`${idx}-${wIdx}`}
+                                                initial={{ opacity: 0, filter: "blur(4px)" }}
+                                                animate={{ opacity: 1, filter: "blur(0px)" }}
+                                                transition={{ duration: 0.4 }}
+                                                className="inline-block"
+                                            >
+                                                {word}
+                                            </motion.span>
+                                        ))}
+                                        {/* Thinking Marker / Cursor */}
+                                        {visibleMsgIndex === idx && (
+                                            <Marker
+                                                isThinking={isThinking}
+                                                isTyping={visibleCount > 0 && visibleCount < words.length}
+                                            />
+                                        )}
+                                    </p>
+                                )}
+                            </div>
+                        );
+                    })}
                 </motion.div>
 
+                {/* Waiting List Area */}
                 <div className="h-[70px] flex items-center justify-center w-full max-w-lg mx-auto relative overflow-visible">
                     <AnimatePresence mode="wait">
                         {!isRegistered ? (
@@ -259,33 +218,27 @@ export default function Hero({ isActive }: HeroProps) {
                                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
                                 exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                                transition={{
-                                    duration: 0.6,
-                                    ease: [0.22, 1, 0.36, 1]
-                                }}
+                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                                 className="w-full relative group"
                             >
                                 {showsWaitingList && (
-                                    <>
-                                        <div className="absolute inset-0 bg-primary/5 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
-                                        <div className="relative flex items-center bg-[#FFFEFC] border border-[#E3DFD9] rounded-full p-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.04)] focus-within:border-primary/30 focus-within:shadow-[0_15px_60px_rgba(0,0,0,0.08)] transition-all duration-300">
-                                            <input
-                                                type="email"
-                                                placeholder="Enter your email"
-                                                value={email}
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                onKeyDown={(e) => e.key === 'Enter' && handleRegister()}
-                                                className="flex-1 bg-transparent px-6 py-3 text-secondary rounded-[30px] font-medium placeholder:text-muted/40 outline-none w-full"
-                                            />
-                                            <button
-                                                onClick={handleRegister}
-                                                className="h-[44px] bg-primary text-primary-foreground px-8 rounded-full font-bold text-sm hover:bg-primary-hover active:scale-95 transition-all shadow-md shadow-primary/20 flex items-center gap-2"
-                                            >
-                                                Join Waitlist
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                                            </button>
-                                        </div>
-                                    </>
+                                    <div className="relative flex items-center bg-[#FFFEFC] border border-[#E3DFD9] rounded-full p-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.04)] focus-within:border-primary/30 transition-all duration-300">
+                                        <input
+                                            type="email"
+                                            placeholder="Enter your email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleRegister()}
+                                            className="flex-1 bg-transparent px-6 py-3 text-secondary rounded-[30px] font-medium placeholder:text-muted/40 outline-none w-full"
+                                        />
+                                        <button
+                                            onClick={handleRegister}
+                                            className="h-[44px] bg-primary text-primary-foreground px-8 rounded-full font-bold text-sm hover:bg-primary-hover active:scale-95 transition-all shadow-md flex items-center gap-2"
+                                        >
+                                            Join Waitlist
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                        </button>
+                                    </div>
                                 )}
                             </motion.div>
                         ) : (
@@ -305,5 +258,39 @@ export default function Hero({ isActive }: HeroProps) {
                 </div>
             </div>
         </section>
+    );
+}
+
+function Marker({ isThinking, isTyping }: { isThinking: boolean; isTyping: boolean }) {
+    // 3 blinks = exactly 3 cycles of ON/OFF
+    // 1 cycle = ~300ms total
+    const blinkVariants = {
+        thinking: {
+            opacity: [1, 0, 1, 0, 1, 0, 1],
+            transition: {
+                duration: 0.9,
+                times: [0, 0.16, 0.33, 0.5, 0.66, 0.83, 1],
+                ease: "linear"
+            }
+        },
+        typing: {
+            opacity: 1
+        },
+        idle: {
+            opacity: [1, 0, 1],
+            transition: {
+                duration: 0.8,
+                repeat: Infinity,
+                ease: "linear"
+            }
+        }
+    };
+
+    return (
+        <motion.span
+            variants={blinkVariants}
+            animate={isThinking ? "thinking" : isTyping ? "typing" : "idle"}
+            className="inline-block w-[3px] h-[18px] bg-primary ml-1"
+        />
     );
 }
