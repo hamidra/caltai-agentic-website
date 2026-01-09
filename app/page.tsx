@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <main className="relative h-screen w-full bg-background overflow-hidden">
-      <Navbar className="hidden lg:flex" currentIndex={currentIndex} onSectionChange={setCurrentIndex} />
+      <Navbar currentIndex={currentIndex} onSectionChange={setCurrentIndex} />
 
       <SectionScroller onSectionChange={setCurrentIndex} selectedIndex={currentIndex}>
         <Hero isActive={currentIndex === 0} />

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function FoundersNote() {
     return (
-        <section className="relative w-full h-full flex flex-col items-center justify-start  px-6 lg:px-24 pt-[172px] overflow-hidden bg-grid">
+        <section className="relative w-full h-full flex flex-col items-center justify-start  px-6 lg:px-24 pt-[172px] overflow-scroll bg-grid">
             {/* Background Circular Lines */}
 
             {/* Content Container */}
@@ -33,7 +33,7 @@ export default function FoundersNote() {
                             getting started, and we'd love for you to be part of it."
                         </p>
 
-                        <div className="mt-16">
+                        <div className="m-16">
                             <span className="font-cal text-xl lg:text-xl text-brand-brown tracking-tight">
                                 CaltAI Founders
                             </span>

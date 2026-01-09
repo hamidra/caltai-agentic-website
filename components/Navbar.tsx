@@ -4,14 +4,14 @@ import ThemeToggle from "./ThemeToggle";
 import { cn } from "@/utils/tw";
 
 interface NavbarProps {
-    className: string;
+    className?: string;
     currentIndex: number;
     onSectionChange: (index: number) => void;
 }
 
 export default function Navbar({ className, currentIndex, onSectionChange }: NavbarProps) {
     return (
-        <nav className={cn("fixed top-0 left-0 right-0 z-50 flex items-start justify-between pl-20 pr-8 py-6 transition-all duration-500 bg-navbar-bg backdrop-blur-xl border-b border-navbar-border", className)}>
+        <nav className={cn("fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-8 py-6 transition-all duration-500 bg-navbar-bg backdrop-blur-xl border-b border-navbar-border", className)}>
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                     <button
@@ -20,18 +20,23 @@ export default function Navbar({ className, currentIndex, onSectionChange }: Nav
                         aria-label="Return to Home"
                     >
                         <img
+                            src="/logo.svg"
+                            alt="CaltAI Logo"
+                            className="h-full w-auto transition-all md:hidden"
+                        />
+                        <img
                             src="/long Logo.svg"
                             alt="CaltAI Logo"
-                            className="h-full w-auto transition-all"
+                            className="h-full w-auto transition-all hidden md:block"
                         />
                     </button>
                 </div>
             </div>
-
+            {/*
             <div className="absolute left-1/2 -translate-x-1/2 top-[0px]">
                 <NavbarTicks currentIndex={currentIndex} onSectionChange={onSectionChange} />
             </div>
-
+            */}
             {/* Social Icons - Top Right */}
             <div className="flex items-center gap-4 pt-1">
                 <a
