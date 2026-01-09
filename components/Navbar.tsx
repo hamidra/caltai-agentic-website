@@ -32,11 +32,11 @@ export default function Navbar({ className, currentIndex, onSectionChange }: Nav
                     </button>
                 </div>
             </div>
-            {/*
-            <div className="absolute left-1/2 -translate-x-1/2 top-[0px]">
+            
+            <div className="lg:block hidden absolute left-1/2 -translate-x-1/2 top-[0px]">
                 <NavbarTicks currentIndex={currentIndex} onSectionChange={onSectionChange} />
             </div>
-            */}
+            
             {/* Social Icons - Top Right */}
             <div className="flex items-center gap-4 pt-1">
                 <a

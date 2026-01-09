@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 interface HeroProps {
     isActive?: boolean;
@@ -264,7 +264,7 @@ export default function Hero({ isActive }: HeroProps) {
 function Marker({ isThinking, isTyping }: { isThinking: boolean; isTyping: boolean }) {
     // 3 blinks = exactly 3 cycles of ON/OFF
     // 1 cycle = ~300ms total
-    const blinkVariants = {
+    const blinkVariants: Variants = {
         thinking: {
             opacity: [1, 0, 1, 0, 1, 0, 1],
             transition: {
