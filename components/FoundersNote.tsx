@@ -8,7 +8,7 @@ export default function FoundersNote() {
             {/* Background Circular Lines */}
 
             {/* Content Container */}
-            <div className="relative z-10 max-w-6xl w-full h-full flex flex-col text-center pb-32 lg:pb-40">
+            <div className="relative z-10 max-w-6xl w-full h-full flex flex-col text-center pb-32 lg:pb-0">
                 <motion.h2
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}

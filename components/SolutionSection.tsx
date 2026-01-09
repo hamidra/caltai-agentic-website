@@ -73,8 +73,8 @@ export default function SolutionSection({ direction = "down", isCurrent = true }
         <motion.section
             variants={containerVariants}
             initial="initial"
-            animate="animate"
-            exit="exit"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.3 }}
             className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[71px] lg:pt-[142px] pb-16 bg-background"
         >
             {/* Grid Overlay */}
