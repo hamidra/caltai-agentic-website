@@ -42,7 +42,10 @@ export default function Home() {
       </div>
 
       {/* Persistent Background Elements */}
-      {currentIndex !== 0 && currentIndex !== 7 && <AIChatBox />}
+      {/* 
+      // TODO: add back when Agent is added to the website
+      currentIndex !== 0 && currentIndex !== 7 && <AIChatBox /> 
+      */}
       <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-grid">
         <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-primary/5 blur-[120px] rounded-full"></div>
         <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-primary/5 blur-[120px] rounded-full"></div>
