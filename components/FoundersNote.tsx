@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 
 export default function FoundersNote() {
     return (
-        <section className="relative w-full h-full flex flex-col items-center justify-start  px-6 lg:px-24 pt-[172px] overflow-scroll bg-grid">
+        <section className="relative w-full h-full flex flex-col items-center justify-start  px-6 lg:px-24 pt-[30px] lg:pt-[172px] overflow-scroll bg-grid">
             {/* Background Circular Lines */}
 
             {/* Content Container */}
-            <div className="relative z-10 max-w-6xl w-full h-full flex flex-col text-center pb-32 lg:pb-0">
+            <div className="relative z-10 max-w-6xl w-full h-full flex flex-col text-center pb-0 lg:pb-0">
                 <motion.h2
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}

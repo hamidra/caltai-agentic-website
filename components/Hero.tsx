@@ -157,7 +157,7 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, y: 20 }}
                     animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-[60px] tracking-tight text-secondary mt-8 mb-8 leading-[1.1] font-cal"
+                    className="text-5xl md:text-[60px] tracking-tight text-secondary mt-20 mb-8 leading-[1.1] font-cal"
                 >
                     Stop Prompting, <span className="text-primary">Start Scaling</span>
                 </motion.h1>
@@ -167,7 +167,7 @@ export default function Hero({ isActive }: HeroProps) {
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
                         transition={{ duration: 1, delay: 0.2 }}
-                        className="w-40 h-40 md:w-44 md:h-44 relative z-20 animate-float flex items-center justify-center"
+                        className="w-34 h-34 md:w-34 md:h-34 relative z-20 animate-float flex items-center justify-center"
                     >
                         <img
                             src="/AI design.svg"

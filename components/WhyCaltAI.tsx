@@ -89,8 +89,8 @@ export default function WhyCaltAI({ isActive = false }: WhyCaltAIProps) {
             className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[71px] lg:pt-[142px] pb-16 bg-grid perspective-1000"
             variants={containerVariants}
             initial="initial"
-            animate={isActive ? "animate" : "initial"}
-            exit="exit"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.2 }}
         >
             <motion.div
                 variants={cardVariants}

@@ -76,7 +76,7 @@ export default function Home() {
             key={id}
             id={id}
             ref={(el) => { sectionRefs.current[index] = el; }}
-            className="min-h-screen w-full lg:snap-start lg:snap-always"
+            className="min-h-screen w-full lg:snap-start lg:snap-always relative"
           >
             {id === "home" ? (
               <Hero isActive={currentIndex === 0} />
@@ -86,6 +86,11 @@ export default function Home() {
               <FoundersNote />
             ) : id === "faq" ? (
               <FAQSection isActive={currentIndex === 7} />
+            ) : id === "solution" ? (
+              <>
+                <Component />
+                <div className="absolute bottom-0 w-full h-px lg:snap-end lg:snap-always pointer-events-none" />
+              </>
             ) : (
               <Component />
             )}
