@@ -36,7 +36,7 @@
   --card-border: rgba(61, 48, 42, 0.05);
   --input-bg: #ffffff;
   --input-border: rgba(61, 48, 42, 0.1);
-  --navbar-bg: rgba(253, 251, 247, 0.8);
+  --navbar-bg: rgba(253, 251, 247, 0.1);
   --navbar-border: rgba(253, 251, 247, 0.2);
 }
 
@@ -72,7 +72,7 @@
   --card-border: rgba(255, 255, 255, 0.05);
   --input-bg: #18181b;
   --input-border: rgba(255, 255, 255, 0.1);
-  --navbar-bg: rgba(10, 10, 11, 0.8);
+  --navbar-bg: rgba(10, 10, 11, 0.1);
   --navbar-border: rgba(255, 255, 255, 0.05);
 }
 
@@ -132,6 +132,19 @@
 
 .font-serif {
   font-family: var(--font-serif), serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 88px;
+  /* High enough to clear the fixed navbar */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {

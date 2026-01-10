@@ -69,14 +69,14 @@ export default function Home() {
 
       <main
         ref={containerRef}
-        className="h-full w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth"
+        className="h-full w-full overflow-y-auto overflow-x-hidden lg:snap-y lg:snap-mandatory scroll-smooth"
       >
         {SECTIONS.map(({ id, Component }, index) => (
           <div
             key={id}
             id={id}
             ref={(el) => { sectionRefs.current[index] = el; }}
-            className="min-h-screen w-full snap-start snap-always"
+            className="min-h-screen w-full lg:snap-start lg:snap-always"
           >
             {id === "home" ? (
               <Hero isActive={currentIndex === 0} />

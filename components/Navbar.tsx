@@ -11,7 +11,7 @@ interface NavbarProps {
 
 export default function Navbar({ className, currentIndex, onSectionChange }: NavbarProps) {
     return (
-        <nav className={cn("fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-8 py-6 transition-all duration-500 bg-navbar-bg backdrop-blur-xl border-b border-navbar-border", className)}>
+        <nav className={cn("fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-8 pt-6 pb-[32px] transition-all duration-500 bg-navbar-bg backdrop-blur-xl", className)}>
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
                     <button
@@ -32,11 +32,11 @@ export default function Navbar({ className, currentIndex, onSectionChange }: Nav
                     </button>
                 </div>
             </div>
-            
+
             <div className="lg:block hidden absolute left-1/2 -translate-x-1/2 top-[0px]">
                 <NavbarTicks currentIndex={currentIndex} onSectionChange={onSectionChange} />
             </div>
-            
+
             {/* Social Icons - Top Right */}
             <div className="flex items-center gap-4 pt-1">
                 <a

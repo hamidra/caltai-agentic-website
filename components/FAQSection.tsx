@@ -46,7 +46,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [visibleWordsCount, setVisibleWordsCount] = useState(0);
     const [isTyping, setIsTyping] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+
 
     const currentAnswer = faqs[activeIndex].answer;
     const words = currentAnswer.split(" ");
@@ -91,7 +91,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
 
             <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20">
 
-                {/* Left Side: Questions List */}
+                {/* Left Side: Questions List & Mobile Answers */}
                 <div className="flex flex-col gap-[18px]">
                     <motion.h2
                         initial={{ opacity: 0, x: -20 }}
@@ -104,31 +104,77 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
 
                     <div className="flex flex-col border-brand-brown/10">
                         {faqs.map((faq, index) => (
-                            <motion.button
-                                key={index}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.05 }}
-                                onClick={() => setActiveIndex(index)}
-                                className={`text-left py-[12px] px-4 border-brand-brown/10 flex items-center transition-all relative ${activeIndex === index ? 'text-brand-brown' : 'text-brand-brown/40 hover:text-brand-brown/60'
-                                    }`}
-                            >
-                                {activeIndex === index && (
-                                    <motion.div
-                                        layoutId="faq-indicator"
-                                        className="absolute left-[10px] w-[1.5px] h-[52px] bg-brand-orange"
-                                    />
-                                )}
-                                <span className="font-cal text-lg lg:text-l font-medium ml-4">
-                                    {faq.question}
-                                </span>
-                            </motion.button>
+                            <div key={index} className="flex flex-col">
+                                <motion.button
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                                    onClick={() => setActiveIndex(index)}
+                                    className={`text-left py-[12px] px-4 border-brand-brown/10 flex items-center transition-all relative ${activeIndex === index ? 'text-brand-brown' : 'text-brand-brown/40 hover:text-brand-brown/60'
+                                        }`}
+                                >
+                                    {activeIndex === index && (
+                                        <motion.div
+                                            layoutId="faq-indicator"
+                                            className="absolute left-[10px] w-[1.5px] h-[52px] bg-brand-orange"
+                                        />
+                                    )}
+                                    <span className="font-cal text-lg lg:text-l font-medium ml-4">
+                                        {faq.question}
+                                    </span>
+                                </motion.button>
+
+                                {/* Mobile Answer Box (Visible only on < lg) */}
+                                <AnimatePresence mode="wait">
+                                    {activeIndex === index && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.4 }}
+                                            className="lg:hidden overflow-hidden"
+                                        >
+                                            <div className="px-4 pb-6 pt-2">
+                                                <div className="bg-[#FFFEFC] rounded-[20px] border border-[#E3DFD9] p-6 shadow-sm relative overflow-hidden min-h-[120px]">
+                                                    {/* Ghost text for layout stability */}
+                                                    <p className="text-[15px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">
+                                                        {currentAnswer}
+                                                    </p>
+                                                    {/* Visible Typing Text */}
+                                                    <div className="absolute inset-0 p-6 flex items-start">
+                                                        <p className="text-[15px] leading-relaxed text-brand-brown font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                                                            {words.slice(0, visibleWordsCount).map((word, wIdx) => (
+                                                                <motion.span
+                                                                    key={wIdx}
+                                                                    initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                                                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                                                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                                                    className="inline-block"
+                                                                >
+                                                                    {word}&nbsp;
+                                                                </motion.span>
+                                                            ))}
+                                                            {isTyping && (
+                                                                <motion.span
+                                                                    animate={{ opacity: [1, 0, 1] }}
+                                                                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                                                                    className="inline-block w-[2px] h-[16px] bg-brand-orange ml-1"
+                                                                />
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Right Side: Answer Box & Assistant */}
-                <div className="relative flex flex-col items-center justify-center gap-12">
+                {/* Right Side: Answer Box & Assistant (Visible only on lg+) */}
+                <div className="hidden lg:flex relative flex-col items-center justify-center gap-12">
                     {/* Assistant Orb */}
                     <div className="relative w-40 h-40 lg:w-56 lg:h-56 -mb-12">
                         <div className="relative w-full h-full  backdrop-blur-xl rounded-full border-white/30 flex items-center justify-center p-8 overflow-hidden">
@@ -140,7 +186,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                         </div>
                     </div>
 
-                    {/* Answer Bubble */}
+                    {/* Desktop Answer Bubble */}
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeIndex}
@@ -188,57 +234,6 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                             </div>
                         </motion.div>
                     </AnimatePresence>
-
-                    {/* TODO: Add back when we add Agent in the landind the page
-                    <div className="w-full max-w-md mt-4">
-                        <div className="relative group">
-                            
-                            <input
-                                type="text"
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                placeholder="Ask your question"
-                                className="w-full h-16 bg-input-bg border border-input-border rounded-full px-8 pr-32 text-foreground font-cal font-medium focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
-                            />
-                            <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3">
-                                <button className="p-2 text-muted-foreground hover:text-primary transition-colors">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" y1="19" x2="12" y2="22" /></svg>
-                                </button>
-                                <button className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20 hover:scale-105 transition-transform overflow-hidden">
-                                    {inputValue ? (
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="5" y1="12" x2="19" y2="12" />
-                                            <polyline points="12 5 19 12 12 19" />
-                                        </svg>
-                                    ) : (
-                                        <div className="flex items-center gap-0.5 h-3">
-                                            <motion.div
-                                                animate={{ height: [6, 12, 6] }}
-                                                transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                                                className="w-[2px] bg-primary-foreground rounded-full"
-                                            ></motion.div>
-                                            <motion.div
-                                                animate={{ height: [10, 16, 10] }}
-                                                transition={{ repeat: Infinity, duration: 1, ease: "easeInOut", delay: 0.1 }}
-                                                className="w-[2px] bg-primary-foreground rounded-full"
-                                            ></motion.div>
-                                            <motion.div
-                                                animate={{ height: [8, 14, 8] }}
-                                                transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut", delay: 0.2 }}
-                                                className="w-[2px] bg-primary-foreground rounded-full"
-                                            ></motion.div>
-                                            <motion.div
-                                                animate={{ height: [4, 10, 4] }}
-                                                transition={{ repeat: Infinity, duration: 1.1, ease: "easeInOut", delay: 0.3 }}
-                                                className="w-[2px] bg-primary-foreground rounded-full"
-                                            ></motion.div>
-                                        </div>
-                                    )}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    */}
                 </div>
             </div>
 

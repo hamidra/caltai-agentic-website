@@ -28,30 +28,7 @@ const AIChatBox = () => {
         <>
             {/* Orb Indicator (Floating Button) */}
             <AnimatePresence>
-                {!isOpen && (
-                    <motion.div
-                        initial={{ scale: 0, opacity: 0, y: 20 }}
-                        animate={{ scale: 1, opacity: 1, y: 0 }}
-                        exit={{ scale: 0, opacity: 0, y: 20 }}
-                        className="fixed bottom-2 right-2 z-[100]"
-                    >
-                        <motion.button
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            whileTap={{ scale: 0.9 }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setIsOpen(true);
-                            }}
-                            className="group relative w-18 h-18 rounded-full flex items-center justify-center cursor-pointer bg-[rgba(251, 247, 242)]"
-                        >
-                            <img
-                                src="/AI design.svg"
-                                alt="AI Assistant"
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            />
-                        </motion.button>
-                    </motion.div>
-                )}
+                {/* Orb Indicator Hidden */}
             </AnimatePresence>
 
             <AnimatePresence>
