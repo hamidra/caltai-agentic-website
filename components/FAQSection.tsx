@@ -52,33 +52,29 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
     const words = currentAnswer.split(" ");
 
     useEffect(() => {
-        if (isActive) {
-            setVisibleWordsCount(0);
-            setIsTyping(true); // Show cursor immediately
-            let i = 0;
-            const typingSpeed = 80;
+        // We removed the 'isActive' check to ensure FAQ answers render immediately on mobile interactions
+        // regardless of strict section tracking.
+        setVisibleWordsCount(0);
+        setIsTyping(true);
+        let i = 0;
 
-            // Longer 'thinking' delay: 2.4s (3 blinks of 800ms each)
-            const startTimeout = setTimeout(() => {
-                const interval = setInterval(() => {
-                    i++;
-                    setVisibleWordsCount(i);
+        // Reduced delay for better responsiveness
+        const startTimeout = setTimeout(() => {
+            const interval = setInterval(() => {
+                i++;
+                setVisibleWordsCount(i);
 
-                    if (i >= words.length) {
-                        setIsTyping(false);
-                        clearInterval(interval);
-                    }
-                }, typingSpeed);
+                if (i >= words.length) {
+                    setIsTyping(false);
+                    clearInterval(interval);
+                }
+            }, 90); // Faster typing speed
 
-                return () => clearInterval(interval);
-            }, 2400);
+            return () => clearInterval(interval);
+        }, 2000); // 500ms delay
 
-            return () => clearTimeout(startTimeout);
-        } else {
-            setVisibleWordsCount(0);
-            setIsTyping(false);
-        }
-    }, [activeIndex, isActive, currentAnswer]);
+        return () => clearTimeout(startTimeout);
+    }, [activeIndex, currentAnswer]);
 
     return (
         <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-0 lg:pt-[142px] pb-16 bg-grid">
@@ -137,12 +133,12 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                                             <div className="px-4 pb-6 pt-2">
                                                 <div className="bg-[#FFFEFC] rounded-[20px] border border-[#E3DFD9] p-6 shadow-sm relative overflow-hidden min-h-[120px]">
                                                     {/* Ghost text for layout stability */}
-                                                    <p className="text-[15px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">
+                                                    <p className="text-[15px] leading-relaxed text-[#3d302a] font-medium text-left opacity-0 pointer-events-none">
                                                         {currentAnswer}
                                                     </p>
                                                     {/* Visible Typing Text */}
                                                     <div className="absolute inset-0 p-6 flex items-start">
-                                                        <p className="text-[15px] leading-relaxed text-brand-brown font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                                                        <p className="text-[15px] leading-relaxed text-[#3d302a] font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
                                                             {words.slice(0, visibleWordsCount).map((word, wIdx) => (
                                                                 <motion.span
                                                                     key={wIdx}
@@ -197,13 +193,13 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                             className="bg-[#FFFEFC] rounded-[20px] border border-[#E3DFD9] p-8 max-w-[550px] w-full shadow-sm min-h-[160px] flex items-start justify-center relative overflow-hidden"
                         >
                             {/* Ghost text for layout stability */}
-                            <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left opacity-0 pointer-events-none">
+                            <p className="text-[16px] leading-relaxed text-[#3d302a] font-medium text-left opacity-0 pointer-events-none">
                                 {currentAnswer}
                             </p>
 
                             {/* Visible Typing Text */}
                             <div className="absolute inset-0 p-8 flex items-start">
-                                <p className="text-[16px] leading-relaxed text-brand-brown font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                                <p className="text-[16px] leading-relaxed text-[#3d302a] font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
                                     {words.slice(0, visibleWordsCount).map((word, index) => (
                                         <motion.span
                                             key={index}
