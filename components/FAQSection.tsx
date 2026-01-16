@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
@@ -51,15 +51,16 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
     const currentAnswer = faqs[activeIndex].answer;
     const words = currentAnswer.split(" ");
 
+    // Ref to track the active interval for cleanup - must be declared with useRef hook
+    const activeIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
     useEffect(() => {
-        // We removed the 'isActive' check to ensure FAQ answers render immediately on mobile interactions
-        // regardless of strict section tracking.
+        // Reset state immediately on change
         setVisibleWordsCount(0);
         setIsTyping(true);
-        let i = 0;
 
-        // Reduced delay for better responsiveness
         const startTimeout = setTimeout(() => {
+            let i = 0;
             const interval = setInterval(() => {
                 i++;
                 setVisibleWordsCount(i);
@@ -68,13 +69,18 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                     setIsTyping(false);
                     clearInterval(interval);
                 }
-            }, 90); // Faster typing speed
+            }, 100);
 
-            return () => clearInterval(interval);
-        }, 2000); // 500ms delay
+            activeIntervalRef.current = interval;
+        }, 2000);
 
-        return () => clearTimeout(startTimeout);
-    }, [activeIndex, currentAnswer]);
+        return () => {
+            clearTimeout(startTimeout);
+            if (activeIntervalRef.current) {
+                clearInterval(activeIntervalRef.current);
+            }
+        };
+    }, [activeIndex, words.length]);
 
     return (
         <section className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-0 lg:pt-[142px] pb-16 bg-grid">

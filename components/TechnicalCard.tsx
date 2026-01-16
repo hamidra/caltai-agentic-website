@@ -106,9 +106,6 @@ export default function TechnicalCard({
                 />
             </div>
 
-            {/* Top Right Corner Marker (from SVG) */}
-            <div className={`absolute -top-1.5 -right-1.5 w-3 h-3 rounded-full border-[0.5px] ${theme.marker} bg-surface z-20`} />
-
             {/* Blueprint Decorative Lines (subtle) */}
             <div className="absolute inset-0 pointer-events-none opacity-[0.05] overflow-hidden">
                 <div className="absolute left-4 top-0 bottom-0 w-[0.5px] bg-current" />
