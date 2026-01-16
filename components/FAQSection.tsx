@@ -138,23 +138,25 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                                                     </p>
                                                     {/* Visible Typing Text */}
                                                     <div className="absolute inset-0 p-6 flex items-start">
-                                                        <p className="text-[15px] leading-relaxed text-[#3d302a] font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                                                        <p className="text-[15px] leading-relaxed text-[#3d302a] font-medium text-left">
                                                             {words.slice(0, visibleWordsCount).map((word, wIdx) => (
-                                                                <motion.span
-                                                                    key={wIdx}
-                                                                    initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-                                                                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                                                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                                                                    className="inline-block"
-                                                                >
-                                                                    {word}&nbsp;
-                                                                </motion.span>
+                                                                <span key={wIdx}>
+                                                                    <motion.span
+                                                                        initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                                                                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                                                        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                                                                        className="inline-block"
+                                                                    >
+                                                                        {word}
+                                                                    </motion.span>
+                                                                    {" "}
+                                                                </span>
                                                             ))}
                                                             {isTyping && (
                                                                 <motion.span
                                                                     animate={{ opacity: [1, 0, 1] }}
                                                                     transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                                                                    className="inline-block w-[2px] h-[16px] bg-brand-orange ml-1"
+                                                                    className="inline-block w-[2px] h-[16px] bg-brand-orange ml-1 align-middle"
                                                                 />
                                                             )}
                                                         </p>
@@ -199,20 +201,22 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
 
                             {/* Visible Typing Text */}
                             <div className="absolute inset-0 p-8 flex items-start">
-                                <p className="text-[16px] leading-relaxed text-[#3d302a] font-medium text-left flex flex-wrap items-center gap-x-[0.3em]">
+                                <p className="text-[16px] leading-relaxed text-[#3d302a] font-medium text-left">
                                     {words.slice(0, visibleWordsCount).map((word, index) => (
-                                        <motion.span
-                                            key={index}
-                                            initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-                                            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                                            transition={{
-                                                duration: 0.8,
-                                                ease: [0.22, 1, 0.36, 1] // Premium quintic ease-out
-                                            }}
-                                            className="inline-block"
-                                        >
-                                            {word}&nbsp;
-                                        </motion.span>
+                                        <span key={index}>
+                                            <motion.span
+                                                initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                                                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                                transition={{
+                                                    duration: 0.8,
+                                                    ease: [0.22, 1, 0.36, 1] // Premium quintic ease-out
+                                                }}
+                                                className="inline-block"
+                                            >
+                                                {word}
+                                            </motion.span>
+                                            {" "}
+                                        </span>
                                     ))}
                                     {isTyping && (
                                         <motion.span
@@ -223,7 +227,7 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                                                 repeat: Infinity,
                                                 ease: "linear"
                                             }}
-                                            className="inline-block w-[2.5px] h-[18px] bg-brand-orange ml-1"
+                                            className="inline-block w-[2.5px] h-[18px] bg-brand-orange ml-1 align-middle"
                                         />
                                     )}
                                 </p>
