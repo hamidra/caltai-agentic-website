@@ -222,13 +222,13 @@ export default function Hero({ isActive }: HeroProps) {
     };
 
     return (
-        <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden pt-4 bg-grid">
+        <section className="relative min-h-[100dvh] md:h-screen w-full flex flex-col items-center justify-start md:justify-center overflow-x-hidden md:overflow-hidden pt-28 md:pt-4 bg-grid">
             <div className="z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center">
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-[60px] tracking-tight text-secondary mt-20 mb-8 leading-[1.1] font-cal"
+                    className="text-4xl md:text-[60px] tracking-tight text-secondary mt-2 md:mt-20 mb-6 md:mb-8 leading-[1.1] font-cal"
                 >
                     Stop Prompting, <span className="text-primary">Start Scaling</span>
                 </motion.h1>
@@ -238,7 +238,7 @@ export default function Hero({ isActive }: HeroProps) {
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={isActive ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
                         transition={{ duration: 1, delay: 0.2 }}
-                        className="w-34 h-34 md:w-34 md:h-34 relative z-20 animate-float flex items-center justify-center"
+                        className="w-24 h-24 md:w-34 md:h-34 relative z-20 animate-float flex items-center justify-center"
                     >
                         <img
                             src="/AI design.svg"
@@ -253,7 +253,7 @@ export default function Hero({ isActive }: HeroProps) {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
-                    className="bg-[#FFFEFC] border border-[#E3DFD9] rounded-[24px] p-8 mb-12 w-full max-w-xl mx-auto shadow-sm min-h-[220px] flex flex-col relative"
+                    className="bg-[#FFFEFC] border border-[#E3DFD9] rounded-[24px] p-6 md:p-8 mb-8 md:mb-12 w-full max-w-xl mx-auto shadow-sm min-h-[220px] flex flex-col relative"
                 >
                     <div className="flex flex-col gap-5">
                         {selectedMessages.map((msg, mIdx) => {
@@ -344,7 +344,7 @@ export default function Hero({ isActive }: HeroProps) {
                                             value={email}
                                             required
                                             onChange={(e) => setEmail(e.target.value)}
-                                            className="flex-1 bg-transparent px-6 py-3 text-secondary rounded-full font-medium outline-none w-full"
+                                            className="flex-1 bg-transparent px-4 md:px-6 py-3 text-secondary rounded-full font-medium outline-none w-full"
                                         />
 
                                         {/* Hidden fields for UTMs */}
@@ -366,7 +366,7 @@ export default function Hero({ isActive }: HeroProps) {
 
                                         <button
                                             type="submit"
-                                            className="h-[44px] bg-primary text-white px-8 rounded-full font-bold text-sm hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center gap-2"
+                                            className="h-[44px] bg-primary text-white px-5 md:px-8 rounded-full font-bold text-sm hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center gap-2"
                                         >
                                             Join Waitlist
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
