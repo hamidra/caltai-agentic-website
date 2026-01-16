@@ -34,6 +34,20 @@ const MSG_3_POOL = [
 
 const COOLDOWN_MS = 3000;
 
+// Cookie helpers
+const setCookie = (name: string, value: string, days = 180) => {
+    if (!value || typeof document === 'undefined') return;
+    if (document.cookie.split('; ').find(row => row.startsWith(name + '='))) return;
+    const d = new Date(); d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${d.toUTCString()};path=/;SameSite=Lax`;
+};
+
+const getCookie = (name: string) => {
+    if (typeof document === 'undefined') return '';
+    const match = document.cookie.split('; ').find(row => row.startsWith(name + '='));
+    return match ? decodeURIComponent(match.split('=')[1]) : '';
+};
+
 export default function Hero({ isActive }: HeroProps) {
     const [selectedMessages, setSelectedMessages] = useState<string[]>([]);
     const [isRegistered, setIsRegistered] = useState(false);
@@ -43,6 +57,13 @@ export default function Hero({ isActive }: HeroProps) {
     const [blinkKey, setBlinkKey] = useState(0); // to restart blink animation
     const [email, setEmail] = useState("");
     const [showsWaitingList, setShowsWaitingList] = useState(false);
+
+    // Tracking State
+    const [trackingData, setTrackingData] = useState({
+        utm_source: '', utm_medium: '', utm_campaign: '', utm_content: '',
+        referrer: '', landing_url: '', device: '',
+        first_utm_source: '', first_utm_medium: '', first_utm_campaign: '', first_utm_content: ''
+    });
 
     const hasRunRef = useRef(false);
 
@@ -145,9 +166,59 @@ export default function Hero({ isActive }: HeroProps) {
         return () => { isMounted = false; };
     }, [selectedMessages]);
 
+    // UTM Tracking Effect
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const params = new URLSearchParams(window.location.search);
+        const getParam = (k: string) => params.get(k) || '';
+
+        // Save first-touch UTMs (once)
+        ["utm_source", "utm_medium", "utm_campaign", "utm_content"].forEach(k => {
+            const v = getParam(k);
+            if (v) setCookie("first_" + k, v);
+        });
+
+        setTrackingData({
+            utm_source: getParam("utm_source"),
+            utm_medium: getParam("utm_medium"),
+            utm_campaign: getParam("utm_campaign"),
+            utm_content: getParam("utm_content"),
+            referrer: document.referrer || '',
+            landing_url: window.location.href,
+            device: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            first_utm_source: getCookie("first_utm_source"),
+            first_utm_medium: getCookie("first_utm_medium"),
+            first_utm_campaign: getCookie("first_utm_campaign"),
+            first_utm_content: getCookie("first_utm_content"),
+        });
+    }, []);
+
     const handleRegister = () => {
-        if (!email || !email.includes("@")) return;
-        setIsRegistered(true);
+        // We do NOT prevent default, allowing the form to submit to the hidden iframe
+        // e.preventDefault(); 
+
+        if (typeof window !== 'undefined') {
+            /* eslint-disable @typescript-eslint/no-explicit-any */
+            if ((window as any).gtag) {
+                (window as any).gtag('event', 'generate_lead', {
+                    event_category: 'waitlist',
+                    event_label: trackingData.utm_campaign || 'direct',
+                    value: 1
+                });
+            }
+            if ((window as any).plausible) {
+                (window as any).plausible('Waitlist Signup', {
+                    props: { campaign: trackingData.utm_campaign || 'direct' }
+                });
+            }
+            /* eslint-enable @typescript-eslint/no-explicit-any */
+        }
+
+        setTimeout(() => {
+            setIsRegistered(true);
+            setEmail("");
+        }, 200);
     };
 
     return (
@@ -243,8 +314,6 @@ export default function Hero({ isActive }: HeroProps) {
                                 </div>
                             );
                         })}
-
-                        {/* Success message removed as per request */}
                     </div>
                 </motion.div>
 
@@ -261,23 +330,48 @@ export default function Hero({ isActive }: HeroProps) {
                                 className="w-full relative group"
                             >
                                 {showsWaitingList && (
-                                    <div className="relative flex items-center bg-[#FFFEFC] border border-[#E3DFD9] rounded-full p-1.5 shadow-sm focus-within:border-primary/30 transition-all duration-300">
+                                    <form
+                                        action="https://script.google.com/macros/s/AKfycbyuh655QJqBRSwWnbC2nI3zhmeGbVp4RZiyl4dWOrWFMZdEeZQsBEZ_bnUVbz6ORUBeWg/exec"
+                                        method="POST"
+                                        target="hidden_iframe"
+                                        onSubmit={handleRegister}
+                                        className="relative flex items-center bg-[#FFFEFC] border border-[#E3DFD9] rounded-full p-1.5 shadow-sm focus-within:border-primary/30 transition-all duration-300"
+                                    >
                                         <input
                                             type="email"
+                                            name="email"
                                             placeholder="Enter your email"
                                             value={email}
+                                            required
                                             onChange={(e) => setEmail(e.target.value)}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleRegister()}
                                             className="flex-1 bg-transparent px-6 py-3 text-secondary rounded-full font-medium outline-none w-full"
                                         />
+
+                                        {/* Hidden fields for UTMs */}
+                                        <input type="hidden" name="utm_source" value={trackingData.utm_source} />
+                                        <input type="hidden" name="utm_medium" value={trackingData.utm_medium} />
+                                        <input type="hidden" name="utm_campaign" value={trackingData.utm_campaign} />
+                                        <input type="hidden" name="utm_content" value={trackingData.utm_content} />
+
+                                        {/* Extra hidden fields */}
+                                        <input type="hidden" name="referrer" value={trackingData.referrer} />
+                                        <input type="hidden" name="landing_url" value={trackingData.landing_url} />
+                                        <input type="hidden" name="device" value={trackingData.device} />
+
+                                        {/* First-touch cookies */}
+                                        <input type="hidden" name="first_utm_source" value={trackingData.first_utm_source} />
+                                        <input type="hidden" name="first_utm_medium" value={trackingData.first_utm_medium} />
+                                        <input type="hidden" name="first_utm_campaign" value={trackingData.first_utm_campaign} />
+                                        <input type="hidden" name="first_utm_content" value={trackingData.first_utm_content} />
+
                                         <button
-                                            onClick={handleRegister}
+                                            type="submit"
                                             className="h-[44px] bg-primary text-white px-8 rounded-full font-bold text-sm hover:brightness-110 active:scale-95 transition-all shadow-md flex items-center gap-2"
                                         >
                                             Join Waitlist
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                                         </button>
-                                    </div>
+                                    </form>
                                 )}
                             </motion.div>
                         ) : (
@@ -290,17 +384,22 @@ export default function Hero({ isActive }: HeroProps) {
                                 <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </div>
-                                <span className="text-primary font-bold text-lg">You're on the list!</span>
+                                <span className="text-primary font-bold text-lg">You&apos;re on the list!</span>
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
             </div>
+
+            {/* Hidden iframe so the page doesn’t navigate away */}
+            <iframe name="hidden_iframe" style={{ display: 'none' }} title="hidden_iframe"></iframe>
         </section>
     );
 }
 
-function Marker({ isThinking, isTyping }: { isThinking: boolean; isTyping: boolean }) {
+// Marker component is unused in the main render, but preserved if future animations need it.
+// If not needed, it can be safely removed.
+export function Marker({ isThinking, isTyping }: { isThinking: boolean; isTyping: boolean }) {
     // 3 blinks = exactly 3 cycles of ON/OFF
     // 1 cycle = ~300ms total
     const blinkVariants: Variants = {
