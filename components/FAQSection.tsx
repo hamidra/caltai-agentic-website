@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 const faqs = [
     {
@@ -242,7 +243,6 @@ export default function FAQSection({ isActive }: FAQSectionProps) {
                     </AnimatePresence>
                 </div>
             </div>
-
         </section>
     );
 }

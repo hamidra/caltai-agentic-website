@@ -8,6 +8,7 @@ import SolutionSection from "@/components/SolutionSection";
 import WhyCaltAI from "@/components/WhyCaltAI";
 import PilotSection from "@/components/PilotSection";
 import ROISection from "@/components/ROISection";
+import Link from "next/link";
 import FoundersNote from "@/components/FoundersNote";
 import FAQSection from "@/components/FAQSection";
 import AIChatBox from "@/components/AIChatBox";
@@ -22,6 +23,21 @@ const SECTIONS = [
   { id: "founders", Component: FoundersNote },
   { id: "faq", Component: FAQSection },
 ];
+
+
+function PrivacyFooter() {
+  return (
+    <footer className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-3 text-[10px] font-medium tracking-[0.2em] text-muted-foreground/70 z-20 pointer-events-auto">
+      <div className="flex gap-8">
+        <Link href="/terms" className="hover:text-primary transition-all duration-300 uppercase">Terms</Link>
+        <Link href="/privacy" className="hover:text-primary transition-all duration-300 uppercase">Privacy</Link>
+      </div>
+      <div className="opacity-50">
+        &copy; {new Date().getFullYear()} CALTAI INC.
+      </div>
+    </footer>
+  );
+}
 
 export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -69,7 +85,7 @@ export default function Home() {
 
       <main
         ref={containerRef}
-        className="h-full w-full overflow-y-auto overflow-x-hidden lg:snap-y lg:snap-mandatory scroll-smooth"
+        className="h-full w-full overflow-y-auto overflow-x-hidden lg:snap-y lg:snap-mandatory scroll-smooth relative"
       >
         {SECTIONS.map(({ id, Component }, index) => (
           <div
@@ -85,7 +101,10 @@ export default function Home() {
             ) : id === "founders" ? (
               <FoundersNote />
             ) : id === "faq" ? (
-              <FAQSection isActive={currentIndex === 7} />
+              <>
+                <FAQSection isActive={currentIndex === 7} />
+                <PrivacyFooter />
+              </>
             ) : id === "solution" ? (
               <>
                 <Component />
