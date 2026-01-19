@@ -1,0 +1,71 @@
+Terms of Service
+Effective Date: 20 Oct 2025
+These Terms of Service (“Terms”) govern your access to and use of CaltAI’s websites, applications, APIs, and related services (collectively, the “Service”). The Service is operated by CaltAI (“CaltAI,” “we,” “us,” or “our”).
+
+By accessing or using the Service, you agree to be bound by these Terms. If you do not agree, do not use the Service.
+1. Eligibility and Acceptance
+You must be at least eighteen (18) years old and have the legal authority to enter into these Terms. If you are using the Service on behalf of an organization, you represent that you have authority to bind that organization.
+2. Account Registration and Security
+You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You must notify CaltAI immediately of any unauthorized use or security breach.
+
+CaltAI is not responsible for losses caused by unauthorized access resulting from your failure to safeguard credentials.
+3. License and Acceptable Use 3.1 License Grant
+Subject to these Terms, CaltAI grants you a limited, non-exclusive, non-transferable, revocable license to access and use the Service for personal or internal business purposes.
+3.2 Prohibited Use
+You may not:
+Copy, modify, distribute, or create derivative works of the Service.
+Reverse engineer, decompile, or attempt to extract source code.
+Use the Service to build or train competing products or services.
+Upload unlawful, infringing, misleading, or harmful content.
+Interfere with or disrupt the integrity or performance of the Service.
+4. User Content and Data
+You retain ownership of content you submit to the Service (“User Content”). By using the Service, you grant CaltAI a limited right to host, process, store, and analyze User Content solely to provide and improve the Service.
+
+You are solely responsible for the legality, accuracy, and appropriateness of your User Content.
+5. AI-Generated Outputs and Assumption of Risk
+The Service uses artificial intelligence systems that generate automated outputs.
+
+You acknowledge and agree that:
+AI-generated outputs may be inaccurate, incomplete, misleading, or inappropriate.
+CaltAI does not guarantee correctness, reliability, or suitability of any output.
+The Service does not provide legal, financial, medical, tax, or professional advice.
+You are solely responsible for reviewing, validating, and deciding whether to rely on any AI-generated output.
+You assume all risks arising from your use of the Service, including decisions made, actions taken, or outcomes resulting from reliance on AI-generated outputs.
+6. Fees and Payments
+Certain features may require payment. All fees are non-refundable except where required by law. CaltAI may modify pricing with advance notice before a billing cycle renewal.
+
+Failure to pay may result in suspension or termination of access.
+7. Third-Party Services
+The Service may integrate with third-party services. CaltAI does not control and is not responsible for third-party products, content, or practices. Your use of third-party services is governed by their respective terms.
+8. Confidentiality
+Each party agrees to protect the other’s confidential information and not disclose it except as permitted by these Terms or required by law.
+9. Disclaimers
+THE SERVICE IS PROVIDED “AS IS” AND “AS AVAILABLE.”
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, CALTAI DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+CALTAI DOES NOT WARRANT THAT THE SERVICE WILL BE ERROR-FREE, UNINTERRUPTED, OR MEET YOUR REQUIREMENTS.
+10. Limitation of Liability
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:
+CALTAI SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING LOSS OF PROFITS, REVENUE, DATA, OR BUSINESS OPPORTUNITIES.
+CALTAI’S TOTAL AGGREGATE LIABILITY ARISING OUT OF OR RELATING TO THE SERVICE SHALL NOT EXCEED THE GREATER OF ONE HUNDRED US DOLLARS ($100) OR THE TOTAL FEES PAID BY YOU TO CALTAI IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM.
+Some jurisdictions do not allow certain limitations, so portions of this section may not apply to you.
+11. Indemnification
+You agree to defend, indemnify, and hold harmless CaltAI and its officers, directors, employees, and affiliates from any claims, damages, losses, liabilities, and expenses arising from:
+Your use of the Service.
+Your User Content.
+Your violation of these Terms or applicable laws.
+12. Termination
+CaltAI may suspend or terminate your access at any time for any reason, including violation of these Terms. Upon termination, your right to use the Service immediately ceases.
+
+Sections that by their nature should survive termination shall survive.
+13. Governing Law and Jurisdiction
+These Terms are governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to conflict of laws principles.
+
+You agree that any dispute arising out of or relating to these Terms or the Service shall be brought exclusively in the state or federal courts located in Delaware, and you consent to the personal jurisdiction and venue of such courts.
+14. Changes to These Terms
+CaltAI may modify these Terms from time to time. Material changes will be posted with an updated effective date. Continued use of the Service constitutes acceptance of the revised Terms.
+15. Miscellaneous
+These Terms constitute the entire agreement between you and CaltAI regarding the Service.
+If any provision is held unenforceable, the remaining provisions remain in effect.
+You may not assign these Terms without prior written consent from CaltAI

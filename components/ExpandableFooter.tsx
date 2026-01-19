@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Facebook, Twitter, Linkedin, Instagram, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 
 export default function ExpandableFooter() {
     const [isHovered, setIsHovered] = useState(false);
@@ -99,8 +100,8 @@ export default function ExpandableFooter() {
                                     <h4 className="font-bold tracking-wider text-xs uppercase text-muted-foreground">Company</h4>
                                     <ul className="space-y-2 text-sm text-muted">
                                         <li><a href="#" className="transition-colors hover:text-primary">About Us</a></li>
-                                        <li><a href="#" className="transition-colors hover:text-primary">Careers</a></li>
-                                        <li><a href="#" className="transition-colors hover:text-primary">Blog</a></li>
+                                        <li><Link href="/privacy" className="transition-colors hover:text-primary">Privacy Policy</Link></li>
+                                        <li><Link href="/terms" className="transition-colors hover:text-primary">Terms of Service</Link></li>
                                         <li><a href="#" className="transition-colors hover:text-primary">Contact</a></li>
                                     </ul>
                                 </div>
