@@ -84,7 +84,7 @@ const Hero = () => {
             </div>
 
             {/* Headline */}
-            <h1 className="text-[50px] font-semibold text-[#443218] leading-[1.12] tracking-tight w-[604px] font-heading">
+            <h1 className="text-[46px] font-semibold text-[#443218] leading-[1.12] tracking-tight w-[604px] font-heading">
               An operation system that <br />
               runs <RollingWord word={rotatingWords[index]} /> <br />
               across your tools
@@ -121,8 +121,8 @@ const Hero = () => {
         </section>
 
         {/* Decorative Bottom Hatched Band */}
-        <div className="absolute bottom-0 left-0 right-0 border-t border-[#D5D4CF] h-[30px] overflow-hidden">
-          <div className="w-full h-full hatch-pattern opacity-40 px-8" />
+        <div className="absolute bottom-0 left-0 right-0 h-[30px] border-t border-[#D5D4CF] overflow-hidden">
+          <div className="w-full h-full hatch-pattern opacity-30" />
         </div>
       </div>
     </div>

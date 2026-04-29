@@ -28,26 +28,29 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Cal Sans', sans-serif;
 }
 
 /* Hatched / Zebra Pattern */
 .hatch-pattern {
-  background-image: repeating-linear-gradient(
-    45deg,
-    var(--border-color),
-    var(--border-color) 1px,
-    transparent 1px,
-    transparent 10px
-  );
+  background-image: repeating-linear-gradient(45deg,
+      var(--border-color),
+      var(--border-color) 1px,
+      transparent 1px,
+      transparent 10px);
   background-size: 14px 14px;
 }
 
-/* 1240px Frame Container */
+/* 1300px Frame Container */
 .page-frame {
   width: 100%;
-  max-width: 1240px;
+  max-width: 1300px;
   margin: 0 auto;
   position: relative;
   /* Visual Borders */
