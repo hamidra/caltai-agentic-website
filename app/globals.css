@@ -62,8 +62,8 @@ h6 {
 .hatch-pattern-strip {
   background-image: repeating-linear-gradient(45deg,
       #e4e4e4,
-      #e4e4e4 2px,
-      transparent 2px,
+      #e4e4e4 1px,
+      transparent 1px,
       transparent 10px);
   background-size: 14px 14px;
 }
@@ -77,6 +77,12 @@ h6 {
   /* Visual Borders */
   border-left: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
+}
+
+/* Frame Container for Dark Mode */
+.page-frame-dark {
+  border-left: 1px solid #4A4A4A;
+  border-right: 1px solid #4A4A4A;
 }
 
 /* Base transitions */

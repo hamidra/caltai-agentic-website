@@ -103,7 +103,7 @@ const WorkflowTabsSection = () => {
   };
 
   return (
-    <section className="w-full bg-[#FBF9F4] relative pt-[60px] pb-[100px] overflow-hidden">
+    <section className="w-full bg-[#FBF9F4] relative pt-[60px] overflow-hidden">
       {/* Top Hatch Strip - Behind Tabs */}
       <div className="absolute top-[60px] border-t border-b border-[#FF6A2A] left-0 h-[52px] w-[100%] right-0 z-0 hatch-pattern-strip" />
 
