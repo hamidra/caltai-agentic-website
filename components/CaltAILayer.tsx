@@ -40,12 +40,12 @@ const CaltAILayer = () => {
         <div className="w-full h-[1px] bg-[#D5D4CF]" />
 
         {/* Bottom Statement Band */}
-        <div className="h-[155px] relative overflow-hidden bg-[#FBF9F4] flex items-center justify-center">
+        <div className="h-[155px] relative overflow-hidden bg-[#F6F3EF] flex items-center justify-center">
           {/* Dotted Pattern */}
           <div
             className="absolute inset-0 opacity-50"
             style={{
-              backgroundImage: "radial-gradient(#E1DFD8 1px, transparent 1px)",
+              backgroundImage: "radial-gradient(#D6D6D6 1.5px, transparent 1.5px)",
               backgroundSize: "24px 24px"
             }}
           />
@@ -89,13 +89,10 @@ const CaltAILayer = () => {
 
           </div>
         </div>
-
-        {/* Bottom Zebra Band */}
-        <div className="w-full h-[32px] border-t border-[#D5D4CF] overflow-hidden">
-          <div
-            className="w-full h-full opacity-40 hatch-pattern"
-          />
-        </div>
+      </div>
+      {/* Bottom Zebra Band */}
+      <div className="relative h-[30px] border-t border-[#D5D4CF] border-b bg-[#FBF9F4] overflow-hidden">
+        <div className="page-frame h-full hatch-pattern opacity-30" />
       </div>
     </section>
   );

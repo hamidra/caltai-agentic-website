@@ -47,6 +47,27 @@ h6 {
   background-size: 14px 14px;
 }
 
+/* Hatched / Zebra Pattern Orange*/
+.hatch-pattern-orange {
+  background-image: repeating-linear-gradient(45deg,
+      #FF9A73,
+      #FF9A73 2px,
+      transparent 2px,
+      transparent 10px);
+  background-size: 14px 14px;
+}
+
+
+/* Hatched / Zebra Strip */
+.hatch-pattern-strip {
+  background-image: repeating-linear-gradient(45deg,
+      #e4e4e4,
+      #e4e4e4 2px,
+      transparent 2px,
+      transparent 10px);
+  background-size: 14px 14px;
+}
+
 /* 1300px Frame Container */
 .page-frame {
   width: 100%;

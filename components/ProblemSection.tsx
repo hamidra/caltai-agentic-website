@@ -41,12 +41,12 @@ const ProblemSection = () => {
   }, []);
 
   const { scrollY } = useScroll();
-  
+
   // Manual progress calculation as requested: (scrollY - offsetTop) / 2160
   const progress = useTransform(
-    scrollY, 
-    [offsetTop, offsetTop + 2160], 
-    [0, 1], 
+    scrollY,
+    [offsetTop, offsetTop + 2160],
+    [0, 1],
     { clamp: true }
   );
 
@@ -69,13 +69,13 @@ const ProblemSection = () => {
       style={{ height: "calc(720px + 907px + 2160px)" }}
     >
       <div
-        className="sticky top-0 z-10 h-auto"
+        className="sticky top-[63px] z-10 h-auto"
       >
         {/**
          * Problem frame — 720px, dark
          * Z-index -1 as requested to stay below the top layer
          */}
-        <div className="relative z-[-1] bg-[#FBF9F4]">
+        <div className="relative z-[-1] !bg-[#262626]">
           <div className="page-frame h-[720px] relative !bg-[#262626] flex !border-[#4C4C4B] overflow-hidden">
             {/* Vertical Divider */}
             <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-[#4C4C4B] z-10" />
@@ -85,7 +85,7 @@ const ProblemSection = () => {
               <div
                 className="absolute inset-0 opacity-[0.4]"
                 style={{
-                  backgroundImage: "radial-gradient(#262626 3px, transparent 3px)",
+                  backgroundImage: "radial-gradient(#4A4A4A 1.5px, transparent 1.5px)",
                   backgroundSize: "19px 19px",
                 }}
               />
