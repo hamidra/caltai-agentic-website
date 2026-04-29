@@ -1,246 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Cal+Sans&family=Onest:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
-/* ================================
-   CSS VARIABLES - THEME SYSTEM
-   ================================ */
-
 :root {
-  /* Semantic Colors - Light Mode */
-  --background: #fbf9f4;
-  --foreground: #2d2d2d;
-  --surface: #ffffff;
-  --surface-alt: #fff5ec;
-  --border: rgba(61, 48, 42, 0.1);
-  --border-strong: rgba(61, 48, 42, 0.2);
-  --muted: rgba(61, 48, 42, 0.6);
-  --muted-foreground: rgba(61, 48, 42, 0.4);
-
-  /* Brand/Accent Colors */
-  --primary: #ff602e;
-  --primary-hover: #e5562a;
-  --primary-foreground: #ffffff;
-  --secondary: #3d302a;
-  --secondary-foreground: #ffffff;
-  --accent: #9067ff;
-  --accent-hover: #7c50f0;
-  --accent-foreground: #ffffff;
-
-  /* Semantic status colors */
-  --success: #22c55e;
-  --error: #ef4444;
-  --info: #3b82f6;
-  --warning: #f59e0b;
-
-  /* Component specific */
-  --card-bg: rgba(255, 255, 255, 0.4);
-  --card-border: rgba(61, 48, 42, 0.05);
-  --input-bg: #ffffff;
-  --input-border: rgba(61, 48, 42, 0.1);
-  --navbar-bg: rgba(253, 251, 247, 0.1);
-  --navbar-border: rgba(253, 251, 247, 0.2);
-}
-
-:root.dark {
-  /* Semantic Colors - Dark Mode */
-  --background: #0a0a0b;
-  --foreground: #f5f5f5;
-  --surface: #18181b;
-  --surface-alt: #27272a;
-  --border: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.2);
-  --muted: rgba(255, 255, 255, 0.6);
-  --muted-foreground: rgba(255, 255, 255, 0.4);
-
-  /* Brand/Accent Colors (optimized for dark visibility) */
-  --primary: #ff7a4d;
-  --primary-hover: #ff8f66;
-  --primary-foreground: #ffffff;
-  --secondary: #d4c8c0;
-  --secondary-foreground: #0a0a0b;
-  --accent: #a585ff;
-  --accent-hover: #b89aff;
-  --accent-foreground: #ffffff;
-
-  /* Semantic status colors (brighter for dark) */
-  --success: #34d399;
-  --error: #f87171;
-  --info: #60a5fa;
-  --warning: #fbbf24;
-
-  /* Component specific */
-  --card-bg: rgba(24, 24, 27, 0.6);
-  --card-border: rgba(255, 255, 255, 0.05);
-  --input-bg: #18181b;
-  --input-border: rgba(255, 255, 255, 0.1);
-  --navbar-bg: rgba(10, 10, 11, 0.1);
-  --navbar-border: rgba(255, 255, 255, 0.05);
-}
-
-/* ================================
-   TAILWIND THEME MAPPING
-   ================================ */
-
-@theme inline {
-  /* Map CSS variables to Tailwind colors */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
-  --color-surface-alt: var(--surface-alt);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-foreground: var(--accent-foreground);
-
-  --color-success: var(--success);
-  --color-error: var(--error);
-  --color-info: var(--info);
-  --color-warning: var(--warning);
-
-  --color-card-bg: var(--card-bg);
-  --color-card-border: var(--card-border);
-  --color-input-bg: var(--input-bg);
-  --color-input-border: var(--input-border);
-  --color-navbar-bg: var(--navbar-bg);
-  --color-navbar-border: var(--navbar-border);
-
-  /* Keep brand colors for backward compatibility during transition */
-  --color-brand-orange: var(--primary);
-  --color-brand-brown: var(--secondary);
-  --color-brand-cream: var(--surface-alt);
-
-  /* Fonts */
-  --font-sans: var(--font-outfit);
-  --font-cal: "Cal Sans", sans-serif;
-}
-
-/* ================================
-   BASE STYLES
-   ================================ */
-
-.font-cal {
-  font-family: var(--font-cal), system-ui, sans-serif;
-}
-
-.font-serif {
-  font-family: var(--font-serif), serif;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-  scroll-padding-top: 88px;
-  /* High enough to clear the fixed navbar */
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  --background: #FBF9F4;
+  --foreground: #443218;
+  --muted-text: #8D8177;
+  --accent-orange: #FF5A1F;
+  --accent-blue: #4209DF;
+  --border-color: #D5D4CF;
+  --placeholder-bg: #F5F2ED;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: var(--background);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ================================
-   CUSTOM UTILITIES
-   ================================ */
-
-.bg-grid {
-  background-image: url('/background.svg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cal Sans', sans-serif;
 }
 
-/* Dark mode background adjustment */
-:root.dark .bg-grid {
-  background-image: url('/background-dark.svg');
+/* Hatched / Zebra Pattern */
+.hatch-pattern {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--border-color),
+    var(--border-color) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+  background-size: 14px 14px;
 }
 
-.cal-sans-regular {
-  font-family: "Cal Sans", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+/* 1240px Frame Container */
+.page-frame {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  position: relative;
+  /* Visual Borders */
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
 }
 
-.orb-glow {
-  filter: blur(40px);
-  background: radial-gradient(circle, rgba(255, 96, 46, 0.4) 0%, rgba(144, 103, 255, 0.4) 100%);
+/* Base transitions */
+.transition-all {
+  transition-duration: 250ms;
 }
 
-/* ================================
-   ANIMATIONS
-   ================================ */
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
-}
-
-/* ================================
-   THEME TRANSITION
-   ================================ */
-
-/* ================================
-   AUTOFILL RESET
-   ================================ */
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active,
-input:autofill {
-  -webkit-box-shadow: 0 0 0 1000px #FFFEFC inset !important;
-  box-shadow: 0 0 0 1000px #FFFEFC inset !important;
-  -webkit-text-fill-color: var(--secondary) !important;
-  color: var(--secondary) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  caret-color: var(--primary) !important;
-}
-
-* {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-timing-function: ease;
-  transition-duration: 0.15s;
+.selection\:bg-orange-100 ::selection {
+  background-color: #fef3c7;
+  color: #92400e;
 }

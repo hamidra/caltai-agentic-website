@@ -1,99 +1,149 @@
 "use client";
 
-import { motion } from "framer-motion";
-import TechnicalCard from "./TechnicalCard";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTransform, AnimatePresence, useMotionValueEvent } from "framer-motion";
 
-const cards = [
-    {
-        icon: (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
-                <circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" />
-            </svg>
-        ),
-        title: '"Drowning in Data, Starving for Insights"',
-        description: "You have 4+ disconnected tools. Data lives everywhere. But when you need to make a decision, you're back in spreadsheet hell.",
-        stat: "74% of SMBs lack resources to turn data into decisions"
-    },
-    {
-        icon: (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
-                <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
-            </svg>
-        ),
-        title: '"I Know What to Do, But No Time to Do It"',
-        description: "You see the opportunities. You know the moves. But you're spending 70+ hours just keeping up. The gap between knowing and doing is where growth dies.",
-        stat: "1.5 hours/day lost to operational inefficiencies"
-    },
-    {
-        icon: (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary-foreground">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-            </svg>
-        ),
-        title: '"My Automations Are Held Together with Duct Tape"',
-        description: "You've built a Franken-stack of integrations. Only one person understands how it works. And you're terrified to touch it.",
-        stat: "$800+/month on automation tools and they still break"
-    }
+const problemStates = [
+  {
+    id: "01",
+    title: "The problem isn’t your tools.\nIt’s what happens between them.",
+    body: "You’ve bought the CRM, the inbox automation, the doc system, the task tracker. Each one works.\n\nThe problem is what falls into the cracks between them, every single day.",
+  },
+  {
+    id: "02",
+    title: "It’s not one process that\nbreaks. It’s every process, in\nthe same way.",
+    body: "Something finishes, nobody starts what comes next. A step needs input, somebody has to chase it. A decision needs approval, it sits in a thread.\n\nEvery workflow in your business has the same breakage pattern. You’ve just been treating them as separate problems.",
+  },
+  {
+    id: "03",
+    title: "Automation moves data.\nIt doesn’t move work.",
+    body: "Automation fire when something happens. Chatbots answer when someone asks. Neither of them owns an outcome. Neither notices when a run is stuck. Neither picks up the next step.\n\nThe work between your tools needs something that watches, decides, and acts and stays on the run until it’s done.",
+  },
 ];
 
-export default function ProblemSection() {
-    return (
-        <div className="relative w-full min-h-screen flex flex-col items-center justify-start px-8 md:pl-20 md:pr-[120px] pt-[71px] lg:pt-[142px] pb-16 bg-grid">
-            <div className="max-w-7xl w-full">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="mb-[80px]"
-                >
-                    <h2 className="text-[40px] text-secondary mb-5 font-cal leading-tight">
-                        You've Hit the "Scale Gap"
-                    </h2>
-                    <p className="text-[20px] text-muted font-medium max-w-4xl leading-relaxed">
-                        You're too big for spreadsheets, too small for Oracle. Your complexity has outpaced your capacity. Sound familiar?
-                    </p>
-                </motion.div>
+const ProblemSection = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-[40px]">
-                    {cards.map((card, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                        >
-                            <TechnicalCard
-                                variant="orange"
-                                className="pt-[10px] px-8 pb-0 min-h-[300px] h-full group"
-                            >
-                                <div className="flex items-center gap-5 mb-[40px] mt-[30px]">
-                                    <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/20 flex-shrink-0">
-                                        <div className="scale-125">
-                                            {card.icon}
-                                        </div>
-                                    </div>
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
-                                    <h3 className="text-[20px] font-bold text-secondary font-cal leading-tight">
-                                        {card.title}
-                                    </h3>
-                                </div>
+  // Handle discrete state changes exactly at 33.33% and 66.66%
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    if (latest < 1/3) {
+      if (index !== 0) setIndex(0);
+    } else if (latest < 2/3) {
+      if (index !== 1) setIndex(1);
+    } else {
+      if (index !== 2) setIndex(2);
+    }
+  });
 
-                                <p className="text-muted text-[15px] leading-relaxed mb-[36px] h-[100px]">
-                                    {card.description}
-                                </p>
+  const progressPercent = useTransform(scrollYProgress, (p) => `${p * 100}%`);
 
-                                <div className="border-t border-border h-[72px] flex items-center w-full">
-                                    <p className="text-primary font-bold text-[13px] uppercase tracking-wider">
-                                        {card.stat.split(' ')[0]} <span className="text-muted-foreground font-medium lowercase italic">{card.stat.split(' ').slice(1).join(' ')}</span>
-                                    </p>
-                                </div>
-                            </TechnicalCard>
-                        </motion.div>
-                    ))}
-                </div>
+  return (
+    <div ref={containerRef} className="relative h-[2160px] bg-[#262626]">
+      {/* Sticky Container (720px tall) */}
+      <div className="sticky top-0 h-[720px] w-full overflow-hidden">
+        {/* Page Frame Borders (1240px) */}
+        <div className="page-frame h-full !bg-[#262626] flex !border-[#4C4C4B]">
+          {/* Vertical Divider between columns */}
+          <div className="absolute left-1/2 top-0 bottom-[32px] w-[1px] bg-[#4C4C4B] z-10" />
+
+          {/* Left Visual Column */}
+          <div className="w-1/2 h-[calc(100%-32px)] bg-[#1C1C1C] relative overflow-hidden">
+            {/* Dotted Pattern */}
+            <div 
+              className="absolute inset-0 opacity-[0.08]"
+              style={{
+                backgroundImage: "radial-gradient(#2B2B2B 1px, transparent 1px)",
+                backgroundSize: "24px 24px"
+              }}
+            />
+          </div>
+
+          {/* Right Text Column */}
+          <div className="w-1/2 h-[calc(100%-32px)] bg-[#262626] relative flex flex-col pt-[90px] pl-20 pr-[60px]">
+            {/* Badge */}
+            <div className="h-[44px] inline-flex items-center gap-[10px] px-5 rounded-full border border-[#484746] bg-[#1C1C1C] mb-[56px] w-fit">
+              {/* Icon Slot */}
+              <div className="w-[22px] h-[22px] flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 1v16M1 9h16" stroke="#F6F3EF" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+              </div>
+              <span className="text-[16px] font-medium text-[#F6F3EF] font-sans">Problem</span>
             </div>
 
+            {/* Content Transitions */}
+            <div className="relative flex-1">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.45, ease: "circOut" }}
+                  className="w-[478px]"
+                >
+                  <h2 className="text-[40px] font-semibold text-[#F6F3EF] leading-[1.15] mb-[44px] whitespace-pre-line font-heading">
+                    {problemStates[index].title}
+                  </h2>
+                  <p className="text-[16px] leading-[1.55] text-[#F6F3EF] font-normal whitespace-pre-line font-sans">
+                    {problemStates[index].body}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
+            {/* Progress Indicator */}
+            <div className="w-[470px] mb-[100px] relative pt-8">
+              {/* Number Label (Movers with progress) */}
+              <motion.div 
+                className="absolute top-0 text-[16px] font-normal text-[#FF5A1F] font-sans h-6 flex items-center"
+                style={{ 
+                  left: progressPercent, 
+                  translateX: "-50%",
+                  // Clamp label to stay within bounds
+                  paddingLeft: "4px",
+                  paddingRight: "4px"
+                }}
+              >
+                {problemStates[index].id}
+              </motion.div>
+
+              {/* Base Line */}
+              <div className="h-[1px] w-full bg-[#4C4C4B] relative flex items-center">
+                {/* 33.33% Marker */}
+                <div className="absolute left-[33.333%] w-[1px] h-3 bg-[#4C4C4B]" />
+                {/* 66.66% Marker */}
+                <div className="absolute left-[66.666%] w-[1px] h-3 bg-[#4C4C4B]" />
+                
+                {/* Orange Active Line */}
+                <motion.div 
+                  className="absolute left-0 h-[4px] bg-[#FF5A1F] rounded-full"
+                  style={{ width: progressPercent }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Zebra Band */}
+          <div className="absolute bottom-0 left-0 right-0 h-[32px] border-t border-[#4C4C4B] overflow-hidden">
+             <div 
+               className="w-full h-full opacity-30 hatch-pattern"
+               style={{
+                 backgroundImage: "repeating-linear-gradient(45deg, #4C4C4B, #4C4C4B 1px, transparent 1px, transparent 10px)",
+                 backgroundSize: "14px 14px"
+               }}
+             />
+          </div>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
+
+export default ProblemSection;
