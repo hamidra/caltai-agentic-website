@@ -147,13 +147,12 @@ export default function TermsPage() {
                     {/* Hero */}
                     <div className="px-[55px] pb-[70px] pt-[72px]">
                         <div className="mb-[72px] inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4">
-                            <div className="flex h-[22px] w-[22px] items-center justify-center text-[#5C35F5]">
-                                <svg width="28" height="22" viewBox="0 0 28 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect width="27.8056" height="7.33333" rx="3.66667" fill="#613EE9" />
-                                    <rect x="8.33984" y="7.33398" width="11.1252" height="7.33333" rx="3.66667" fill="#9077ED" />
-                                    <rect x="10.2344" y="14.666" width="7.33494" height="7.33333" rx="3.66667" fill="#D0C3F1" />
+                            <div className="flex h-[20px] w-[20px] items-center justify-center text-[#5C35F5]">
+                                <svg width="22" height="20" viewBox="0 0 25 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="24.8915" height="7.33333" rx="3.66667" fill="#613EE9" />
+                                    <rect x="6.88281" y="7.33398" width="11.1252" height="7.33333" rx="3.66667" fill="#9077ED" />
+                                    <rect x="8.77734" y="14.666" width="7.33494" height="7.33333" rx="3.66667" fill="#D0C3F1" />
                                 </svg>
-
                             </div>
                             <span className="font-sans text-[14px] font-medium text-[#443218]">
                                 Legal Terms
