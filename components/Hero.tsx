@@ -47,7 +47,7 @@ const Hero = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % rotatingWords.length);
-    }, 3000);
+    }, 3400);
     return () => clearInterval(timer);
   }, []);
 
@@ -63,22 +63,27 @@ const Hero = () => {
           {/* Left Column (Content) */}
           <div className="flex-1 flex flex-col items-start z-10">
             {/* Eyebrow Badge */}
-            <div className="h-[36px] flex items-center gap-2.5 px-3.5 rounded-full border border-[#FCB7A4] bg-[#FBF9F4] mb-12">
+            <div className="h-[36px] flex items-center gap-2.5 pr-3.5 pl-[10px] rounded-full border border-[#FCB7A4] bg-[#FBF9F4] mb-12">
               <div className="relative w-4 h-4 flex items-center justify-center">
                 {/* Layered Pulsing Circles */}
                 <motion.div
-                  animate={{ scale: [1, 1.4, 1], opacity: [0.2, 0.4, 0.2] }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute w-full h-full rounded-full bg-[#FF5A1F] opacity-20"
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.5, 0.4] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute w-[18px] h-[18px] rounded-full bg-[#F8C8B0]"
                 />
                 <motion.div
-                  animate={{ scale: [1, 1.2, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute w-2.5 h-2.5 rounded-full bg-[#FF7A45]"
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.5, 0.4] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute w-[12px] h-[12px] rounded-full bg-[#F99F75] opacity-20"
+                />
+                <motion.div
+                  animate={{ scale: [1, 1, 1] }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute w-[6px] h-[6px] rounded-full bg-[#FB631C]"
                 />
                 <div className="w-1.5 h-1.5 rounded-full bg-[#FF5A1F]" />
               </div>
-              <span className="text-[13px] font-normal leading-none text-[#443218] whitespace-nowrap font-sans">
+              <span className="text-[13px] font-normal leading-none text-[#443218] whitespace-nowrap font-inter">
                 ENTERPRISE QUALITY OPERATION
               </span>
             </div>
@@ -91,7 +96,7 @@ const Hero = () => {
             </h1>
 
             {/* Subtext */}
-            <p className="text-[18px] font-medium leading-[1.4] text-[#8D8177] mt-10 w-[580px] font-sans">
+            <p className="text-[18px] font-light leading-[1.4] text-[#695A44] mt-10 w-[580px] font-inter">
               For agencies tired of manual chasing across their CRM, inbox,
               calendar, and docs. CaltAI watches for signals, drafts actions,
               routes approvals, and keeps work moving until it's done.
@@ -99,10 +104,10 @@ const Hero = () => {
 
             {/* CTA Buttons */}
             <div className="flex items-center gap-5 mt-12">
-              <button className="h-[52px] px-8 bg-[#FF5A1F] text-white text-[16px] font-medium rounded-full hover:bg-[#E84D14] transition-all shadow-sm font-sans">
+              <button className="h-[52px] px-8 bg-[#FF5A1F] text-white text-[16px] font-medium rounded-full hover:bg-[#E84D14] transition-all shadow-sm font-inter">
                 Become a design partner
               </button>
-              <button className="h-[52px] px-8 border border-[#D5D4CF] text-[#443218] text-[16px] font-medium rounded-full hover:bg-white transition-all font-sans">
+              <button className="h-[52px] px-8 border border-[#D5D4CF] text-[#443218] text-[16px] font-medium rounded-full hover:bg-white transition-all font-inter">
                 Book a demo
               </button>
             </div>

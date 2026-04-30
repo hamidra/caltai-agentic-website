@@ -20,16 +20,16 @@ const CaltAILayer = () => {
                 <path d="M3.34234 16.8225L7.57079 10.812M3.34234 16.8225L3.82319 12.789L8.03185 6.80656M3.34234 16.8225L6.47971 18.6075M7.57079 10.812L10.6035 12.5234M7.57079 10.812L8.03185 6.80656M10.6035 12.5234L12.7047 9.53671M10.6035 12.5234L11.1219 8.42326M12.7047 9.53671L15.6176 11.2233M12.7047 9.53671L13.138 5.55747M15.6176 11.2233L17.7452 8.199M15.6176 11.2233L16.1757 7.09488M17.7452 8.199L20.6282 9.8707M17.7452 8.199L18.2216 4.18682M20.6282 9.8707L21.0867 5.81545L18.2216 4.18682M20.6282 9.8707L20.5626 9.96392M6.11976 22.5361L8.11995 19.5407L6.47971 18.6075M6.11976 22.5361L11.9777 25.8511L14.0034 22.9717L17.9866 25.3626L22.199 19.3791M6.11976 22.5361L6.47971 18.6075M8.03185 6.80656L11.1219 8.42326M11.1219 8.42326L13.138 5.55747M13.138 5.55747L16.1757 7.09488M16.1757 7.09488L18.2216 4.18682M21.3075 14.6148L18.4217 13.0071L20.5626 9.96392M21.3075 14.6148L19.1618 17.6649L22.199 19.3791M21.3075 14.6148L21.3248 14.4656M22.199 19.3791L22.6705 15.3134L21.3248 14.4656M20.5626 9.96392L21.7728 10.5953L21.3248 14.4656" stroke="#532CEA" stroke-width="0.75" />
               </svg>
             </div>
-            <span className="text-[14px] font-medium text-[#443218] font-sans">CaltAI Layer</span>
+            <span className="text-[14px] font-medium text-[#443218] font-inter">CaltAI Layer</span>
           </div>
 
           {/* Main Title */}
-          <h2 className="text-[40px] font-semibold text-[#262626] leading-[1.18] w-[520px] mb-[42px] font-heading">
+          <h2 className="text-[40px] font-semibold text-[#443218] leading-[1.18] w-[520px] mb-[42px] font-heading">
             CaltAI is the layer that runs the work between your tools.
           </h2>
 
           {/* Body Text */}
-          <p className="text-[16px] font-medium leading-[1.5] text-[#8D8177] w-[520px] font-sans">
+          <p className="text-[16px] font-light leading-[1.5] text-[#695A44] w-[520px] font-inter">
             It watches the signals in your tools. Holds context about your business, your clients, and your past runs.
             Plans the next actions. Routes what needs human judgment, executes what doesn’t.
             And stays on the run until the outcome is done.
@@ -67,7 +67,7 @@ const CaltAILayer = () => {
           </div>
 
           {/* Statement Text */}
-          <p className="text-[24px] font-semibold text-[#262626] leading-[1.35] text-center w-[700px] z-10 font-sans">
+          <p className="text-[24px] font-semibold text-[#443218] leading-[1.35] text-center w-[700px] z-10 font-inter">
             Not a chatbot. Not an automation. CaltAI is a system that owns operational work end to end.
           </p>
 

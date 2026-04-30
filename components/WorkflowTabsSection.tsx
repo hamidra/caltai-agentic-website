@@ -141,17 +141,17 @@ const WorkflowTabsSection = () => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-[30px] font-bold text-[#242424] leading-[1.12] tracking-[-0.02em] mb-[28px] font-heading w-full lg:max-w-[420px]">
+                <h3 className="text-[30px] font-bold text-[#443218] leading-[1.12] tracking-[-0.02em] mb-[28px] font-heading w-full lg:max-w-[420px]">
                   {currentTab.headline}
                 </h3>
 
-                <p className="text-[17px] leading-[1.45] text-[#94897F] mb-[34px] font-sans font-normal lg:max-w-[400px]">
+                <p className="text-[16px] leading-[1.45] text-[#695A44] mb-[34px] font-inter font-normal lg:max-w-[400px]">
                   {currentTab.description}
                 </p>
 
                 {/* "What will be handled" Divider Block */}
                 <div className="w-full lg:max-w-[414px] border-t border-b border-[rgba(80,70,60,0.14)] py-[10px] flex items-center justify-between mb-[36px]">
-                  <span className="text-[18px] font-semibold text-[#262626] whitespace-nowrap">
+                  <span className="text-[18px] font-semibold text-[#443218] whitespace-nowrap">
                     What will be handled
                   </span>
                   <div
@@ -164,7 +164,7 @@ const WorkflowTabsSection = () => {
                   {currentTab.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex items-start gap-4">
                       <div className="w-[8px] h-[8px] bg-[#FF5A1F] mt-[7px] shrink-0" />
-                      <span className="text-[15px] font-medium text-[#94897F] leading-[1.35] font-sans">
+                      <span className="text-[15px] font-normal text-[#695A44] leading-[1.35] font-inter">
                         {bullet}
                       </span>
                     </li>
@@ -173,10 +173,10 @@ const WorkflowTabsSection = () => {
 
                 {/* Buttons - Same row on desktop, naturally in flow */}
                 <div className="flex flex-row flex-wrap gap-[16px] mt-[42px]">
-                  <button className="w-full lg:w-[234px] h-[46px] flex-shrink-0 rounded-full bg-[#FF5A1F] text-white text-[16px] font-medium transition-opacity hover:opacity-90">
+                  <button className="w-full lg:w-[234px] h-[46px] flex-shrink-0 rounded-full bg-[#FF5A1F] text-white text-[15px] font-medium transition-opacity hover:opacity-90">
                     Become a design partner
                   </button>
-                  <button className="w-full lg:w-[174px] h-[46px] flex-shrink-0 rounded-full border border-[#A79A8E] bg-transparent text-[#40362D] text-[16px] font-medium transition-colors hover:bg-[rgba(167,154,142,0.05)]">
+                  <button className="w-full lg:w-[174px] h-[46px] flex-shrink-0 rounded-full border border-[#A79A8E] bg-transparent text-[#40362D] text-[15px] font-medium transition-colors hover:bg-[rgba(167,154,142,0.05)]">
                     See a walkthrough
                   </button>
                 </div>

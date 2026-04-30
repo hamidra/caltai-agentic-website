@@ -26,19 +26,15 @@ const ControlSection = () => {
                     {/* Badge */}
                     <div className="h-[40px] mx-auto flex w-fit items-center gap-2 px-4 rounded-full border border-white/10 bg-[#191919] mb-[82px]">
                         <div className="w-[18px] h-[18px] flex items-center justify-center">
-                            <svg
-                                width="18"
-                                height="18"
-                                viewBox="0 0 18 18"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <rect x="2" y="3" width="14" height="4" rx="2" fill="#FF5A1F" />
-                                <rect x="2" y="8" width="10" height="4" rx="2" fill="#FF5A1F" opacity="0.85" />
-                                <rect x="2" y="13" width="5" height="3" rx="1.5" fill="#FF5A1F" opacity="0.7" />
+                            <svg width="297" height="298" viewBox="0 0 297 298" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M178 89.4756H237V149.476H177V119.001H118V0H178V89.4756Z" fill="#FDA177" />
+                                <rect x="236" y="60.4878" width="60" height="30" fill="#FDC0A4" />
+                                <path d="M119 60.001H60V237.979H119V297.979H59V238.976H0V58.9756H59V0H119V60.001Z" fill="#FB631C" />
+                                <path d="M296.023 297.979H236.023V208.476H178V297.979H118V178.979H177V148.476H296.023V297.979Z" fill="#FC8249" />
                             </svg>
+
                         </div>
-                        <span className="text-[14px] font-medium text-[#F2EEE9] font-sans">
+                        <span className="text-[14px] font-medium text-[#F2EEE9] font-inter">
                             Control
                         </span>
                     </div>
@@ -73,14 +69,14 @@ const ControlSection = () => {
                             {controls.map((item) => (
                                 <div key={item.title}>
                                     <div className="h-[54px] border-y border-white/20 flex items-center">
-                                        <h3 className="whitespace-nowrap text-[18px] font-normal text-[#D7C1A4] leading-[1.2] font-sans">
+                                        <h3 className="whitespace-nowrap text-[18px] font-normal text-[#D7C1A4] leading-[1.2] font-inter">
                                             {item.title}
                                         </h3>
 
                                         <div className="ml-5 h-[28px] min-w-[80px] flex-1 hatch-pattern opacity-40" />
                                     </div>
 
-                                    <p className="mt-[20px] text-[15px] font-normal leading-[1.55] text-[#F2EEE9]/90 font-sans max-w-[360px]">
+                                    <p className="mt-[20px] text-[15px] font-normal leading-[1.55] text-[#F2EEE9]/90 font-inter max-w-[360px]">
                                         {item.description}
                                     </p>
                                 </div>
@@ -106,7 +102,7 @@ const ControlSection = () => {
                         }}
                     />
 
-                    <p className="text-[20px] font-semibold text-[#F2EEE9] leading-[1.45] text-center w-[820px] z-10 font-sans">
+                    <p className="text-[20px] font-semibold text-[#F2EEE9] leading-[1.45] text-center w-[820px] z-10 font-inter">
                         We’re building this trust-first. CaltAI is currently in private design partnership with a small
                         group of agency operators helping us shape how this works in practice.
                     </p>

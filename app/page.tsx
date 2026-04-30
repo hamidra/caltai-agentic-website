@@ -4,6 +4,8 @@ import ProblemSection from "@/components/ProblemSection";
 import WorkflowsIntroSection from "@/components/WorkflowsIntroSection";
 import WorkflowTabsSection from "@/components/WorkflowTabsSection";
 import ControlSection from "@/components/ControlSection";
+import FAQSection from "@/components/FAQSection";
+import CTASection from "@/components/CTASection";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
       <WorkflowsIntroSection />
       <WorkflowTabsSection />
       <ControlSection />
+      <FAQSection />
+      <CTASection />
 
       {/* Additional sections will be added here one by one */}
     </main>
