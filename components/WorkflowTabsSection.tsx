@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 const tabData = [
@@ -11,7 +12,7 @@ const tabData = [
     headline: (
       <>
         Client intake, without the
-        <br />
+        <br className="hidden sm:block" />
         back-and-forth.
       </>
     ),
@@ -32,7 +33,7 @@ const tabData = [
     headline: (
       <>
         Lead lifecycle, from first
-        <br />
+        <br className="hidden sm:block" />
         touch to booked call.
       </>
     ),
@@ -53,7 +54,7 @@ const tabData = [
     headline: (
       <>
         Outbound follow-up that
-        <br />
+        <br className="hidden sm:block" />
         doesn’t go cold.
       </>
     ),
@@ -74,7 +75,7 @@ const tabData = [
     headline: (
       <>
         Onboarding, from signed deal
-        <br />
+        <br className="hidden sm:block" />
         to first value delivered.
       </>
     ),
@@ -91,48 +92,41 @@ const tabData = [
 ];
 
 const WorkflowTabsSection = () => {
-  const [activeIdx, setActiveIdx] = useState(3); // Default to Post-sales onboarding
+  const [activeIdx, setActiveIdx] = useState(3);
   const currentTab = tabData[activeIdx];
 
-  const hatchStripStyle = {
-    height: "52px",
-    width: "100%",
-    backgroundColor: "#F7F4EF",
-    backgroundImage: "repeating-linear-gradient(45deg, #FF9A73, #FF9A73 2px, transparent 2px, transparent 10px)",
-
-  };
-
   return (
-    <section className="w-full bg-[#FBF9F4] relative pt-[60px] overflow-hidden">
-      {/* Top Hatch Strip - Behind Tabs */}
-      <div className="absolute top-[60px] border-t border-b border-[#FF6A2A] left-0 h-[52px] w-[100%] right-0 z-0 hatch-pattern-strip" />
+    <section className="relative w-full overflow-hidden bg-[#FBF9F4] pt-[44px] md:pt-[56px] lg:pt-[60px]">
+      {/* Top Hatch Strip */}
+      <div className="absolute left-0 right-0 top-[44px] z-0 h-[52px] border-y border-[#FF6A2A] hatch-pattern-strip md:top-[56px] lg:top-[60px]" />
 
-      <div className="max-w-[1300px] mx-auto relative z-10 flex flex-col items-start lg:items-center">
-        {/* Tab Row Container - sits flush with the panel below */}
-        <div className="flex justify-center mb-[-1px]">
-          <div className="flex border-t border-l border-r border-[#FF6A2A] bg-[#F7F4EF] overflow-x-auto no-scrollbar max-w-full">
+      <div className="relative z-10 mx-auto flex max-w-[1300px] flex-col items-start lg:items-center">
+        {/* Tabs */}
+        <div className="w-full px-5 md:px-8 lg:flex lg:justify-center lg:px-0">
+          <div className="grid w-full grid-cols-2 border-l border-t border-[#FF6A2A] bg-[#F7F4EF] lg:flex lg:w-auto lg:border-r">
             {tabData.map((tab, idx) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveIdx(idx)}
                 aria-selected={activeIdx === idx}
-                className={`flex-shrink-0 h-[52px] text-[17px] font-medium transition-colors border-r last:border-r-0 border-[#FF6A2A] flex items-center justify-center px-6 whitespace-nowrap
-                  ${activeIdx === idx ? "bg-[#FF5A1F] text-white" : "bg-[#F7F4EF] text-[#8D8176]"}`}
-                style={{ width: tab.width }}
+                className={`h-[52px] border-b border-r border-[#FF6A2A] px-3 text-[14px] font-medium transition-colors md:px-6 md:text-[16px] lg:flex-shrink-0 lg:border-b-0 lg:text-[17px] ${activeIdx === idx
+                    ? "bg-[#FF5A1F] text-white"
+                    : "bg-[#F7F4EF] text-[#8D8176]"
+                  }`}
+                style={{
+                  width: undefined,
+                }}
               >
-                {tab.label}
+                <span className="whitespace-nowrap">{tab.label}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Main Outer Panel */}
-        <div
-          className="w-full lg:w-[1300px] top-[-1px] lg:h-[670px] border-l border-t border-r border-b border-[#FF6A2A] bg-[#F7F4EF] pt-[58px] pb-[56px] px-[105px] md:px-[105px] sm:px-[22px] flex flex-col lg:grid lg:grid-cols-[430px_535px] lg:gap-[85px] relative items-start box-border overflow-hidden"
-          style={{ maxWidth: "100%" }}
-        >
-          {/* Left Column Content */}
-          <div className="w-full lg:w-[430px] flex flex-col items-start">
+        {/* Main Panel */}
+        <div className="relative top-[-1px] box-border flex w-full max-w-full flex-col gap-10 border border-[#FF6A2A] bg-[#F7F4EF] px-5 pb-10 pt-10 md:px-8 md:pb-12 md:pt-12 lg:h-[670px] lg:w-[1300px] lg:grid-cols-[430px_535px] lg:gap-[85px] lg:px-[105px] lg:pb-[56px] lg:pt-[58px] xl:grid">
+          {/* Left Column */}
+          <div className="w-full lg:w-[430px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentTab.id}
@@ -141,62 +135,83 @@ const WorkflowTabsSection = () => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <h3 className="text-[30px] font-bold text-[#443218] leading-[1.12] tracking-[-0.02em] mb-[28px] font-heading w-full lg:max-w-[420px]">
+                <h3 className="mb-6 w-full font-heading text-[28px] font-bold leading-[1.12] tracking-[-0.02em] text-[#443218] md:text-[30px] lg:mb-[28px] lg:max-w-[430px]">
                   {currentTab.headline}
                 </h3>
 
-                <p className="text-[16px] leading-[1.45] text-[#695A44] mb-[34px] font-inter font-normal lg:max-w-[400px]">
+                <p className="mb-8 font-inter text-[16px] font-normal leading-[1.5] text-[#695A44] lg:mb-[34px] lg:max-w-[400px]">
                   {currentTab.description}
                 </p>
 
-                {/* "What will be handled" Divider Block */}
-                <div className="w-full lg:max-w-[414px] border-t border-b border-[rgba(80,70,60,0.14)] py-[10px] flex items-center justify-between mb-[36px]">
-                  <span className="text-[18px] font-semibold text-[#443218] whitespace-nowrap">
+                {/* Divider Block */}
+                <div className="mb-8 flex w-full items-center justify-between gap-4 border-y border-[rgba(80,70,60,0.14)] py-[10px] lg:mb-[36px] lg:max-w-[414px]">
+                  <span className="whitespace-nowrap text-[16px] font-semibold text-[#443218] md:text-[18px]">
                     What will be handled
                   </span>
-                  <div
-                    className="w-[210px] h-[26px] opacity-80 hatch-pattern-orange"
-                  />
+                  <div className="h-[26px] min-w-[70px] flex-1 hatch-pattern-orange opacity-80" />
                 </div>
 
                 {/* Bullet List */}
-                <ul className="space-y-[15px]">
+                <ul className="space-y-[14px] lg:space-y-[15px]">
                   {currentTab.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex items-start gap-4">
-                      <div className="w-[8px] h-[8px] bg-[#FF5A1F] mt-[7px] shrink-0" />
-                      <span className="text-[15px] font-normal text-[#695A44] leading-[1.35] font-inter">
+                      <div className="mt-[7px] h-[8px] w-[8px] shrink-0 bg-[#FF5A1F]" />
+                      <span className="font-inter text-[15px] font-normal leading-[1.45] text-[#695A44]">
                         {bullet}
                       </span>
                     </li>
                   ))}
                 </ul>
 
-                {/* Buttons - Same row on desktop, naturally in flow */}
-                <div className="flex flex-row flex-wrap gap-[16px] mt-[42px]">
-                  <button className="w-full lg:w-[234px] h-[46px] flex-shrink-0 rounded-full bg-[#FF5A1F] text-white text-[15px] font-medium transition-opacity hover:opacity-90">
+                {/* Buttons */}
+                <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:mt-[42px] lg:gap-[16px]">
+                  <Link
+                    href="/design-partners"
+                    className="flex h-[46px] w-full items-center justify-center rounded-full bg-[#FF5A1F] text-[15px] font-medium text-white transition-opacity hover:opacity-90 sm:w-[234px]"
+                  >
                     Become a design partner
-                  </button>
-                  <button className="w-full lg:w-[174px] h-[46px] flex-shrink-0 rounded-full border border-[#A79A8E] bg-transparent text-[#40362D] text-[15px] font-medium transition-colors hover:bg-[rgba(167,154,142,0.05)]">
+                  </Link>
+
+                  <Link
+                    href="/#demo"
+                    className="flex h-[46px] w-full items-center justify-center rounded-full border border-[#A79A8E] bg-transparent text-[15px] font-medium text-[#40362D] transition-colors hover:bg-[rgba(167,154,142,0.05)] sm:w-[174px]"
+                  >
                     See a walkthrough
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Right Column (Major Visual Block) */}
-          <div className="w-full lg:w-[535px] h-[535px] sm:aspect-square border border-[#BFC0C2] bg-[#F8F8F8] relative overflow-hidden flex-shrink-0 lg:mt-0">
-            {/* Corner to Corner lines (X) */}
-            <svg className="absolute inset-0 w-full h-full text-[#C9C9C9]" preserveAspectRatio="none">
-              <line x1="0" y1="0" x2="100%" y2="100%" stroke="currentColor" strokeWidth="1" />
-              <line x1="100%" y1="0" x2="0" y2="100%" stroke="currentColor" strokeWidth="1" />
+          {/* Right Visual */}
+          <div className="relative aspect-[1.15/1] w-full flex-shrink-0 overflow-hidden border border-[#BFC0C2] bg-[#F8F8F8] md:aspect-square lg:h-[535px] lg:w-[535px]">
+            <svg
+              className="absolute inset-0 h-full w-full text-[#C9C9C9]"
+              preserveAspectRatio="none"
+            >
+              <line
+                x1="0"
+                y1="0"
+                x2="100%"
+                y2="100%"
+                stroke="currentColor"
+                strokeWidth="1"
+              />
+              <line
+                x1="100%"
+                y1="0"
+                x2="0"
+                y2="100%"
+                stroke="currentColor"
+                strokeWidth="1"
+              />
             </svg>
           </div>
         </div>
       </div>
 
       {/* Bottom Zebra Band */}
-      <div className="relative h-[30px] top-[-2px] border-t border-[#D5D4CF] border-b bg-[#FBF9F4] overflow-hidden">
+      <div className="relative top-[-2px] h-[30px] overflow-hidden border-y border-[#D5D4CF] bg-[#FBF9F4]">
         <div className="page-frame h-full hatch-pattern opacity-30" />
       </div>
     </section>

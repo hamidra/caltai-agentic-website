@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -33,8 +33,7 @@ const ProblemSection = () => {
   const [index, setIndex] = useState(0);
   const [offsetTop, setOffsetTop] = useState(0);
 
-  // Measure the offset top after mount to calculate progress relative to viewport start
-  React.useEffect(() => {
+  useEffect(() => {
     if (containerRef.current) {
       setOffsetTop(containerRef.current.offsetTop);
     }
@@ -42,7 +41,6 @@ const ProblemSection = () => {
 
   const { scrollY } = useScroll();
 
-  // Manual progress calculation as requested: (scrollY - offsetTop) / 2160
   const progress = useTransform(
     scrollY,
     [offsetTop, offsetTop + 2160],
@@ -52,124 +50,160 @@ const ProblemSection = () => {
 
   useMotionValueEvent(progress, "change", (latest) => {
     if (latest < 1 / 3) {
-      if (index !== 0) setIndex(0);
+      setIndex(0);
     } else if (latest < 2 / 3) {
-      if (index !== 1) setIndex(1);
+      setIndex(1);
     } else {
-      if (index !== 2) setIndex(2);
+      setIndex(2);
     }
   });
 
   const progressPercent = useTransform(progress, (p) => `${p * 100}%`);
 
   return (
-    <section
-      ref={containerRef}
-      className="relative bg-[#FBF9F4]"
-      style={{ height: "calc(720px + 907px + 2160px)" }}
-    >
-      <div
-        className="sticky top-[63px] z-10 h-auto"
+    <>
+      {/* Desktop sticky scroll version */}
+      <section
+        ref={containerRef}
+        className="relative hidden bg-[#FBF9F4] lg:block"
+        style={{ height: "calc(720px + 907px + 2160px)" }}
       >
-        {/**
-         * Problem frame — 720px, dark
-         * Z-index -1 as requested to stay below the top layer
-         */}
-        <div className="relative z-[-1] !bg-[#262626]">
-          <div className="page-frame h-[720px] relative !bg-[#262626] flex !border-[#4C4C4B] overflow-hidden">
-            {/* Vertical Divider */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-[#4C4C4B] z-10" />
+        <div className="sticky top-[63px] z-10 h-auto">
+          <div className="relative z-[-1] !bg-[#262626]">
+            <div className="page-frame relative flex h-[720px] overflow-hidden !border-[#4C4C4B] !bg-[#262626]">
+              <div className="absolute bottom-0 left-1/2 top-0 z-10 w-px bg-[#4C4C4B]" />
 
-            {/* Left Visual Column */}
-            <div className="w-1/2 h-full bg-[#1C1C1C] relative overflow-hidden">
-              <div
-                className="absolute inset-0 opacity-[0.4]"
-                style={{
-                  backgroundImage: "radial-gradient(#4A4A4A 1.5px, transparent 1.5px)",
-                  backgroundSize: "19px 19px",
-                }}
-              />
+              <div className="relative h-full w-1/2 overflow-hidden bg-[#1C1C1C]">
+                <div
+                  className="absolute inset-0 opacity-[0.4]"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(#4A4A4A 1.5px, transparent 1.5px)",
+                    backgroundSize: "19px 19px",
+                  }}
+                />
+              </div>
+
+              <div className="relative flex h-full w-1/2 flex-col bg-[#262626] pb-0 pl-20 pr-[60px] pt-[90px]">
+                <div className="mb-[56px] inline-flex h-[44px] w-fit items-center gap-[10px] rounded-full border border-[#484746] bg-[#1C1C1C] px-5">
+                  <div className="flex h-[22px] w-[22px] items-center justify-center">
+                    <svg width="17" height="18" viewBox="0 0 17 18" fill="none">
+                      <rect width="16.918" height="5.71875" rx="2.85938" fill="#FB631C" />
+                      <rect y="5.71875" width="11.7969" height="5.71875" rx="2.85938" fill="#FB9F72" />
+                      <rect y="11.4375" width="5.72" height="5.71875" rx="2.85938" fill="#FBCCB3" />
+                    </svg>
+                  </div>
+                  <span className="font-inter text-[16px] font-medium text-[#F6F3EF]">
+                    Problem
+                  </span>
+                </div>
+
+                <div className="relative flex-1">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.45, ease: "circOut" }}
+                      className="w-[478px]"
+                    >
+                      <h2 className="mb-[44px] font-heading text-[32px] font-semibold leading-[1.15] text-[#F6F3EF]">
+                        {problemStates[index].title}
+                      </h2>
+
+                      <p className="whitespace-pre-line font-inter text-[16px] font-normal leading-[1.55] text-[#F6F3EF]">
+                        {problemStates[index].body}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <div className="relative mb-[100px] w-[470px] pt-8">
+                  <motion.div
+                    className="absolute top-0 flex h-6 items-center px-1 font-inter text-[16px] font-normal text-[#FF5A1F]"
+                    style={{
+                      left: progressPercent,
+                      translateX: "-50%",
+                    }}
+                  >
+                    {problemStates[index].id}
+                  </motion.div>
+
+                  <div className="relative flex h-px w-full items-center bg-[#4C4C4B]">
+                    <div className="absolute left-[33.333%] h-3 w-px bg-[#4C4C4B]" />
+                    <div className="absolute left-[66.666%] h-3 w-px bg-[#4C4C4B]" />
+                    <motion.div
+                      className="absolute left-0 h-[4px] rounded-full bg-[#FF5A1F]"
+                      style={{ width: progressPercent }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Right Text Column */}
-            <div className="w-1/2 h-full bg-[#262626] relative flex flex-col pt-[90px] pl-20 pr-[60px]">
-              {/* Badge */}
-              <div className="h-[44px] inline-flex items-center gap-[10px] px-5 rounded-full border border-[#484746] bg-[#1C1C1C] mb-[56px] w-fit">
-                <div className="w-[22px] h-[22px] flex items-center justify-center">
-                  <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="16.918" height="5.71875" rx="2.85938" fill="#FB631C" />
-                    <rect y="5.71875" width="11.7969" height="5.71875" rx="2.85938" fill="#FB9F72" />
-                    <rect y="11.4375" width="5.72" height="5.71875" rx="2.85938" fill="#FBCCB3" />
-                  </svg>
+            <div className="relative h-[30px] overflow-hidden border-y border-[#D5D4CF] bg-[#FBF9F4]">
+              <div className="page-frame h-full hatch-pattern opacity-30" />
+            </div>
+          </div>
 
-                </div>
-                <span className="text-[16px] font-medium text-[#F6F3EF] font-inter">Problem</span>
+          <div className="relative z-[1] bg-[#FBF9F4]">
+            <CaltAILayer />
+          </div>
+        </div>
+      </section>
+
+      {/* Tablet/mobile static version */}
+      <section className="block bg-[#FBF9F4] lg:hidden">
+        <div className="bg-[#262626]">
+          <div className="page-frame !border-[#4C4C4B]">
+            <div className="px-5 py-14 sm:px-8 md:px-10 md:py-16">
+              <div className="mb-10 inline-flex h-[42px] w-fit items-center gap-[10px] rounded-full border border-[#484746] bg-[#1C1C1C] px-5">
+                <svg width="17" height="18" viewBox="0 0 17 18" fill="none">
+                  <rect width="16.918" height="5.71875" rx="2.85938" fill="#FB631C" />
+                  <rect y="5.71875" width="11.7969" height="5.71875" rx="2.85938" fill="#FB9F72" />
+                  <rect y="11.4375" width="5.72" height="5.71875" rx="2.85938" fill="#FBCCB3" />
+                </svg>
+                <span className="font-inter text-[15px] font-medium text-[#F6F3EF]">
+                  Problem
+                </span>
               </div>
 
-              {/* Animated Problem Content */}
-              <div className="relative flex-1">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.45, ease: "circOut" }}
-                    className="w-[478px]"
+              <div className="grid gap-5 md:gap-6">
+                {problemStates.map((state, i) => (
+                  <motion.article
+                    key={state.id}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.25 }}
+                    transition={{ duration: 0.45, delay: i * 0.08 }}
+                    className="border border-[#4C4C4B] bg-[#1C1C1C] p-6 sm:p-7 md:p-8"
                   >
-                    <h2 className="text-[32px] font-semibold text-[#F6F3EF] leading-[1.15] mb-[44px] font-heading">
-                      {problemStates[index].title}
+                    <div className="mb-5 font-inter text-[15px] font-normal text-[#FF5A1F]">
+                      {state.id}
+                    </div>
+
+                    <h2 className="font-heading text-[26px] font-semibold leading-[1.12] text-[#F6F3EF] sm:text-[30px] md:text-[34px]">
+                      {state.title}
                     </h2>
-                    <p className="text-[16px] leading-[1.55] text-[#F6F3EF] font-normal whitespace-pre-line font-inter">
-                      {problemStates[index].body}
+
+                    <p className="mt-7 whitespace-pre-line font-inter text-[15px] font-normal leading-[1.65] text-[#F6F3EF]/90 sm:text-[16px]">
+                      {state.body}
                     </p>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Progress Indicator */}
-              <div className="w-[470px] mb-[100px] relative pt-8">
-                <motion.div
-                  className="absolute top-0 text-[16px] font-normal text-[#FF5A1F] font-inter h-6 flex items-center"
-                  style={{
-                    left: progressPercent,
-                    translateX: "-50%",
-                    paddingLeft: "4px",
-                    paddingRight: "4px",
-                  }}
-                >
-                  {problemStates[index].id}
-                </motion.div>
-
-                <div className="h-[1px] w-full bg-[#4C4C4B] relative flex items-center">
-                  <div className="absolute left-[33.333%] w-[1px] h-3 bg-[#4C4C4B]" />
-                  <div className="absolute left-[66.666%] w-[1px] h-3 bg-[#4C4C4B]" />
-                  <motion.div
-                    className="absolute left-0 h-[4px] bg-[#FF5A1F] rounded-full"
-                    style={{ width: progressPercent }}
-                  />
-                </div>
+                  </motion.article>
+                ))}
               </div>
             </div>
           </div>
 
-          {/**
-           * Hatched transition band
-           */}
-          <div className="relative h-[30px] border-t border-[#D5D4CF] border-b bg-[#FBF9F4] overflow-hidden">
+          <div className="relative h-[30px] overflow-hidden border-y border-[#D5D4CF] bg-[#FBF9F4]">
             <div className="page-frame h-full hatch-pattern opacity-30" />
           </div>
         </div>
 
-        {/**
-         * CaltAI Layer — Layer 1 (on top)
-         * Z-index 1 as requested
-         */}
-        <div className="relative z-[1] bg-[#FBF9F4]">
-          <CaltAILayer />
-        </div>
-      </div>
-    </section>
+        <CaltAILayer />
+      </section>
+    </>
   );
 };
 
