@@ -41,21 +41,21 @@ const CTASection = () => {
                     <div className="mb-9 flex w-full max-w-[360px] flex-col items-center justify-center gap-3 sm:max-w-[640px] sm:flex-row sm:gap-4 md:mb-[42px] lg:gap-[32px]">
                         <Link
                             href="/design-partners"
-                            className="flex h-[46px] w-full max-w-[320px] items-center justify-center rounded-full bg-[#FF5A1F] text-[15px] font-medium text-white transition-opacity hover:opacity-90 sm:w-[234px]"
+                            className="flex h-[46px] w-full max-w-[340px] items-center justify-center rounded-full bg-[#FF5A1F] px-5 text-[15px] font-medium text-white transition-all hover:bg-[#E84D14] sm:w-[304px]"
                         >
-                            Become a design partner
+                            Learn about our design partnership
                         </Link>
 
                         <Link
-                            href="/design-partners"
-                            className="flex h-[46px] w-full max-w-[340px] items-center justify-center rounded-full border border-[#443218] bg-[#FBF9F4] px-5 text-[15px] font-medium text-[#443218] transition-colors hover:bg-[rgba(167,154,142,0.05)] sm:w-[304px]"
+                            href="/get-started?mode=demo"
+                            className="flex h-[46px] w-full max-w-[174px] items-center justify-center rounded-full border border-[#443218] bg-[#FBF9F4] px-5 text-[15px] font-medium text-[#443218] transition-colors hover:bg-[rgba(167,154,142,0.05)] sm:w-[174px]"
                         >
-                            Learn about our design partnership
+                            Book a demo
                         </Link>
                     </div>
 
                     <a
-                        href="#"
+                        href="/get-started?mode=newsletter"
                         className="inline-flex items-center gap-2 font-sans text-[16px] font-medium text-[#443218]"
                     >
                         Stay informed

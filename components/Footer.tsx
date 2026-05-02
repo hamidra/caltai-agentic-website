@@ -15,7 +15,7 @@ export default function Footer() {
             links: [
                 ["About us", "/#about"],
                 ["Design partnership", "/design-partners"],
-                ["Book a demo", "/#book"],
+                ["Book a demo", "/get-started?mode=demo"],
             ],
         },
         {

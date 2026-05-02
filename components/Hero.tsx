@@ -129,7 +129,7 @@ const Hero = () => {
               </Link>
 
               <Link
-                href="/#demo"
+                href="/get-started?mode=demo"
                 className="flex h-[52px] w-full items-center justify-center rounded-full border border-[#D5D4CF] px-8 font-inter text-[16px] font-medium text-[#443218] transition-all hover:bg-white sm:w-auto"
               >
                 Book a demo

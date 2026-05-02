@@ -63,7 +63,7 @@ const Navbar = () => {
           {/* Desktop CTA */}
           <div className="hidden items-center lg:flex">
             <Link
-              href="/#demo"
+              href="/get-started?mode=demo"
               className="flex h-[40px] w-[140px] items-center justify-center border border-[#D5D4CF] text-[14px] font-medium text-[#443218] transition-all hover:bg-[#F2EEE9]"
             >
               Book a demo

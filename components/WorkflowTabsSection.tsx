@@ -103,15 +103,15 @@ const WorkflowTabsSection = () => {
       <div className="relative z-10 mx-auto flex max-w-[1300px] flex-col items-start lg:items-center">
         {/* Tabs */}
         <div className="w-full px-5 md:px-8 lg:flex lg:justify-center lg:px-0">
-          <div className="grid w-full grid-cols-2 border-l border-t border-[#FF6A2A] bg-[#F7F4EF] lg:flex lg:w-auto lg:border-r">
+          <div className="grid w-full grid-cols-2 border-l border-t border-[#FF6A2A] bg-[#F7F4EF] lg:flex lg:w-auto">
             {tabData.map((tab, idx) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveIdx(idx)}
                 aria-selected={activeIdx === idx}
                 className={`h-[52px] border-b border-r border-[#FF6A2A] px-3 text-[14px] font-medium transition-colors md:px-6 md:text-[16px] lg:flex-shrink-0 lg:border-b-0 lg:text-[17px] ${activeIdx === idx
-                    ? "bg-[#FF5A1F] text-white"
-                    : "bg-[#F7F4EF] text-[#8D8176]"
+                  ? "bg-[#FF5A1F] text-white"
+                  : "bg-[#F7F4EF] text-[#8D8176]"
                   }`}
                 style={{
                   width: undefined,
@@ -124,7 +124,7 @@ const WorkflowTabsSection = () => {
         </div>
 
         {/* Main Panel */}
-        <div className="relative top-[-1px] box-border flex w-full max-w-full flex-col gap-10 border border-[#FF6A2A] bg-[#F7F4EF] px-5 pb-10 pt-10 md:px-8 md:pb-12 md:pt-12 lg:h-[670px] lg:w-[1300px] lg:grid-cols-[430px_535px] lg:gap-[85px] lg:px-[105px] lg:pb-[56px] lg:pt-[58px] xl:grid">
+        <div className="relative top-[-2px] box-border flex w-full max-w-full flex-col gap-10 border border-[#FF6A2A] bg-[#F7F4EF] px-5 pb-10 pt-10 md:px-8 md:pb-12 md:pt-12 lg:h-[670px] lg:w-[1300px] lg:grid-cols-[430px_535px] lg:gap-[85px] lg:px-[105px] lg:pb-[56px] lg:pt-[58px] xl:grid">
           {/* Left Column */}
           <div className="w-full lg:w-[430px]">
             <AnimatePresence mode="wait">
@@ -173,7 +173,7 @@ const WorkflowTabsSection = () => {
                   </Link>
 
                   <Link
-                    href="/#demo"
+                    href="/get-started?mode=demo"
                     className="flex h-[46px] w-full items-center justify-center rounded-full border border-[#A79A8E] bg-transparent text-[15px] font-medium text-[#40362D] transition-colors hover:bg-[rgba(167,154,142,0.05)] sm:w-[174px]"
                   >
                     See a walkthrough

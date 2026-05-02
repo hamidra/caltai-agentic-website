@@ -88,10 +88,7 @@ const HatchDivider = ({ dark = false }: { dark?: boolean }) => (
             : "border-[#D5D4CF] bg-[#FBF9F4]"
             }`}
     >
-        <div
-            className={`h-full w-full hatch-pattern ${dark ? "opacity-25" : "opacity-30"
-                }`}
-        />
+        <div className={`h-full w-full hatch-pattern ${dark ? "opacity-25" : "opacity-30"}`} />
     </div>
 );
 
@@ -106,71 +103,72 @@ export default function DesignPartnersPage() {
 
                     {/* Hero */}
                     <motion.div
-                        className="px-[55px] pb-[78px] pt-[82px]"
+                        className="px-5 pb-14 pt-14 sm:px-6 md:px-10 md:pb-16 md:pt-16 lg:px-[55px] lg:pb-[78px] lg:pt-[82px]"
                         initial="hidden"
                         animate="visible"
                         variants={fadeUp}
                         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <div className="h-[40px] inline-flex items-center gap-2 pr-4 pl-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] mb-[72px]">
-                            <div className="w-[22px] h-[22px] flex items-center justify-center text-[#5C35F5]">
-                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path opacity="0.68" d="M10.6133 0C16.4748 0 21.2266 4.75273 21.2266 10.6152C21.2264 16.4776 16.4748 21.2305 10.6133 21.2305C4.75181 21.2305 0.00012677 16.4776 0 10.6152C0 4.75273 4.75173 0 10.6133 0ZM10.6055 3.21484C6.51727 3.21484 3.20312 6.52833 3.20312 10.6152C3.20334 14.702 6.5174 18.0146 10.6055 18.0146C14.6935 18.0146 18.0076 14.702 18.0078 10.6152C18.0078 6.52833 14.6937 3.21484 10.6055 3.21484Z" fill="#6C4DE2" fill-opacity="0.7" />
-                                    <ellipse opacity="0.68" cx="10.6094" cy="10.6159" rx="2.85938" ry="2.86" fill="#FB631C" />
-                                </svg>
+                        <div className="mb-10 flex justify-center md:mb-14 lg:mb-[72px] lg:justify-start">
+                            <div className="inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] pl-2 pr-4">
+                                <div className="flex h-[22px] w-[22px] items-center justify-center text-[#5C35F5]">
+                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                        <path
+                                            opacity="0.68"
+                                            d="M10.6133 0C16.4748 0 21.2266 4.75273 21.2266 10.6152C21.2264 16.4776 16.4748 21.2305 10.6133 21.2305C4.75181 21.2305 0.00012677 16.4776 0 10.6152C0 4.75273 4.75173 0 10.6133 0ZM10.6055 3.21484C6.51727 3.21484 3.20312 6.52833 3.20312 10.6152C3.20334 14.702 6.5174 18.0146 10.6055 18.0146C14.6935 18.0146 18.0076 14.702 18.0078 10.6152C18.0078 6.52833 14.6937 3.21484 10.6055 3.21484Z"
+                                            fill="#6C4DE2"
+                                            fillOpacity="0.7"
+                                        />
+                                        <ellipse
+                                            opacity="0.68"
+                                            cx="10.6094"
+                                            cy="10.6159"
+                                            rx="2.85938"
+                                            ry="2.86"
+                                            fill="#FB631C"
+                                        />
+                                    </svg>
+                                </div>
 
-
+                                <span className="font-inter text-[14px] font-medium text-[#443218]">
+                                    Design Partnership
+                                </span>
                             </div>
-
-                            <span className="text-[14px] font-medium text-[#443218] font-inter">
-                                Design Partnership
-                            </span>
                         </div>
 
-                        <div className="grid grid-cols-[560px_1fr] items-start gap-[110px]">
-                            <div>
-                                <h1 className="font-heading text-[58px] font-semibold leading-[1.06] tracking-[-0.03em] text-[#443218]">
+                        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[560px_1fr] lg:items-start lg:gap-[110px]">
+                            <div className="text-center lg:text-left">
+                                <h1 className="font-heading text-[40px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#443218] sm:text-[46px] md:text-[52px] lg:text-[58px]">
                                     Help shape the AI operator for agency onboarding.
                                 </h1>
 
-                                <p className="mt-[34px] font-inter text-[19px] font-normal leading-[1.6] text-[#695A44]">
+                                <p className="mx-auto mt-6 max-w-[680px] font-inter text-[17px] font-normal leading-[1.6] text-[#695A44] md:mt-8 md:text-[18px] lg:mx-0 lg:mt-[34px] lg:text-[19px]">
                                     We’re working with a small group of agency operators to build
                                     CaltAI around real post-sale onboarding work, not fake demo
                                     workflows.
                                 </p>
 
-                                <div className="mt-[42px] flex items-center gap-4">
+                                <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center md:mt-10 lg:mt-[42px] lg:justify-start">
                                     <Link
-                                        href="/#book"
-                                        className="flex h-[52px] items-center justify-center rounded-full bg-[#FF5A1F] px-8 font-inter text-[16px] font-medium text-white transition-transform hover:scale-[1.02]"
+                                        href="/get-started?mode=design-partner"
+                                        className="flex h-[52px] w-fit min-w-[280px] items-center justify-center rounded-full bg-[#FF5A1F] px-8 font-inter text-[16px] font-medium text-white transition-transform hover:scale-[1.02]"
                                     >
                                         Apply to be a design partner
-                                    </Link>
-
-                                    <Link
-                                        href="/#workflows"
-                                        className="flex h-[52px] items-center justify-center rounded-full border border-[#8D8177] px-8 font-inter text-[16px] font-medium text-[#443218] transition-colors hover:bg-white"
-                                    >
-                                        See the workflow
                                     </Link>
                                 </div>
                             </div>
 
                             <motion.div
-                                className="border border-[#D5D4CF] bg-[#F6F3EF] p-[34px]"
+                                className="border border-[#D5D4CF] bg-[#F6F3EF] p-6 md:p-8 lg:p-[34px]"
                                 initial={{ opacity: 0, y: 28 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    duration: 0.6,
-                                    delay: 0.18,
-                                    ease: [0.22, 1, 0.36, 1],
-                                }}
+                                transition={{ duration: 0.6, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
                             >
-                                <h2 className="font-heading text-[30px] font-semibold leading-[1.15] text-[#443218]">
+                                <h2 className="font-heading text-[28px] font-semibold leading-[1.15] text-[#443218] md:text-[30px]">
                                     Who this is for
                                 </h2>
 
-                                <div className="mt-8 space-y-5 font-inter text-[17px] font-normal leading-[1.55] text-[#695A44]">
+                                <div className="mt-6 space-y-5 font-inter text-[16px] font-normal leading-[1.55] text-[#695A44] md:mt-8 md:text-[17px]">
                                     <p>
                                         Agencies and consultancies with repeated client onboarding,
                                         messy handoffs, missing assets, kickoff coordination, and
@@ -189,7 +187,7 @@ export default function DesignPartnersPage() {
 
                     {/* Benefits / Commitments */}
                     <motion.div
-                        className="grid grid-cols-2 gap-[80px] px-[55px] py-[76px]"
+                        className="grid grid-cols-1 gap-12 px-5 py-14 sm:px-6 md:grid-cols-2 md:gap-10 md:px-10 md:py-16 lg:gap-[80px] lg:px-[55px] lg:py-[76px]"
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.25 }}
@@ -199,20 +197,16 @@ export default function DesignPartnersPage() {
                             ["What you get", benefits],
                             ["What we ask", commitments],
                         ].map(([title, items]) => (
-                            <motion.div
-                                key={title as string}
-                                variants={fadeUp}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <h2 className="font-heading text-[38px] font-semibold leading-[1.15] text-[#443218]">
+                            <motion.div key={title as string} variants={fadeUp} transition={{ duration: 0.5 }}>
+                                <h2 className="font-heading text-[32px] font-semibold leading-[1.15] text-[#443218] md:text-[36px] lg:text-[38px]">
                                     {title as string}
                                 </h2>
 
-                                <ul className="mt-8 space-y-4">
+                                <ul className="mt-6 space-y-4 md:mt-8">
                                     {(items as string[]).map((item) => (
                                         <li
                                             key={item}
-                                            className="flex gap-4 font-inter text-[17px] font-normal leading-[1.55] text-[#695A44]"
+                                            className="flex gap-4 font-inter text-[16px] font-normal leading-[1.55] text-[#695A44] md:text-[17px]"
                                         >
                                             <span className="mt-[10px] h-[7px] w-[7px] shrink-0 bg-[#FF5A1F]" />
                                             <span>{item}</span>
@@ -230,47 +224,43 @@ export default function DesignPartnersPage() {
                         <HatchDivider dark />
 
                         <motion.div
-                            className="px-[55px] py-[82px]"
+                            className="px-5 py-14 sm:px-6 md:px-10 md:py-16 lg:px-[55px] lg:py-[82px]"
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, amount: 0.2 }}
                         >
-                            <motion.div
-                                className="max-w-[860px]"
-                                variants={fadeUp}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <div className="mb-[42px] inline-flex h-[40px] items-center rounded-full border border-white/10 bg-[#191919] px-4">
+                            <motion.div className="max-w-[860px]" variants={fadeUp} transition={{ duration: 0.5 }}>
+                                <div className="mb-8 inline-flex h-[40px] items-center rounded-full border border-white/10 bg-[#191919] px-4 lg:mb-[42px]">
                                     <span className="font-inter text-[14px] font-medium text-[#F2EEE9]">
                                         Program overview
                                     </span>
                                 </div>
 
-                                <h2 className="font-heading text-[46px] font-semibold leading-[1.1] tracking-[-0.02em] text-[#F2EEE9]">
+                                <h2 className="font-heading text-[34px] font-semibold leading-[1.1] tracking-[-0.02em] text-[#F2EEE9] sm:text-[40px] lg:text-[46px]">
                                     Choose the level of involvement that fits your team.
                                 </h2>
 
-                                <p className="mt-5 font-inter text-[17px] font-normal leading-[1.6] text-[#D7C1A4]">
+                                <p className="mt-5 max-w-[760px] font-inter text-[16px] font-normal leading-[1.6] text-[#D7C1A4] md:text-[17px]">
                                     Both programs are built around the same goal: test CaltAI on
                                     real agency onboarding work and shape the product before
                                     public release.
                                 </p>
                             </motion.div>
 
-                            <div className="mt-[52px] grid grid-cols-2 gap-[32px]">
+                            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:mt-[52px] lg:gap-[32px]">
                                 {programs.map((program, index) => (
                                     <motion.div
                                         key={program.name}
-                                        className="relative overflow-hidden border border-[#4A4A4A] bg-[#1D1D1D] p-[36px]"
+                                        className="relative overflow-hidden border border-[#4A4A4A] bg-[#1D1D1D] p-6 md:p-7 lg:p-[36px]"
                                         initial={{ opacity: 0, y: 26 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true, amount: 0.3 }}
                                         transition={{ duration: 0.5, delay: index * 0.12 }}
                                     >
-                                        <div className="absolute right-0 top-0 h-[54px] w-[220px] hatch-pattern opacity-20" />
+                                        <div className="absolute right-0 top-0 h-[54px] w-[160px] hatch-pattern opacity-20 md:w-[190px] lg:w-[220px]" />
 
                                         <div className="relative z-10">
-                                            <div className="mb-[46px] text-[#FF5A1F]">
+                                            <div className="mb-8 text-[#FF5A1F] lg:mb-[46px]">
                                                 {program.icon === "outline" ? (
                                                     <svg width="46" height="46" viewBox="0 0 24 24" fill="none">
                                                         <path
@@ -294,21 +284,18 @@ export default function DesignPartnersPage() {
                                                 {program.eyebrow}
                                             </p>
 
-                                            <h3 className="font-heading text-[42px] font-semibold leading-[1.05] text-[#F2EEE9]">
+                                            <h3 className="font-heading text-[34px] font-semibold leading-[1.05] text-[#F2EEE9] sm:text-[38px] lg:text-[42px]">
                                                 {program.name}
                                             </h3>
 
-                                            <div className="mt-8 border-t border-[#4A4A4A] pt-7">
+                                            <div className="mt-7 border-t border-[#4A4A4A] pt-6 lg:mt-8 lg:pt-7">
                                                 <h4 className="font-inter text-[16px] font-semibold text-[#F2EEE9]">
                                                     Benefits
                                                 </h4>
 
                                                 <ul className="mt-4 space-y-3">
                                                     {program.benefits.map((item) => (
-                                                        <li
-                                                            key={item}
-                                                            className="flex gap-3 font-inter text-[16px] font-normal leading-[1.5] text-[#D7C1A4]"
-                                                        >
+                                                        <li key={item} className="flex gap-3 font-inter text-[15px] font-normal leading-[1.5] text-[#D7C1A4] md:text-[16px]">
                                                             <span className="mt-[9px] h-[6px] w-[6px] shrink-0 bg-[#FF5A1F]" />
                                                             <span>{item}</span>
                                                         </li>
@@ -316,17 +303,14 @@ export default function DesignPartnersPage() {
                                                 </ul>
                                             </div>
 
-                                            <div className="mt-8 border-t border-[#4A4A4A] pt-7">
+                                            <div className="mt-7 border-t border-[#4A4A4A] pt-6 lg:mt-8 lg:pt-7">
                                                 <h4 className="font-inter text-[16px] font-semibold text-[#F2EEE9]">
                                                     Commitment
                                                 </h4>
 
                                                 <ul className="mt-4 space-y-3">
                                                     {program.commitment.map((item) => (
-                                                        <li
-                                                            key={item}
-                                                            className="flex gap-3 font-inter text-[16px] font-normal leading-[1.5] text-[#D7C1A4]"
-                                                        >
+                                                        <li key={item} className="flex gap-3 font-inter text-[15px] font-normal leading-[1.5] text-[#D7C1A4] md:text-[16px]">
                                                             <span className="mt-[9px] h-[6px] w-[6px] shrink-0 bg-[#FF5A1F]" />
                                                             <span>{item}</span>
                                                         </li>
@@ -346,18 +330,18 @@ export default function DesignPartnersPage() {
                 <div className="page-frame">
                     {/* How it works */}
                     <motion.div
-                        className="px-[55px] pt-[82px] pb-[30px]"
+                        className="px-5 pb-8 pt-14 sm:px-6 md:px-10 md:pt-16 lg:px-[55px] lg:pb-[30px] lg:pt-[82px]"
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.2 }}
                     >
-                        <div className="grid grid-cols-[390px_1fr] gap-[100px]">
+                        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[390px_1fr] lg:gap-[100px]">
                             <motion.div variants={fadeUp} transition={{ duration: 0.5 }}>
-                                <h2 className="font-heading text-[42px] font-semibold leading-[1.12] text-[#443218]">
+                                <h2 className="font-heading text-[34px] font-semibold leading-[1.12] text-[#443218] md:text-[38px] lg:text-[42px]">
                                     How the partnership works
                                 </h2>
 
-                                <p className="mt-6 font-inter text-[17px] font-normal leading-[1.6] text-[#695A44]">
+                                <p className="mt-5 max-w-[620px] font-inter text-[16px] font-normal leading-[1.6] text-[#695A44] md:text-[17px]">
                                     The goal is simple: prove CaltAI can reduce manual
                                     coordination in your real onboarding process.
                                 </p>
@@ -367,16 +351,16 @@ export default function DesignPartnersPage() {
                                 {phases.map((phase, index) => (
                                     <motion.div
                                         key={phase.title}
-                                        className="grid grid-cols-[210px_1fr] gap-10 border-t border-[#D5D4CF] py-7"
+                                        className="grid grid-cols-1 gap-3 border-t border-[#D5D4CF] py-6 md:grid-cols-[190px_1fr] md:gap-8 lg:grid-cols-[210px_1fr] lg:gap-10 lg:py-7"
                                         initial={{ opacity: 0, y: 18 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true, amount: 0.4 }}
                                         transition={{ duration: 0.45, delay: index * 0.06 }}
                                     >
-                                        <h3 className="font-inter text-[19px] font-medium text-[#443218]">
+                                        <h3 className="font-inter text-[18px] font-medium text-[#443218] md:text-[19px]">
                                             {phase.title}
                                         </h3>
-                                        <p className="font-inter text-[16px] font-normal leading-[1.65] text-[#695A44]">
+                                        <p className="font-inter text-[15px] font-normal leading-[1.65] text-[#695A44] md:text-[16px]">
                                             {phase.text}
                                         </p>
                                     </motion.div>
@@ -388,12 +372,11 @@ export default function DesignPartnersPage() {
                     <HatchDivider />
 
                     {/* Bottom CTA */}
-                    <div className="relative overflow-hidden bg-[#F6F3EF] px-[55px] py-[70px] text-center">
+                    <div className="relative overflow-hidden bg-[#F6F3EF] px-5 py-14 text-center sm:px-6 md:px-10 md:py-16 lg:px-[55px] lg:py-[70px]">
                         <div
                             className="absolute inset-0 opacity-50"
                             style={{
-                                backgroundImage:
-                                    "radial-gradient(#D6D6D6 1.5px, transparent 1.5px)",
+                                backgroundImage: "radial-gradient(#D6D6D6 1.5px, transparent 1.5px)",
                                 backgroundSize: "24px 24px",
                             }}
                         />
@@ -405,19 +388,19 @@ export default function DesignPartnersPage() {
                             viewport={{ once: true, amount: 0.4 }}
                             transition={{ duration: 0.55 }}
                         >
-                            <h2 className="font-heading text-[44px] font-semibold leading-[1.15] text-[#443218]">
+                            <h2 className="font-heading text-[34px] font-semibold leading-[1.15] text-[#443218] md:text-[40px] lg:text-[44px]">
                                 If onboarding still depends on someone chasing everything, we
                                 should talk.
                             </h2>
 
-                            <p className="mx-auto mt-6 max-w-[660px] font-inter text-[18px] font-normal leading-[1.6] text-[#695A44]">
+                            <p className="mx-auto mt-5 max-w-[660px] font-inter text-[16px] font-normal leading-[1.6] text-[#695A44] md:mt-6 md:text-[18px]">
                                 We are selecting a small number of design partners, so the fit
                                 matters more than volume.
                             </p>
 
                             <Link
-                                href="/#book"
-                                className="mx-auto mt-9 flex h-[54px] w-fit items-center justify-center rounded-full bg-[#FF5A1F] px-9 font-inter text-[17px] font-medium text-white transition-transform hover:scale-[1.02]"
+                                href="/get-started?mode=design-partner"
+                                className="mx-auto mt-8 flex h-[54px] w-fit min-w-[280px] max-w-[calc(100vw-40px)] items-center justify-center rounded-full bg-[#FF5A1F] px-8 font-inter text-[16px] font-medium text-white transition-transform hover:scale-[1.02] md:mt-9 md:px-9 md:text-[17px]"
                             >
                                 Apply to be a design partner
                             </Link>

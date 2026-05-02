@@ -139,14 +139,12 @@ export default function TermsPage() {
         <main className="bg-[#FBF9F4] text-[#443218]">
             <section className="relative bg-[#FBF9F4]">
                 <div className="page-frame min-h-screen">
-                    {/* Top hatch band */}
-                    <div className="h-[30px] w-full overflow-hidden border-b border-[#D5D4CF]">
+                    <div className="h-[24px] w-full overflow-hidden border-b border-[#D5D4CF] sm:h-[30px]">
                         <div className="h-full w-full hatch-pattern opacity-40" />
                     </div>
 
-                    {/* Hero */}
-                    <div className="px-[55px] pb-[70px] pt-[72px]">
-                        <div className="mb-[72px] inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4">
+                    <div className="px-5 pb-12 pt-12 sm:px-8 sm:pb-16 sm:pt-16 lg:px-[55px] lg:pb-[70px] lg:pt-[72px]">
+                        <div className="mb-10 inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4 sm:mb-14 lg:mb-[72px]">
                             <div className="flex h-[20px] w-[20px] items-center justify-center text-[#5C35F5]">
                                 <svg width="22" height="20" viewBox="0 0 25 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect width="24.8915" height="7.33333" rx="3.66667" fill="#613EE9" />
@@ -159,26 +157,26 @@ export default function TermsPage() {
                             </span>
                         </div>
 
-                        <div className="grid grid-cols-[470px_1fr] gap-[120px]">
+                        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[470px_1fr] lg:gap-[120px]">
                             <div>
-                                <h1 className="font-heading text-[56px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#443218]">
+                                <h1 className="font-heading text-[42px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#443218] sm:text-[50px] lg:text-[56px]">
                                     Terms of Service
                                 </h1>
 
-                                <p className="mt-[28px] font-sans text-[18px] font-normal leading-[1.5] text-[#695A44]">
+                                <p className="mt-5 font-sans text-[16px] font-normal leading-[1.5] text-[#695A44] sm:mt-[28px] sm:text-[18px]">
                                     Effective Date: 20 Oct 2025
                                 </p>
                             </div>
 
-                            <div className="max-w-[650px] pt-[8px]">
-                                <p className="font-sans text-[18px] font-normal leading-[1.6] text-[#695A44]">
+                            <div className="max-w-[650px] lg:pt-[8px]">
+                                <p className="font-sans text-[16px] font-normal leading-[1.65] text-[#695A44] sm:text-[18px]">
                                     These Terms of Service (“Terms”) govern your access to and use of
                                     CaltAI’s websites, applications, APIs, and related services
                                     (collectively, the “Service”). The Service is operated by CaltAI
                                     (“CaltAI,” “we,” “us,” or “our”).
                                 </p>
 
-                                <p className="mt-[22px] font-sans text-[18px] font-medium leading-[1.6] text-[#FB631C]">
+                                <p className="mt-[22px] font-sans text-[16px] font-medium leading-[1.65] text-[#FB631C] sm:text-[18px]">
                                     By accessing or using the Service, you agree to be bound by these
                                     Terms. If you do not agree, do not use the Service.
                                 </p>
@@ -188,41 +186,21 @@ export default function TermsPage() {
 
                     <div className="h-px w-full bg-[#D5D4CF]" />
 
-                    {/* Content */}
-                    <div className="grid grid-cols-[300px_1fr] gap-[110px] px-[55px] py-[72px]">
-                        {/* Sticky side note */}
-                        <aside className="hidden lg:block">
-                            <div className="sticky top-10 border-t border-[#D5D4CF] pt-5">
-                                <p className="font-sans text-[15px] font-normal leading-[1.6] text-[#695A44]">
-                                    Please read these terms carefully before using CaltAI.
-                                </p>
-
-                                <div className="mt-8 flex gap-4 font-sans text-[15px] font-medium">
-                                    <Link href="/" className="text-[#443218] underline underline-offset-4">
-                                        Home
-                                    </Link>
-                                    <Link href="/privacy" className="text-[#443218] underline underline-offset-4">
-                                        Privacy Policy
-                                    </Link>
-                                </div>
-                            </div>
-                        </aside>
-
-                        {/* Terms body */}
-                        <div className="max-w-[780px]">
-                            <div className="space-y-[46px]">
+                    <div className="px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[260px_1fr] lg:gap-[80px] lg:px-[55px] lg:py-[72px] xl:grid-cols-[300px_1fr] xl:gap-[110px]">
+                        <div>
+                            <div className="space-y-9 sm:space-y-[46px]">
                                 {sections.map((section) => (
-                                    <section key={section.title} className="border-t border-[#D5D4CF] pt-[28px]">
-                                        <h2 className="font-heading text-[28px] font-semibold leading-[1.2] tracking-[-0.01em] text-[#443218]">
+                                    <section key={section.title} className=" pt-6 sm:pt-[28px]">
+                                        <h2 className="font-heading text-[24px] font-semibold leading-[1.2] tracking-[-0.01em] text-[#443218] sm:text-[28px]">
                                             {section.title}
                                         </h2>
 
                                         {"body" in section && section.body && (
-                                            <div className="mt-[18px] space-y-[16px]">
+                                            <div className="mt-[18px] space-y-[14px] sm:space-y-[16px]">
                                                 {section.body.map((paragraph) => (
                                                     <p
                                                         key={paragraph}
-                                                        className="font-sans text-[16px] font-normal leading-[1.7] text-[#695A44]"
+                                                        className="font-sans text-[15px] font-normal leading-[1.75] text-[#695A44] sm:text-[16px]"
                                                     >
                                                         {paragraph}
                                                     </p>
@@ -235,7 +213,7 @@ export default function TermsPage() {
                                                 {section.list.map((item) => (
                                                     <li
                                                         key={item}
-                                                        className="flex gap-3 font-sans text-[16px] font-medium leading-[1.6] text-[#8D8177]"
+                                                        className="flex gap-3 font-sans text-[15px] font-normal leading-[1.65] text-[#695A44] sm:text-[16px]"
                                                     >
                                                         <span className="mt-[10px] h-[6px] w-[6px] shrink-0 bg-[#FF5A1F]" />
                                                         <span>{item}</span>
@@ -245,10 +223,10 @@ export default function TermsPage() {
                                         )}
 
                                         {"subsections" in section && section.subsections && (
-                                            <div className="mt-[22px] space-y-[30px]">
+                                            <div className="mt-[22px] space-y-[26px] sm:space-y-[30px]">
                                                 {section.subsections.map((subsection) => (
                                                     <div key={subsection.title}>
-                                                        <h3 className="font-sans text-[18px] font-semibold text-[#443218]">
+                                                        <h3 className="font-sans text-[17px] font-semibold text-[#443218] sm:text-[18px]">
                                                             {subsection.title}
                                                         </h3>
 
@@ -257,7 +235,7 @@ export default function TermsPage() {
                                                                 {subsection.body.map((paragraph) => (
                                                                     <p
                                                                         key={paragraph}
-                                                                        className="font-sans text-[16px] font-medium leading-[1.7] text-[#8D8177]"
+                                                                        className="font-sans text-[15px] font-normal leading-[1.75] text-[#695A44] sm:text-[16px]"
                                                                     >
                                                                         {paragraph}
                                                                     </p>
@@ -270,7 +248,7 @@ export default function TermsPage() {
                                                                 {subsection.list.map((item) => (
                                                                     <li
                                                                         key={item}
-                                                                        className="flex gap-3 font-sans text-[16px] font-medium leading-[1.6] text-[#8D8177]"
+                                                                        className="flex gap-3 font-sans text-[15px] font-normal leading-[1.65] text-[#695A44] sm:text-[16px]"
                                                                     >
                                                                         <span className="mt-[10px] h-[6px] w-[6px] shrink-0 bg-[#FF5A1F]" />
                                                                         <span>{item}</span>
@@ -286,17 +264,11 @@ export default function TermsPage() {
                                 ))}
                             </div>
 
-                            <div className="mt-[64px] border-t border-[#D5D4CF] pt-[26px]">
-                                <p className="font-sans text-[15px] font-medium text-[#8D8177]">
-                                    © 2026 CaltAI Inc. All rights reserved.
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Zebra Band */}
-                <div className="relative h-[30px] overflow-hidden border-y border-[#D5D4CF] bg-[#FBF9F4]">
+                <div className="relative h-[24px] overflow-hidden border-y border-[#D5D4CF] bg-[#FBF9F4] sm:h-[30px]">
                     <div className="page-frame h-full hatch-pattern opacity-30" />
                 </div>
             </section>
