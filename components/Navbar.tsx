@@ -6,8 +6,26 @@ import Link from "next/link";
 const navLinks = [
   { label: "Product", href: "/#product" },
   { label: "How it works", href: "/#how-it-works" },
-  { label: "Use cases", href: "/#use-cases" },
   { label: "About us", href: "/#about-us" },
+];
+
+const useCaseLinks = [
+  {
+    label: "Post-sales onboarding",
+    href: "/use-cases/post-sales-onboarding",
+  },
+  {
+    label: "Client intake",
+    href: "/use-cases/client-intake",
+  },
+  {
+    label: "Lead lifecycle",
+    href: "/use-cases/lead-lifecycle",
+  },
+  {
+    label: "Outbound follow-up",
+    href: "/use-cases/outbound-follow-up",
+  },
 ];
 
 const Logo = () => (
@@ -32,6 +50,7 @@ const Logo = () => (
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [useCasesOpen, setUseCasesOpen] = useState(false);
 
   return (
     <nav
@@ -47,9 +66,85 @@ const Navbar = () => {
             <Logo />
           </Link>
 
-          {/* Desktop nav */}
           <div className="hidden items-center gap-8 lg:flex">
-            {navLinks.map((item) => (
+            {navLinks.slice(0, 2).map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="text-[14px] font-medium text-[#443218] transition-colors hover:text-[#FF5A1F]"
+              >
+                {item.label}
+              </Link>
+            ))}
+
+            <div
+              className="relative"
+              onMouseEnter={() => setUseCasesOpen(true)}
+              onMouseLeave={() => setUseCasesOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setUseCasesOpen((prev) => !prev)}
+                className="flex items-center gap-1 text-[14px] font-medium text-[#443218] transition-colors hover:text-[#FF5A1F]"
+                aria-expanded={useCasesOpen}
+              >
+                Use cases
+                <span
+                  className={`transition-transform duration-200 ${useCasesOpen ? "rotate-180" : ""
+                    }`}
+                  aria-hidden="true"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3.5 5.25L7 8.75L10.5 5.25"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+
+              {useCasesOpen && (
+                <div className="absolute left-1/2 top-full z-50 pt-5 -translate-x-1/2">
+                  <div className="w-[310px] border border-[#D5D4CF] bg-[#FBF9F4] shadow-[0_18px_50px_rgba(68,50,24,0.16)]">
+                    <div className="p-2">
+                      {useCaseLinks.map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className="flex items-center justify-between gap-3 border-b border-[#D5D4CF] px-4 py-4 last:border-b-0 hover:bg-[#F6F3EF]"
+                        >
+                          <span className="font-sans text-[15px] font-medium text-[#443218]">
+                            {item.label}
+                          </span>
+
+                          {item.badge && (
+                            <span
+                              className={`rounded-full px-2 py-1 font-sans text-[11px] font-medium ${item.badge === "Primary"
+                                ? "bg-[#FF5A1F] text-white"
+                                : "border border-[#D5D4CF] text-[#695A44]"
+                                }`}
+                            >
+                              {item.badge}
+                            </span>
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {navLinks.slice(2).map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
@@ -60,7 +155,6 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Desktop CTA */}
           <div className="hidden items-center lg:flex">
             <Link
               href="/get-started?mode=demo"
@@ -70,10 +164,9 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Tablet CTA + mobile menu button */}
           <div className="flex items-center gap-3 lg:hidden">
             <Link
-              href="/#demo"
+              href="/get-started?mode=demo"
               className="hidden h-[38px] items-center justify-center border border-[#D5D4CF] px-5 text-[13px] font-medium text-[#443218] transition-all hover:bg-[#F2EEE9] sm:flex"
             >
               Book a demo
@@ -104,40 +197,115 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile/tablet dropdown */}
         {open && (
-          <div className="absolute left-0 right-0 top-[64px] border-b border-[#D5D4CF] bg-[#FBF9F4]/95 backdrop-blur-md lg:hidden">
-            <div className="page-frame border-b-0 px-5 py-5 sm:px-6 md:px-8">
-              <div className="flex flex-col gap-1">
-                {navLinks.map((item) => (
+          <>
+            <div
+              className="fixed inset-0 top-[64px] z-40 bg-[#443218]/30 backdrop-blur-[2px] lg:hidden"
+              onClick={() => setOpen(false)}
+            />
+
+            <div className="absolute left-0 right-0 top-[64px] z-50 border-b border-[#D5D4CF] bg-[#FBF9F4] shadow-[0_24px_80px_rgba(68,50,24,0.22)] lg:hidden">
+              <div className="page-frame border-b-0 px-5 py-5 sm:px-6 md:px-8">
+                <div className="flex flex-col gap-1">
+                  {navLinks.slice(0, 2).map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="border-b border-[#D5D4CF] py-4 text-[18px] font-medium text-[#443218]"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+
+                  <div className="border-b border-[#D5D4CF] py-4">
+                    <button
+                      type="button"
+                      onClick={() => setUseCasesOpen((prev) => !prev)}
+                      className="flex w-full items-center justify-between text-[18px] font-medium text-[#443218]"
+                      aria-expanded={useCasesOpen}
+                    >
+                      Use cases
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        className={`transition-transform duration-200 ${useCasesOpen ? "rotate-180" : ""}`}
+                      >
+                        <path
+                          d="M4.5 6.75L9 11.25L13.5 6.75"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+
+                    {useCasesOpen && (
+                      <div className="mt-4 overflow-hidden border border-[#D5D4CF] bg-[#F6F3EF] shadow-[0_16px_40px_rgba(68,50,24,0.14)]">
+
+                        {useCaseLinks.map((item) => (
+                          <Link
+                            key={item.label}
+                            href={item.href}
+                            onClick={() => {
+                              setOpen(false);
+                              setUseCasesOpen(false);
+                            }}
+                            className="flex items-center justify-between gap-3 border-b border-[#D5D4CF] px-4 py-4 last:border-b-0"
+                          >
+                            <span className="font-sans text-[15px] font-medium text-[#443218]">
+                              {item.label}
+                            </span>
+
+                            {item.badge && (
+                              <span
+                                className={`rounded-full px-2 py-1 font-sans text-[11px] font-medium ${item.badge === "Primary"
+                                  ? "bg-[#FF5A1F] text-white"
+                                  : "border border-[#D5D4CF] text-[#695A44]"
+                                  }`}
+                              >
+                                {item.badge}
+                              </span>
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {navLinks.slice(2).map((item) => (
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="border-b border-[#D5D4CF] py-4 text-[18px] font-medium text-[#443218]"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+
                   <Link
-                    key={item.label}
-                    href={item.href}
+                    href="/get-started?mode=demo"
                     onClick={() => setOpen(false)}
-                    className="border-b border-[#D5D4CF] py-4 text-[18px] font-medium text-[#443218]"
+                    className="mt-4 flex h-[48px] items-center justify-center bg-[#FF5A1F] px-6 text-[15px] font-medium text-white sm:hidden"
                   >
-                    {item.label}
+                    Book a demo
                   </Link>
-                ))}
 
-                <Link
-                  href="/#demo"
-                  onClick={() => setOpen(false)}
-                  className="mt-4 flex h-[48px] items-center justify-center bg-[#FF5A1F] px-6 text-[15px] font-medium text-white sm:hidden"
-                >
-                  Book a demo
-                </Link>
-
-                <Link
-                  href="/design-partners"
-                  onClick={() => setOpen(false)}
-                  className="flex h-[48px] items-center justify-center border border-[#D5D4CF] px-6 text-[15px] font-medium text-[#443218] sm:mt-4"
-                >
-                  Become a design partner
-                </Link>
+                  <Link
+                    href="/design-partners"
+                    onClick={() => setOpen(false)}
+                    className="flex h-[48px] items-center justify-center border border-[#D5D4CF] px-6 text-[15px] font-medium text-[#443218] sm:mt-4"
+                  >
+                    Become a design partner
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </nav>
