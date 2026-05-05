@@ -6,61 +6,127 @@ import { motion } from "framer-motion";
 
 type Mode = "demo" | "design-partner" | "newsletter";
 
-const modes: {
-    id: Mode;
-    label: string;
-    title: string;
-    description: string;
-    button: string;
-}[] = [
-        {
-            id: "demo",
-            label: "Book a demo",
-            title: "Book a walkthrough",
-            description:
-                "Show us how your operation works today. We’ll walk you through how CaltAI could help move the workflow forward across your tools.",
-            button: "Request walkthrough",
-        },
-        {
-            id: "design-partner",
-            label: "Design partner",
-            title: "Apply to be a design partner",
-            description:
-                "For agencies willing to test CaltAI on real onboarding work and help shape the product before public release.",
-            button: "Apply now",
-        },
-        {
-            id: "newsletter",
-            label: "Stay informed",
-            title: "Stay informed",
-            description:
-                "Get product updates, design partner notes, and practical thinking on AI operations for service businesses.",
-            button: "Subscribe",
-        },
-    ];
+const WEB_APP_URL =
+    "https://script.google.com/macros/s/AKfycbx4c7LY8F_Aedu6L3F8qrYEQUjMhetiqziNs90jCy86SV9xudYKM7mOFQrQ_sj71Tju2w/exec";
 
-const formFields: Record<Mode, string[]> = {
-    demo: [
-        "Full name",
-        "Work email",
-        "Company",
-        "Role",
-        "Website",
-        "What workflow are you trying to improve?",
-        "Approx. client onboarding volume",
-    ],
+const modes = [
+    {
+        id: "demo" as Mode,
+        label: "Book a demo",
+        title: "Book a walkthrough",
+        description:
+            "Show us how your operation works today. We’ll walk you through how CaltAI could help move the workflow forward across your tools.",
+        button: "Request walkthrough",
+    },
+    {
+        id: "design-partner" as Mode,
+        label: "Design partner",
+        title: "Apply to be a design partner",
+        description:
+            "For agencies willing to test CaltAI on real onboarding work and help shape the product before public release.",
+        button: "Apply now",
+    },
+    {
+        id: "newsletter" as Mode,
+        label: "Stay informed",
+        title: "Stay informed",
+        description:
+            "Get product updates, design partner notes, and practical thinking on AI operations for service businesses.",
+        button: "Subscribe",
+    },
+];
+
+const formFields: Record<
+    Mode,
+    {
+        label: string;
+        name: string;
+        type?: "text" | "email" | "select" | "textarea";
+        optional?: boolean;
+        options?: string[];
+    }[]
+> = {
     "design-partner": [
-        "Full name",
-        "Work email",
-        "Company",
-        "Website",
-        "Role",
-        "Company size",
-        "Onboardings per month",
-        "Which program are you interested in? Lite, Full, or not sure",
-        "What breaks most in your onboarding process?",
+        { label: "First name", name: "firstName" },
+        { label: "Last name, optional", name: "lastName", optional: true },
+        { label: "Work email", name: "email", type: "email" },
+        { label: "Company name", name: "company" },
+        { label: "Website", name: "website" },
+        { label: "Role", name: "role" },
+        {
+            label: "Company size",
+            name: "companySize",
+            type: "select",
+            options: ["1–4", "5–10", "11–30", "31–50", "51+"],
+        },
+        {
+            label: "How many client onboardings do you handle per month?",
+            name: "onboardingsPerMonth",
+            type: "select",
+            options: ["0–2", "3–5", "6–10", "11–20", "21+"],
+        },
+        {
+            label: "Where does onboarding slow down most?",
+            name: "onboardingSlowdown",
+            type: "select",
+            options: [
+                "Missing assets",
+                "Kickoff scheduling",
+                "Client approvals",
+                "Internal handoff",
+                "Status visibility",
+                "Other",
+            ],
+        },
+        {
+            label: "Which program are you interested in?",
+            name: "program",
+            type: "select",
+            options: ["Lite Program", "Full Program", "Not sure yet"],
+        },
+        {
+            label: "Anything else we should know?, optional",
+            name: "anythingElse",
+            type: "textarea",
+            optional: true,
+        },
     ],
-    newsletter: ["Full name", "Email", "Role or company, optional"],
+
+    demo: [
+        { label: "First name", name: "firstName" },
+        { label: "Last name, optional", name: "lastName", optional: true },
+        { label: "Work email", name: "email", type: "email" },
+        { label: "Company name", name: "company" },
+        { label: "Website, optional", name: "website", optional: true },
+        { label: "Role", name: "role" },
+        {
+            label: "What workflow do you want to improve?",
+            name: "workflowToImprove",
+            type: "select",
+            options: [
+                "Post-sales onboarding",
+                "Client intake",
+                "Lead lifecycle",
+                "Outbound follow-up",
+                "Not sure yet",
+            ],
+        },
+        {
+            label: "What is the main problem you want to solve?",
+            name: "mainProblem",
+            type: "textarea",
+        },
+        {
+            label: "Preferred time or timezone, optional",
+            name: "preferredTime",
+            optional: true,
+        },
+    ],
+
+    newsletter: [
+        { label: "First name, optional", name: "firstName", optional: true },
+        { label: "Email", name: "email", type: "email" },
+    ],
 };
 
 const fadeUp = {
@@ -79,7 +145,45 @@ export default function GetStartedPage() {
     }, [searchParams]);
 
     const [activeMode, setActiveMode] = useState<Mode>(initialMode);
+    const [formData, setFormData] = useState<Record<string, string>>({});
+    const [consent, setConsent] = useState(false);
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">(
+        "idle"
+    );
+
     const active = modes.find((mode) => mode.id === activeMode)!;
+
+    function updateField(name: string, value: string) {
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        setStatus("loading");
+
+        const payload = {
+            formType: activeMode,
+            ...formData,
+            consent,
+        };
+
+        try {
+            await fetch(WEB_APP_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            setStatus("success");
+            setFormData({});
+            setConsent(false);
+        } catch {
+            setStatus("error");
+        }
+    }
 
     return (
         <main className="bg-[#FBF9F4] text-[#443218]">
@@ -96,20 +200,8 @@ export default function GetStartedPage() {
                             variants={fadeUp}
                             transition={{ duration: 0.55 }}
                         >
-                            {/* Badge */}
                             <div className="mb-12 inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4 md:mb-16 lg:mb-20">
-                                <div className="flex h-[22px] w-[22px] items-center justify-center text-[#5C35F5]">
-                                    <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="22" height="6.48119" rx="3.24059" fill="#613EE9" />
-                                        <rect y="6.48242" width="6.48288" height="6.48119" rx="3.24059" fill="#FB631C" />
-                                        <rect x="15.5156" y="6.48242" width="6.48288" height="6.48119" rx="3.24059" fill="#FB631C" />
-                                        <rect y="12.9648" width="6.48288" height="6.48119" rx="3.24059" fill="#FDA073" />
-                                        <rect x="15.5156" y="12.9648" width="6.48288" height="6.48119" rx="3.24059" fill="#FDA073" />
-                                    </svg>
-
-                                </div>
-
-                                <span className="font-inter text-[14px] font-medium text-[#443218]">
+                                <span className="font-sans text-[14px] font-medium text-[#443218]">
                                     Get Started
                                 </span>
                             </div>
@@ -126,8 +218,8 @@ export default function GetStartedPage() {
                             <div className="mt-[36px] max-w-[620px] border-t border-[#D5D4CF] pt-[22px] md:mt-[46px] lg:mt-[52px]">
                                 <p className="font-sans text-[14px] font-normal leading-[1.6] text-[#695A44] md:text-[15px]">
                                     Design partner applications are reviewed for fit. Demo
-                                    requests are for teams actively exploring operational
-                                    workflow problems.
+                                    requests are for teams actively exploring operational workflow
+                                    problems.
                                 </p>
                             </div>
                         </motion.div>
@@ -146,7 +238,12 @@ export default function GetStartedPage() {
                                         <button
                                             key={mode.id}
                                             type="button"
-                                            onClick={() => setActiveMode(mode.id)}
+                                            onClick={() => {
+                                                setActiveMode(mode.id);
+                                                setStatus("idle");
+                                                setFormData({});
+                                                setConsent(false);
+                                            }}
                                             className={`h-[52px] border-b border-[#D5D4CF] font-sans text-[14px] font-medium transition-colors last:border-b-0 sm:h-[58px] sm:border-b-0 sm:border-r sm:last:border-r-0 ${isActive
                                                 ? "bg-[#FF5A1F] text-white"
                                                 : "bg-[#F6F3EF] text-[#695A44] hover:bg-[#FBF9F4]"
@@ -173,54 +270,110 @@ export default function GetStartedPage() {
                                         {active.description}
                                     </p>
 
-                                    <form className="mt-[28px] space-y-4 md:mt-[34px]">
-                                        {formFields[activeMode].map((field, index) => {
-                                            const isLong =
-                                                field.includes("workflow") ||
-                                                field.includes("breaks") ||
-                                                field.includes("program");
-
-                                            return (
-                                                <label key={field} className="block">
+                                    {status === "success" ? (
+                                        <div className="mt-[34px] border border-[#D5D4CF] bg-[#FBF9F4] p-6">
+                                            <h3 className="font-heading text-[26px] font-semibold text-[#443218]">
+                                                Thank you.
+                                            </h3>
+                                            <p className="mt-3 font-sans text-[16px] font-normal leading-[1.6] text-[#695A44]">
+                                                We received your submission. If there is a fit, we’ll get
+                                                back to you soon.
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <form
+                                            onSubmit={handleSubmit}
+                                            className="mt-[28px] space-y-4 md:mt-[34px]"
+                                        >
+                                            {formFields[activeMode].map((field) => (
+                                                <label key={field.name} className="block">
                                                     <span className="mb-2 block font-sans text-[14px] font-medium text-[#443218]">
-                                                        {field}
+                                                        {field.label}
                                                     </span>
 
-                                                    {isLong ? (
+                                                    {field.type === "select" ? (
+                                                        <div className="relative">
+                                                            <select
+                                                                required={!field.optional}
+                                                                value={formData[field.name] || ""}
+                                                                onChange={(e) => updateField(field.name, e.target.value)}
+                                                                className="h-[48px] w-full appearance-none border border-[#D5D4CF] bg-[#FBF9F4] pl-4 pr-12 font-sans text-[15px] font-normal text-[#443218] outline-none transition-colors focus:border-[#FF5A1F]"
+                                                            >
+                                                                <option value="">Select one</option>
+                                                                {field.options?.map((option) => (
+                                                                    <option key={option} value={option}>
+                                                                        {option}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+
+                                                            <span className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[#443218]">
+                                                                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+                                                                    <path
+                                                                        d="M5 7.5L10 12.5L15 7.5"
+                                                                        stroke="currentColor"
+                                                                        strokeWidth="2"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                    />
+                                                                </svg>
+                                                            </span>
+                                                        </div>
+                                                    ) : field.type === "textarea" ? (
                                                         <textarea
-                                                            rows={index === formFields[activeMode].length - 1 ? 4 : 3}
+                                                            required={!field.optional}
+                                                            rows={4}
+                                                            value={formData[field.name] || ""}
+                                                            onChange={(e) =>
+                                                                updateField(field.name, e.target.value)
+                                                            }
                                                             className="w-full resize-none border border-[#D5D4CF] bg-[#FBF9F4] px-4 py-3 font-sans text-[15px] font-normal text-[#443218] outline-none transition-colors placeholder:text-[#9A8E7E] focus:border-[#FF5A1F]"
                                                         />
                                                     ) : (
                                                         <input
-                                                            type={field.toLowerCase().includes("email") ? "email" : "text"}
+                                                            required={!field.optional}
+                                                            type={field.type || "text"}
+                                                            value={formData[field.name] || ""}
+                                                            onChange={(e) =>
+                                                                updateField(field.name, e.target.value)
+                                                            }
                                                             className="h-[48px] w-full border border-[#D5D4CF] bg-[#FBF9F4] px-4 font-sans text-[15px] font-normal text-[#443218] outline-none transition-colors placeholder:text-[#9A8E7E] focus:border-[#FF5A1F]"
                                                         />
                                                     )}
                                                 </label>
-                                            );
-                                        })}
+                                            ))}
 
-                                        {activeMode === "design-partner" && (
-                                            <label className="flex items-start gap-3 pt-2 font-sans text-[14px] font-normal leading-[1.5] text-[#695A44]">
-                                                <input
-                                                    type="checkbox"
-                                                    className="mt-1 h-4 w-4 shrink-0 accent-[#FF5A1F]"
-                                                />
-                                                <span>
-                                                    I understand this is a design partner application and
-                                                    may involve feedback sessions during the beta period.
-                                                </span>
-                                            </label>
-                                        )}
+                                            {activeMode === "design-partner" && (
+                                                <label className="flex items-start gap-3 pt-2 font-sans text-[14px] font-normal leading-[1.5] text-[#695A44]">
+                                                    <input
+                                                        type="checkbox"
+                                                        required
+                                                        checked={consent}
+                                                        onChange={(e) => setConsent(e.target.checked)}
+                                                        className="mt-1 h-4 w-4 shrink-0 accent-[#FF5A1F]"
+                                                    />
+                                                    <span>
+                                                        I understand this is a design partner application and
+                                                        may involve feedback sessions during the beta period.
+                                                    </span>
+                                                </label>
+                                            )}
 
-                                        <button
-                                            type="submit"
-                                            className="mt-[22px] flex h-[54px] w-full items-center justify-center rounded-full bg-[#FF5A1F] font-sans text-[16px] font-medium text-white transition-colors hover:bg-[#E84D14] md:text-[17px]"
-                                        >
-                                            {active.button}
-                                        </button>
-                                    </form>
+                                            {status === "error" && (
+                                                <p className="font-sans text-[14px] font-normal text-red-700">
+                                                    Something went wrong. Please try again.
+                                                </p>
+                                            )}
+
+                                            <button
+                                                type="submit"
+                                                disabled={status === "loading"}
+                                                className="mt-[22px] flex h-[54px] w-full items-center justify-center rounded-full bg-[#FF5A1F] font-sans text-[16px] font-medium text-white transition-colors hover:bg-[#E84D14] disabled:cursor-not-allowed disabled:opacity-60 md:text-[17px]"
+                                            >
+                                                {status === "loading" ? "Submitting..." : active.button}
+                                            </button>
+                                        </form>
+                                    )}
                                 </motion.div>
                             </div>
                         </motion.div>
