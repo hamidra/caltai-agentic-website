@@ -4,109 +4,65 @@ import React, { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
-type WorkflowVisual = {
-  word: string;
-  shortLabel: string;
-  signals: string[];
-  context: string[];
-  actions: string[];
-  approval: string;
-  status: string;
-  tools: string[];
-};
-
-const workflows: WorkflowVisual[] = [
-  {
-    word: "post-sales onboarding",
-    shortLabel: "Onboarding run",
-    signals: [
-      "Deal marked closed in CRM",
-      "Payment received",
-      "Kickoff not scheduled yet",
-    ],
-    context: [
-      "Client, package, and owner identified",
-      "Missing assets detected",
-      "Timeline and stakeholders loaded",
-    ],
-    actions: [
-      "Draft kickoff email",
-      "Request missing assets",
-      "Route sales-to-delivery handoff",
-    ],
-    approval: "Approval required",
-    status: "Waiting for account lead approval",
-    tools: ["HubSpot", "Gmail", "Calendar", "Docs"],
-  },
-  {
-    word: "client intake",
-    shortLabel: "Intake run",
-    signals: [
-      "New intake form submitted",
-      "Required fields incomplete",
-      "Files still missing",
-    ],
-    context: [
-      "Client info consolidated",
-      "Inputs validated",
-      "Ready-state check in progress",
-    ],
-    actions: [
-      "Request missing details",
-      "Organize files and links",
-      "Prepare internal next steps",
-    ],
-    approval: "Approval required",
-    status: "Ready for ops review",
-    tools: ["Forms", "Gmail", "Drive", "Tasks"],
-  },
-  {
-    word: "lead lifecycle",
-    shortLabel: "Lead run",
-    signals: [
-      "New lead captured",
-      "Lead source identified",
-      "No follow-up sent yet",
-    ],
-    context: [
-      "Lead enriched with company context",
-      "Previous interactions checked",
-      "Qualification rules applied",
-    ],
-    actions: [
-      "Draft first follow-up",
-      "Update lead stage",
-      "Route qualified lead to owner",
-    ],
-    approval: "Approval required",
-    status: "Draft awaiting review",
-    tools: ["CRM", "Email", "Calendar", "Notes"],
-  },
-  {
-    word: "outbound follow-up",
-    shortLabel: "Outbound run",
-    signals: [
-      "Prospect opened email",
-      "No reply after touchpoint",
-      "Sequence still active",
-    ],
-    context: [
-      "Engagement history reviewed",
-      "Reply likelihood assessed",
-      "Next step selected",
-    ],
-    actions: [
-      "Draft contextual follow-up",
-      "Pause low-signal sequence",
-      "Escalate warm prospect",
-    ],
-    approval: "Approval required",
-    status: "Suggested next action prepared",
-    tools: ["Outbound", "CRM", "Email", "Tasks"],
-  },
+const rotatingWords = [
+  "client onboarding",
+  "outbound follow-up",
+  "lead lifecycle",
+  "client intake",
 ];
 
-const rotatingWords = workflows.map((item) => item.word);
+const clientStatuses = [
+  "Update prepared",
+  "Reminder queued",
+  "Asset requested",
+  "Follow-up sent",
+];
+
+const toolStatuses = [
+  "Timeline logged",
+  "Task created",
+  "CRM updated",
+  "Record synced",
+];
+
+const handoffStatuses = [
+  "Escalation routed",
+  "Next step routed",
+  "Owner assigned",
+  "Brief shared",
+];
+
+const ARTBOARD_WIDTH = 600;
+const ARTBOARD_HEIGHT = 607;
+
+const pxToPercentX = (x: number) => `${(x / ARTBOARD_WIDTH) * 100}%`;
+const pxToPercentY = (y: number) => `${(y / ARTBOARD_HEIGHT) * 100}%`;
+
+const boxStyle = (x: number, y: number, w: number, h: number): React.CSSProperties => ({
+  left: pxToPercentX(x),
+  top: pxToPercentY(y),
+  width: pxToPercentX(w),
+  height: pxToPercentY(h),
+});
+
+function useRotatingIndex(length: number, delay: number) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setIndex((prev) => (prev + 1) % length);
+    }, delay);
+
+    return () => window.clearInterval(timer);
+  }, [length, delay]);
+
+  return index;
+}
+
+function useRotatingText(items: string[], delay: number) {
+  const index = useRotatingIndex(items.length, delay);
+  return items[index];
+}
 
 const RollingWord = ({ word }: { word: string }) => {
   return (
@@ -141,204 +97,424 @@ const RollingWord = ({ word }: { word: string }) => {
   );
 };
 
-const SignalDot = () => (
-  <div className="relative mt-[7px] flex h-[10px] w-[10px] shrink-0 items-center justify-center">
-    <motion.span
-      animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.65, 0.3] }}
-      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-      className="absolute h-[10px] w-[10px] rounded-full bg-[#F7B191]"
-    />
-    <span className="relative h-[6px] w-[6px] rounded-full bg-[#FF5A1F]" />
-  </div>
-);
-
-const RunVisual = ({ workflow }: { workflow: WorkflowVisual }) => {
-  const runSteps = useMemo(
-    () => ["Signal", "Context", "Plan", "Approval"],
-    []
+function AnimatedChipText({
+  text,
+  color = "#6023FA",
+}: {
+  text: string;
+  color?: string;
+}) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.span
+        key={text}
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -5 }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
+        className="block whitespace-nowrap leading-none"
+        style={{ color }}
+      >
+        {text}
+      </motion.span>
+    </AnimatePresence>
   );
+}
+
+function StatusChip({
+  x,
+  y,
+  text,
+}: {
+  x: number;
+  y: number;
+  text: string;
+}) {
+  return (
+    <motion.div
+      style={boxStyle(x, y, 120, 21)}
+      animate={{
+        boxShadow: [
+          "0 0 0 rgba(96,35,250,0)",
+          "0 0 10px rgba(96,35,250,0.10)",
+          "0 0 0 rgba(96,35,250,0)",
+        ],
+      }}
+      transition={{ duration: 7.8, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute z-20 flex items-center justify-center rounded-full border border-[#BCA4FA] bg-[#F2EDFF] px-2 text-center text-[clamp(9px,0.95vw,11px)] font-medium text-[#6023FA]"
+    >
+      <AnimatedChipText text={text} />
+    </motion.div>
+  );
+}
+
+function SignalPath({
+  d,
+  duration = 4,
+  delay = 0,
+  size = 4,
+}: {
+  d: string;
+  duration?: number;
+  delay?: number;
+  size?: number;
+}) {
+  const id = React.useId();
 
   return (
-    <div className="relative h-full w-full overflow-hidden border border-[#D5D4CF] bg-[#F5F2ED]">
-      {/* Background accents */}
-      <div className="absolute right-0 top-0 h-[54px] w-[180px] hatch-pattern opacity-20" />
-      <div className="absolute bottom-0 left-0 h-[44px] w-full border-t border-[#D5D4CF] bg-[#FBF9F4]/70" />
+    <svg
+      className="pointer-events-none absolute inset-0 z-[5] h-full w-full overflow-visible"
+      viewBox={`0 0 ${ARTBOARD_WIDTH} ${ARTBOARD_HEIGHT}`}
+      preserveAspectRatio="none"
+    >
+      <path id={id} d={d} fill="none" stroke="transparent" />
 
-      {/* Frame content */}
-      <div className="relative z-10 flex h-full flex-col p-4 sm:p-5 md:p-6">
-        {/* Header */}
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex h-[28px] items-center rounded-full border border-[#D5D4CF] bg-[#FBF9F4] px-3 font-inter text-[11px] font-medium text-[#695A44]">
-              Live operational run
-            </span>
-            <span className="inline-flex h-[28px] items-center rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-3 font-inter text-[11px] font-medium text-[#4209DF]">
-              {workflow.shortLabel}
-            </span>
-          </div>
+      <g opacity="0">
+        <animate
+          attributeName="opacity"
+          values="0;1;1;0"
+          keyTimes="0;0.08;0.92;1"
+          dur={`${duration}s`}
+          begin={`${delay}s`}
+          repeatCount="indefinite"
+        />
 
-          <motion.div
-            key={workflow.word + "-status"}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className="inline-flex h-[28px] items-center rounded-full bg-[#FF5A1F] px-3 font-inter text-[11px] font-medium text-white"
+        <circle r={size} fill="rgba(251,99,28,0.14)">
+          <animateMotion
+            dur={`${duration}s`}
+            begin={`${delay}s`}
+            repeatCount="indefinite"
+            rotate="auto"
+            calcMode="linear"
           >
-            {workflow.approval}
-          </motion.div>
-        </div>
+            <mpath href={`#${id}`} />
+          </animateMotion>
+        </circle>
 
-        {/* Main visual area */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={workflow.word}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -14 }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className="flex-1"
+        <circle r={size} fill="rgba(251,99,28,0.2)">
+          <animateMotion
+            dur={`${duration}s`}
+            begin={`${delay}s`}
+            repeatCount="indefinite"
+            rotate="auto"
+            calcMode="linear"
           >
-            <div className="grid gap-3 md:grid-cols-[1fr_0.92fr_1fr] md:gap-4">
-              {/* Signals */}
-              <div className="relative border border-[#D5D4CF] bg-[#FBF9F4] p-4">
-                <p className="font-inter text-[11px] font-medium uppercase tracking-[0.08em] text-[#8D8177]">
-                  Signals detected
-                </p>
+            <mpath href={`#${id}`} />
+          </animateMotion>
+        </circle>
 
-                <div className="mt-4 space-y-3">
-                  {workflow.signals.map((item, idx) => (
-                    <motion.div
-                      key={item}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.35, delay: idx * 0.08 }}
-                      className="flex items-start gap-3"
-                    >
-                      <SignalDot />
-                      <span className="font-inter text-[12px] leading-[1.45] text-[#443218] sm:text-[13px]">
-                        {item}
-                      </span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Engine */}
-              <div className="relative overflow-hidden border border-[#D5D4CF] bg-[#FBF9F4] p-4">
-                <div className="absolute inset-x-1/2 top-[54px] h-[132px] w-px -translate-x-1/2 bg-[#D5D4CF]" />
-                <motion.div
-                  animate={{ y: [0, 106, 0], opacity: [0.95, 1, 0.95] }}
-                  transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute left-1/2 top-[54px] h-[10px] w-[10px] -translate-x-1/2 rounded-full bg-[#FF5A1F] shadow-[0_0_0_6px_rgba(255,90,31,0.12)]"
-                />
-
-                <p className="mb-4 text-center font-inter text-[11px] font-medium uppercase tracking-[0.08em] text-[#8D8177]">
-                  CaltAI run
-                </p>
-
-                <div className="mx-auto flex max-w-[150px] flex-col gap-3">
-                  {runSteps.map((step, idx) => (
-                    <motion.div
-                      key={step}
-                      initial={{ opacity: 0, scale: 0.96 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3, delay: idx * 0.07 }}
-                      className={`relative flex h-[34px] items-center justify-center rounded-full border font-inter text-[12px] font-medium ${step === "Approval"
-                        ? "border-[#FCB7A4] bg-[#FFF3ED] text-[#FF5A1F]"
-                        : "border-[#D5D4CF] bg-[#F8F6F2] text-[#443218]"
-                        }`}
-                    >
-                      {step}
-                    </motion.div>
-                  ))}
-                </div>
-
-                <div className="mt-4 space-y-2">
-                  {workflow.context.map((item, idx) => (
-                    <motion.div
-                      key={item}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.35, delay: 0.16 + idx * 0.06 }}
-                      className="rounded-[10px] border border-[#E3DED7] bg-[#F8F6F2] px-3 py-2 font-inter text-[11px] leading-[1.45] text-[#695A44]"
-                    >
-                      {item}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="relative border border-[#D5D4CF] bg-[#FBF9F4] p-4">
-                <p className="font-inter text-[11px] font-medium uppercase tracking-[0.08em] text-[#8D8177]">
-                  Next actions
-                </p>
-
-                <div className="mt-4 space-y-3">
-                  {workflow.actions.map((item, idx) => (
-                    <motion.div
-                      key={item}
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.35, delay: idx * 0.08 }}
-                      className="rounded-[12px] border border-[#D5D4CF] bg-[#F8F6F2] px-3 py-3"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="font-inter text-[12px] leading-[1.4] text-[#443218] sm:text-[13px]">
-                          {item}
-                        </span>
-                        <span className="inline-flex h-[22px] shrink-0 items-center rounded-full border border-[#FCB7A4] bg-[#FFF3ED] px-2 font-inter text-[10px] font-medium text-[#FF5A1F]">
-                          Drafted
-                        </span>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Footer/status */}
-        <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <motion.p
-            key={workflow.word + "-footer-status"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.35 }}
-            className="font-inter text-[12px] text-[#695A44]"
+        <circle r={size} fill="#F9C6AE" stroke="#FB631C" strokeWidth="1.5">
+          <animateMotion
+            dur={`${duration}s`}
+            begin={`${delay}s`}
+            repeatCount="indefinite"
+            rotate="auto"
+            calcMode="linear"
           >
-            {workflow.status}
-          </motion.p>
+            <mpath href={`#${id}`} />
+          </animateMotion>
+        </circle>
+      </g>
+    </svg>
+  );
+}
 
-          <div className="flex flex-wrap items-center gap-2">
-            {workflow.tools.map((tool) => (
-              <span
-                key={tool}
-                className="inline-flex h-[24px] items-center rounded-full border border-[#D5D4CF] bg-[#FBF9F4] px-2.5 font-inter text-[10px] font-medium text-[#695A44]"
-              >
-                {tool}
+function CaltAILogo() {
+  return (
+    <svg viewBox="0 0 63 63" className="h-full w-full" fill="none">
+      <defs>
+        <filter
+          id="caltai-logo-shadow"
+          x="0"
+          y="0"
+          width="62.7031"
+          height="62.7031"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.266667 0 0 0 0 0.196078 0 0 0 0 0.0941176 0 0 0 0.25 0"
+          />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+        </filter>
+      </defs>
+
+      <g filter="url(#caltai-logo-shadow)">
+        <circle cx="31.3516" cy="31.3516" r="25.3516" fill="white" />
+        <circle cx="31.3516" cy="31.3516" r="24.8516" stroke="#443218" strokeOpacity="0.27" />
+      </g>
+
+      <path
+        d="M33.5388 20.4087C33.5388 21.2818 33.7109 22.1465 34.045 22.9532C34.3791 23.7598 34.8689 24.4929 35.4862 25.1103C36.1036 25.7277 36.8367 26.2174 37.6434 26.5516C38.4239 26.8748 39.2587 27.0456 40.1029 27.0564V24.5328H44.4806V27.2268H40.2723V31.2663H44.4806V42.3771H40.1029V35.6449C39.2587 35.6557 38.4239 35.8268 37.6434 36.1501C36.8367 36.4842 36.1036 36.974 35.4862 37.5914C34.8689 38.2088 34.3791 38.9419 34.045 39.7485C33.7109 40.5551 33.5388 41.4198 33.5388 42.2929V42.3775H29.1612V42.3761C26.2671 42.3541 23.4964 41.1959 21.4483 39.1479C19.3805 37.08 18.2187 34.2752 18.2188 31.3508C18.2188 28.4265 19.3805 25.6219 21.4483 23.5541C23.4964 21.5061 26.2672 20.3473 29.1612 20.3252V20.3242H33.5388V20.4087ZM29.3299 24.7018H29.2454C27.482 24.7018 25.7908 25.4024 24.5438 26.6493C23.2969 27.8962 22.5964 29.5875 22.5964 31.3508L22.5984 31.5159C22.6406 33.2195 23.3359 34.8444 24.5438 36.0524C25.7908 37.2993 27.4819 37.9998 29.2454 37.9998H29.3299V40.3722C29.721 38.1611 30.7813 36.1053 32.3907 34.4959C34.1349 32.7518 36.4032 31.652 38.8254 31.3505C36.4032 31.049 34.1349 29.9499 32.3907 28.2058C30.7812 26.5962 29.721 24.5402 29.3299 22.3288V24.7018Z"
+        fill="#443218"
+      />
+    </svg>
+  );
+}
+
+function HeroImage({
+  src,
+  x,
+  y,
+  w,
+  h,
+  className = "",
+}: {
+  src: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  className?: string;
+}) {
+  return (
+    <img
+      src={src}
+      alt=""
+      draggable={false}
+      className={`absolute select-none ${className}`}
+      style={boxStyle(x, y, w, h)}
+    />
+  );
+}
+
+function CaltAILayerVisual() {
+  const activeStage = useRotatingIndex(3, 1500);
+  const clientStatus = useRotatingText(clientStatuses, 2200);
+  const toolStatus = useRotatingText(toolStatuses, 2450);
+  const handoffStatus = useRotatingText(handoffStatuses, 2700);
+
+  return (
+    <div className="relative aspect-[600/607] w-full max-w-[540px] overflow-hidden bg-[#FBF9F4]">
+      <img
+        src="/hero/caltai-layer-base.png"
+        alt="CaltAI layer visual"
+        className="absolute inset-0 h-full w-full object-fill"
+        draggable={false}
+      />
+
+      {/* Tools */}
+      <HeroImage src="/hero/tool-gmail.png" x={78} y={122} w={43} h={43} />
+      <HeroImage src="/hero/tool-calendar.png" x={138} y={76} w={43} h={43} />
+      <HeroImage src="/hero/tool-hubspot.png" x={198} y={28} w={43} h={43} />
+      <HeroImage src="/hero/tool-slack.png" x={359} y={28} w={43} h={43} />
+      <HeroImage src="/hero/tool-docs.png" x={419} y={76} w={43} h={43} />
+      <HeroImage src="/hero/tool-todo.png" x={478} y={122} w={43} h={43} />
+
+      {/* CaltAI layer body */}
+      <HeroImage
+        src="/hero/caltai-layer.png"
+        x={137}
+        y={178}
+        w={326}
+        h={172}
+        className="z-[11]"
+      />
+
+      {/* Cards */}
+      <HeroImage
+        src="/hero/card-client-followup.png"
+        x={42}
+        y={477}
+        w={156}
+        h={76}
+        className="z-[7]"
+      />
+      <HeroImage
+        src="/hero/card-tool-updates.png"
+        x={222}
+        y={508}
+        w={156}
+        h={76}
+        className="z-[7]"
+      />
+      <HeroImage
+        src="/hero/card-internal-handoff.png"
+        x={398}
+        y={477}
+        w={156}
+        h={76}
+        className="z-[7]"
+      />
+
+      {/* Glow behind logo */}
+      <motion.div
+        className="pointer-events-none absolute z-[11] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[22px]"
+        style={{
+          left: pxToPercentX(300),
+          top: pxToPercentY(232),
+          width: "78px",
+          height: "78px",
+          background: "rgba(96, 35, 250, 0.13)",
+        }}
+        animate={{ scale: [0.9, 1.12, 0.9], opacity: [0.35, 0.9, 0.35] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
+        className="pointer-events-none absolute z-[8] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[14px]"
+        style={{
+          left: pxToPercentX(300),
+          top: pxToPercentY(232),
+          width: "58px",
+          height: "58px",
+          background: "rgba(251, 99, 28, 0.12)",
+        }}
+        animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.75, 0.4] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Logo PNG */}
+      <motion.img
+        src="/hero/caltai-logo.png"
+        alt=""
+        draggable={false}
+        className="absolute z-[12] -translate-x-1/2 -translate-y-1/2 select-none"
+        style={{
+          left: pxToPercentX(300),
+          top: pxToPercentY(224),
+          width: "53px",
+          height: "53px",
+        }}
+        animate={{ scale: [1, 1.025, 1] }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Signals from tools to center, then down */}
+      <SignalPath
+        d="M 124 143 H 298.5 V 405"
+        duration={4.8}
+        delay={0}
+      />
+
+      <SignalPath
+        d="M 238 48 H 298.5 V 405"
+        duration={5}
+        delay={1.4}
+      />
+
+      <SignalPath
+        d="M 405 97 H 298.5 V 405"
+        duration={5}
+        delay={2.8}
+      />
+
+      <SignalPath
+        d="M 470 143 H 298.5 V 405"
+        duration={2.8}
+        delay={0}
+      />
+
+      {/* Signals from Human Approval to output cards */}
+
+      <SignalPath
+        d="M 281 405
+     V 430
+     C 280 451 260 451 240 451
+     H 130
+     C 118 460 118 480 118 500
+     V 525"
+        duration={3.2}
+        delay={3.2}
+        size={4}
+      />
+
+      <SignalPath
+        d="M 298.5 405 V 535"
+        duration={3}
+        delay={3.5}
+        size={4}
+      />
+
+      <SignalPath
+        d="M 315 405
+     V 430
+     C 319 451 322 451 350 451
+     H 461
+     C 480 460 475 480 475 500
+     V 525"
+        duration={3.4}
+        delay={5}
+        size={4}
+      />
+
+      {/* Context / Plan / Route */}
+      <div
+        style={boxStyle(165, 289, 269, 38)}
+        className="absolute z-[15] grid grid-cols-3 overflow-hidden rounded-full border border-[#BCA4FA] bg-[#F2EDFF]"
+      >
+        {["Context", "Plan", "Route"].map((label, i) => {
+          const active = activeStage === i;
+
+          return (
+            <motion.div
+              key={label}
+              className={`relative flex items-center justify-center ${i !== 2 ? "border-r border-[#BCA4FA]" : ""
+                }`}
+              animate={{
+                backgroundColor: active ? "#F8F4FF" : "#F2EDFF",
+                boxShadow: active
+                  ? "0 0 18px rgba(96,35,250,0.18)"
+                  : "0 0 0 rgba(0,0,0,0)",
+              }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+            >
+              <span className="text-[clamp(12px,1.85vw,12px)] font-medium text-[#6023FA]">
+                {label}
               </span>
-            ))}
-          </div>
-        </div>
+            </motion.div>
+          );
+        })}
       </div>
+
+      {/* Human Approval */}
+      <motion.div
+        style={boxStyle(221.4, 385.1, 155.2, 36)}
+        className="absolute z-[15] flex items-center justify-center rounded-full border border-[#FAB5A4] bg-[#FFF3ED]"
+        animate={{
+          boxShadow: [
+            "0 0 0 rgba(250,76,35,0)",
+            "0 0 16px rgba(250,76,35,0.18)",
+            "0 0 0 rgba(250,76,35,0)",
+          ],
+        }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <span className="text-[clamp(12px,1.7vw,12px)] font-medium text-[#FA4C23]">
+          Human Approval
+        </span>
+      </motion.div>
+
+      {/* Bottom status chips */}
+      <StatusChip x={59.9} y={519.3} text={clientStatus} />
+      <StatusChip x={239.5} y={550.2} text={toolStatus} />
+      <StatusChip x={415.5} y={519.3} text={handoffStatus} />
     </div>
   );
-};
+}
 
 const Hero = () => {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const timer = window.setInterval(() => {
       setIndex((prev) => (prev + 1) % rotatingWords.length);
-    }, 5200);
+    }, 3400);
 
-    return () => clearInterval(timer);
+    return () => window.clearInterval(timer);
   }, []);
-
-  const activeWorkflow = workflows[index];
 
   return (
     <div className="bg-[#FBF9F4]">
@@ -379,7 +555,7 @@ const Hero = () => {
 
             {/* Headline */}
             <h1
-              className="w-full max-w-[620px] font-heading font-semibold tracking-tight text-[#443218]"
+              className="w-full max-w-[500px] font-heading font-semibold tracking-tight text-[#443218]"
               style={{
                 fontSize: "clamp(25px, 5.4vw, 45px)",
                 lineHeight: "1.1",
@@ -387,9 +563,9 @@ const Hero = () => {
             >
               <span className="block whitespace-nowrap">An operation system</span>
 
-              <span className="block">
-                <span className="whitespace-nowrap">that runs </span>
-                <span className="inline-block align-baseline text-[#4209DF]">
+              <span className="block whitespace-nowrap">
+                that runs{" "}
+                <span className="inline-block whitespace-nowrap align-baseline text-[#4209DF]">
                   <RollingWord word={rotatingWords[index]} />
                 </span>
               </span>
@@ -423,12 +599,8 @@ const Hero = () => {
           </div>
 
           {/* Right Column */}
-          <div className="flex w-full items-center justify-end xl:w-[540px]">
-            <div className="w-full">
-              <div className="h-[300px] w-full sm:h-[360px] md:h-[430px] xl:h-[440px]">
-                <RunVisual workflow={activeWorkflow} />
-              </div>
-            </div>
+          <div className="flex w-full items-center justify-center xl:w-[540px] xl:justify-end">
+            <CaltAILayerVisual />
           </div>
         </section>
 

@@ -126,16 +126,6 @@ const Navbar = () => {
                             {item.label}
                           </span>
 
-                          {item.badge && (
-                            <span
-                              className={`rounded-full px-2 py-1 font-sans text-[11px] font-medium ${item.badge === "Primary"
-                                ? "bg-[#FF5A1F] text-white"
-                                : "border border-[#D5D4CF] text-[#695A44]"
-                                }`}
-                            >
-                              {item.badge}
-                            </span>
-                          )}
                         </Link>
                       ))}
                     </div>
@@ -260,16 +250,6 @@ const Navbar = () => {
                               {item.label}
                             </span>
 
-                            {item.badge && (
-                              <span
-                                className={`rounded-full px-2 py-1 font-sans text-[11px] font-medium ${item.badge === "Primary"
-                                  ? "bg-[#FF5A1F] text-white"
-                                  : "border border-[#D5D4CF] text-[#695A44]"
-                                  }`}
-                              >
-                                {item.badge}
-                              </span>
-                            )}
                           </Link>
                         ))}
                       </div>
@@ -288,7 +268,7 @@ const Navbar = () => {
                   ))}
 
                   <Link
-                    href="/get-started?mode=demo"
+                    href="/#demo"
                     onClick={() => setOpen(false)}
                     className="mt-4 flex h-[48px] items-center justify-center bg-[#FF5A1F] px-6 text-[15px] font-medium text-white sm:hidden"
                   >
