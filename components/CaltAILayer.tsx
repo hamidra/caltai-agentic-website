@@ -44,7 +44,7 @@ const CaltAILayer = () => {
             {/* Visual */}
             <div className="relative hidden justify-end lg:flex">
               <img
-                src="/hero/caltai-layer-page-visual.svg"
+                src="/hero/caltai-layer-page-visual.png"
                 alt="CaltAI layer connecting business signals, context, approvals, and objectives"
                 className="w-[650px] max-w-full"
               />
