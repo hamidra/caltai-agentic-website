@@ -109,12 +109,12 @@ const tabData = [
       "Handoff from sales to delivery",
     ],
     primaryCta: {
-      label: "Become a design partner",
+      label: "Explore onboarding",
       href: "/design-partners?workflow=post-sales-onboarding",
     },
     secondaryCta: {
-      label: "See walkthrough",
-      href: "/get-started?workflow=post-sales-onboarding",
+      label: "Become a design partner",
+      href: "/design-partners?workflow=post-sales-onboarding",
     },
   },
 ];
@@ -136,8 +136,8 @@ const WorkflowTabsSection = () => {
                 onClick={() => setActiveIdx(idx)}
                 aria-selected={activeIdx === idx}
                 className={`h-[52px] border-b border-r border-[#FF6A2A] px-3 text-[14px] font-medium transition-colors md:px-6 md:text-[16px] lg:flex-shrink-0 lg:border-b-0 lg:text-[17px] ${activeIdx === idx
-                    ? "bg-[#FF5A1F] text-white"
-                    : "bg-[#F7F4EF] text-[#8D8176]"
+                  ? "bg-[#FF5A1F] text-white"
+                  : "bg-[#F7F4EF] text-[#8D8176]"
                   }`}
               >
                 <span className="whitespace-nowrap">{tab.label}</span>
@@ -185,7 +185,7 @@ const WorkflowTabsSection = () => {
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:mt-[42px] lg:gap-[16px]">
                   <Link
                     href={currentTab.primaryCta.href}
-                    className="flex h-[46px] w-full items-center justify-center rounded-full bg-[#FF5A1F] px-5 text-[15px] font-medium text-white transition-opacity hover:opacity-90 sm:min-w-[234px] sm:w-auto"
+                    className="flex h-[46px] w-full items-center justify-center rounded-full bg-[#FF5A1F] px-5 text-[15px] font-medium text-white transition-opacity hover:opacity-80 sm:min-w-[190px] sm:w-auto"
                   >
                     {currentTab.primaryCta.label}
                   </Link>

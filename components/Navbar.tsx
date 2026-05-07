@@ -12,19 +12,19 @@ const navLinks = [
 const useCaseLinks = [
   {
     label: "Post-sales onboarding",
-    href: "/use-cases/post-sales-onboarding",
+    href: "/solutions/post-sales-onboarding",
   },
   {
     label: "Client intake",
-    href: "/use-cases/client-intake",
+    href: "/solutions/client-intake",
   },
   {
     label: "Lead lifecycle",
-    href: "/use-cases/lead-lifecycle",
+    href: "/solutions/lead-lifecycle",
   },
   {
     label: "Outbound follow-up",
-    href: "/use-cases/outbound-follow-up",
+    href: "/solutions/outbound-follow-up",
   },
 ];
 
@@ -88,7 +88,7 @@ const Navbar = () => {
                 className="flex items-center gap-1 text-[14px] font-medium text-[#443218] transition-colors hover:text-[#FF5A1F]"
                 aria-expanded={useCasesOpen}
               >
-                Use cases
+                Solutions
                 <span
                   className={`transition-transform duration-200 ${useCasesOpen ? "rotate-180" : ""
                     }`}
