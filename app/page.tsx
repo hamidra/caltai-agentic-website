@@ -9,7 +9,6 @@ import CTASection from "@/components/CTASection";
 export default function Home() {
   return (
     <main className="min-h-screen bg-white selection:bg-orange-100 selection:text-orange-900">
-
       <Hero />
       <ProblemSection />
       <WorkflowsIntroSection />
@@ -17,8 +16,6 @@ export default function Home() {
       <ControlSection />
       <FAQSection />
       <CTASection />
-
-      {/* Additional sections will be added here one by one */}
     </main>
   );
 }
