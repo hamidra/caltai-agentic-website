@@ -8,7 +8,6 @@ const tabData = [
   {
     id: "client-intake",
     label: "Client intake",
-    width: "216px",
     headline: (
       <>
         Client intake, without the
@@ -25,11 +24,18 @@ const tabData = [
       "Internal task creation",
       "Readiness check before work starts",
     ],
+    primaryCta: {
+      label: "Automate client intake",
+      href: "/design-partners?workflow=client-intake",
+    },
+    secondaryCta: {
+      label: "See intake flow",
+      href: "/get-started?workflow=client-intake",
+    },
   },
   {
     id: "lead-lifecycle",
     label: "Lead lifecycle",
-    width: "216px",
     headline: (
       <>
         Lead lifecycle, from first
@@ -46,11 +52,18 @@ const tabData = [
       "Qualification signals",
       "Handoff to sales or founder",
     ],
+    primaryCta: {
+      label: "Improve lead lifecycle",
+      href: "/design-partners?workflow=lead-lifecycle",
+    },
+    secondaryCta: {
+      label: "See lead flow",
+      href: "/get-started?workflow=lead-lifecycle",
+    },
   },
   {
     id: "outbound-followup",
     label: "Outbound follow-up",
-    width: "274px",
     headline: (
       <>
         Outbound follow-up that
@@ -67,11 +80,18 @@ const tabData = [
       "Positive-reply routing",
       "Sequence pause and next-step recommendations",
     ],
+    primaryCta: {
+      label: "Fix outbound follow-up",
+      href: "/design-partners?workflow=outbound-followup",
+    },
+    secondaryCta: {
+      label: "See follow-up flow",
+      href: "/get-started?workflow=outbound-followup",
+    },
   },
   {
     id: "post-sales",
     label: "Post-sales onboarding",
-    width: "324px",
     headline: (
       <>
         Onboarding, from signed deal
@@ -88,6 +108,14 @@ const tabData = [
       "Status visibility across tools",
       "Handoff from sales to delivery",
     ],
+    primaryCta: {
+      label: "Become a design partner",
+      href: "/design-partners?workflow=post-sales-onboarding",
+    },
+    secondaryCta: {
+      label: "See walkthrough",
+      href: "/get-started?workflow=post-sales-onboarding",
+    },
   },
 ];
 
@@ -97,11 +125,9 @@ const WorkflowTabsSection = () => {
 
   return (
     <section className="relative w-full overflow-hidden bg-[#FBF9F4] pt-[44px] md:pt-[56px] lg:pt-[60px]">
-      {/* Top Hatch Strip */}
       <div className="absolute left-0 right-0 top-[44px] z-0 h-[52px] border-y border-[#FF6A2A] hatch-pattern-strip md:top-[56px] lg:top-[60px]" />
 
       <div className="relative z-10 mx-auto flex max-w-[1300px] flex-col items-start lg:items-center">
-        {/* Tabs */}
         <div className="w-full px-5 md:px-8 lg:flex lg:justify-center lg:px-0">
           <div className="grid w-full grid-cols-2 border-l border-t border-[#FF6A2A] bg-[#F7F4EF] lg:flex lg:w-auto">
             {tabData.map((tab, idx) => (
@@ -110,12 +136,9 @@ const WorkflowTabsSection = () => {
                 onClick={() => setActiveIdx(idx)}
                 aria-selected={activeIdx === idx}
                 className={`h-[52px] border-b border-r border-[#FF6A2A] px-3 text-[14px] font-medium transition-colors md:px-6 md:text-[16px] lg:flex-shrink-0 lg:border-b-0 lg:text-[17px] ${activeIdx === idx
-                  ? "bg-[#FF5A1F] text-white"
-                  : "bg-[#F7F4EF] text-[#8D8176]"
+                    ? "bg-[#FF5A1F] text-white"
+                    : "bg-[#F7F4EF] text-[#8D8176]"
                   }`}
-                style={{
-                  width: undefined,
-                }}
               >
                 <span className="whitespace-nowrap">{tab.label}</span>
               </button>
@@ -123,9 +146,7 @@ const WorkflowTabsSection = () => {
           </div>
         </div>
 
-        {/* Main Panel */}
         <div className="relative top-[-2px] box-border flex w-full max-w-full flex-col gap-10 border border-[#FF6A2A] bg-[#F7F4EF] px-5 pb-10 pt-10 md:px-8 md:pb-12 md:pt-12 lg:h-[670px] lg:w-[1300px] lg:grid-cols-[430px_535px] lg:gap-[85px] lg:px-[105px] lg:pb-[56px] lg:pt-[58px] xl:grid">
-          {/* Left Column */}
           <div className="w-full lg:w-[430px]">
             <AnimatePresence mode="wait">
               <motion.div
@@ -143,7 +164,6 @@ const WorkflowTabsSection = () => {
                   {currentTab.description}
                 </p>
 
-                {/* Divider Block */}
                 <div className="mb-8 flex w-full items-center justify-between gap-4 border-y border-[rgba(80,70,60,0.14)] py-[10px] lg:mb-[36px] lg:max-w-[414px]">
                   <span className="whitespace-nowrap text-[16px] font-semibold text-[#443218] md:text-[18px]">
                     What will be handled
@@ -151,7 +171,6 @@ const WorkflowTabsSection = () => {
                   <div className="h-[26px] min-w-[70px] flex-1 hatch-pattern-orange opacity-80" />
                 </div>
 
-                {/* Bullet List */}
                 <ul className="space-y-[14px] lg:space-y-[15px]">
                   {currentTab.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex items-start gap-4">
@@ -163,27 +182,25 @@ const WorkflowTabsSection = () => {
                   ))}
                 </ul>
 
-                {/* Buttons */}
                 <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:mt-[42px] lg:gap-[16px]">
                   <Link
-                    href="/design-partners"
-                    className="flex h-[46px] w-full items-center justify-center rounded-full bg-[#FF5A1F] text-[15px] font-medium text-white transition-opacity hover:opacity-90 sm:w-[234px]"
+                    href={currentTab.primaryCta.href}
+                    className="flex h-[46px] w-full items-center justify-center rounded-full bg-[#FF5A1F] px-5 text-[15px] font-medium text-white transition-opacity hover:opacity-90 sm:min-w-[234px] sm:w-auto"
                   >
-                    Become a design partner
+                    {currentTab.primaryCta.label}
                   </Link>
 
                   <Link
-                    href="/get-started?mode=demo"
-                    className="flex h-[46px] w-full items-center justify-center rounded-full border border-[#A79A8E] bg-transparent text-[15px] font-medium text-[#40362D] transition-colors hover:bg-[rgba(167,154,142,0.05)] sm:w-[174px]"
+                    href={currentTab.secondaryCta.href}
+                    className="flex h-[46px] w-full items-center justify-center rounded-full border border-[#A79A8E] bg-transparent px-5 text-[15px] font-medium text-[#40362D] transition-colors hover:bg-[rgba(167,154,142,0.05)] sm:min-w-[174px] sm:w-auto"
                   >
-                    See a walkthrough
+                    {currentTab.secondaryCta.label}
                   </Link>
                 </div>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Right Visual */}
           <div className="relative aspect-[1.15/1] w-full flex-shrink-0 overflow-hidden border border-[#BFC0C2] bg-[#F8F8F8] md:aspect-square lg:h-[535px] lg:w-[535px]">
             <svg
               className="absolute inset-0 h-full w-full text-[#C9C9C9]"
@@ -210,7 +227,6 @@ const WorkflowTabsSection = () => {
         </div>
       </div>
 
-      {/* Bottom Zebra Band */}
       <div className="relative top-[-2px] h-[30px] overflow-hidden border-y border-[#D5D4CF] bg-[#FBF9F4]">
         <div className="page-frame h-full hatch-pattern opacity-30" />
       </div>

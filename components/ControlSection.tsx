@@ -69,7 +69,7 @@ const ControlSection = () => {
                         </div>
                     </div>
 
-                    <div className="mx-auto mt-14 grid max-w-[1040px] grid-cols-1 items-start gap-12 md:mt-16 md:grid-cols-[1fr_360px] md:gap-10 lg:mt-[90px] lg:grid-cols-[480px_420px] lg:gap-[95px]">
+                    <div className="mx-auto mt-14 grid max-w-[1040px] grid-cols-1 items-start gap-15 md:mt-16 md:grid-cols-[1fr_360px] md:gap-10 lg:mt-[90px] lg:grid-cols-[480px_420px] lg:gap-[95px]">
                         <div className="space-y-0">
                             {controls.map((item, index) => (
                                 <div key={item.title}>
@@ -94,9 +94,12 @@ const ControlSection = () => {
                             ))}
                         </div>
 
-                        <div className="relative mx-auto aspect-square w-full max-w-[420px] overflow-hidden border border-white/20 bg-[#1D1D1D] md:mx-0 md:h-[360px] md:w-[360px] lg:h-[420px] lg:w-[420px]">
-                            <div className="absolute left-0 top-0 h-px w-[141.5%] origin-top-left rotate-45 bg-white/20" />
-                            <div className="absolute right-0 top-0 h-px w-[141.5%] origin-top-right -rotate-45 bg-white/20" />
+                        <div className="relative pl-[60px] pb-[60px] mx-auto flex w-full max-w-[460px] items-center justify-center md:mx-0 md:h-[360px] md:w-[400px] lg:h-[420px] lg:w-[460px]">
+                            <img
+                                src="/hero/control-visual.png"
+                                alt="Control visual showing CaltAI autonomy levels"
+                                className="h-[88%]] w-[88%] object-contain"
+                            />
                         </div>
                     </div>
                 </div>
