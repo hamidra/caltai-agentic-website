@@ -6,7 +6,7 @@ import Link from "next/link";
 const navLinks = [
   { label: "Product", href: "/#product" },
   { label: "How it works", href: "/#how-it-works" },
-  { label: "About us", href: "/#about-us" },
+  { label: "About us", href: "/about" },
 ];
 
 const useCaseLinks = [
@@ -24,7 +24,7 @@ const useCaseLinks = [
   },
   {
     label: "Outbound follow-up",
-    href: "/solutions/outbound-follow-up",
+    href: "/solutions/outbound-followup",
   },
 ];
 

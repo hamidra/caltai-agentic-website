@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -155,21 +156,24 @@ export default function PostSalesOnboardingPage() {
                         variants={fadeUp}
                         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     >
-                        <div className="mb-12 inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4 md:mb-[72px]">
-                            <span className="font-sans text-[14px] font-medium text-[#443218]">
-                                Primary use case
-                            </span>
-                        </div>
-
-                        <div className="grid gap-10 lg:grid-cols-[620px_1fr] lg:gap-[90px]">
+                        <div className="grid items-start gap-6 lg:grid-cols-[650px_505px] lg:gap-[40px]">
                             <div>
-                                <h1 className="font-heading text-[42px] font-semibold leading-[1.06] tracking-[-0.03em] text-[#443218] md:text-[54px] lg:text-[62px]">
+                                <div className="mb-12 inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4 md:mb-[72px]">
+                                    <span className="font-sans text-[14px] font-medium text-[#443218]">
+                                        Primary use case
+                                    </span>
+                                </div>
+
+                                <h1 className="font-heading text-[42px] font-semibold leading-[1.06] tracking-[-0.03em] text-[#443218] md:text-[54px] lg:text-[62px]" style={{
+                                    fontSize: "clamp(25px, 5.4vw, 45px)",
+                                    lineHeight: "1.1",
+                                }}>
                                     Post-sales onboarding that keeps moving after the deal closes.
                                 </h1>
 
-                                <p className="mt-7 max-w-[600px] font-sans text-[17px] font-normal leading-[1.6] text-[#695A44] md:text-[19px]">
-                                    CaltAI turns a signed client into a live client by coordinating assets, kickoff,
-                                    approvals, reminders, and handoffs across your existing tools.
+                                <p className="mt-7 max-w-[550px] font-sans text-[17px] font-normal leading-[1.6] text-[#695A44] md:text-[19px]">
+                                    CaltAI turns a signed client into a live client by coordinating assets,
+                                    kickoff, approvals, reminders, and handoffs across your existing tools.
                                 </p>
 
                                 <div className="mt-9 flex flex-col gap-4 sm:flex-row">
@@ -189,8 +193,14 @@ export default function PostSalesOnboardingPage() {
                                 </div>
                             </div>
 
-                            <div>
-                                <VisualPlaceholder label="Onboarding run overview mockup" />
+                            <div className="relative h-[505px] w-full max-w-[505px] overflow-hidden bg-[#F5F2ED] lg:ml-auto">
+                                <Image
+                                    src="/hero/onboarding-page-hero.png"
+                                    alt="Post-sales onboarding workflow from signed client to live client"
+                                    fill
+                                    priority
+                                    className="object-cover"
+                                />
                             </div>
                         </div>
                     </motion.div>

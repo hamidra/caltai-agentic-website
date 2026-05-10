@@ -75,7 +75,9 @@ export default function Footer() {
 
                 <div className="border-t border-[#4A4A4A] px-5 py-5 sm:px-6 md:px-8 lg:px-[55px]">
                     <div className="flex flex-col gap-5 font-inter text-[13px] font-normal text-[#D7C1A4] sm:flex-row sm:items-center sm:justify-between">
-                        <p>© 2026 CaltAI Inc. All rights reserved.</p>
+                        <p>© 2026 CaltAI Inc. All rights reserved.
+                            Built on the beautiful 🌍 by Humans
+                        </p>
 
                         <div className="flex items-center gap-5">
                             <a

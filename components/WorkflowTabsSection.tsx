@@ -25,13 +25,14 @@ const tabData = [
       "Readiness check before work starts",
     ],
     primaryCta: {
-      label: "Automate client intake",
-      href: "/design-partners?workflow=client-intake",
+      label: "Explore more",
+      href: "/workflows/client-intake",
     },
     secondaryCta: {
-      label: "See intake flow",
+      label: "Book a walkthrough",
       href: "/get-started?workflow=client-intake",
     },
+    visual: null,
   },
   {
     id: "lead-lifecycle",
@@ -53,13 +54,14 @@ const tabData = [
       "Handoff to sales or founder",
     ],
     primaryCta: {
-      label: "Improve lead lifecycle",
-      href: "/design-partners?workflow=lead-lifecycle",
+      label: "Explore more",
+      href: "/workflows/lead-lifecycle",
     },
     secondaryCta: {
-      label: "See lead flow",
+      label: "Book a walkthrough",
       href: "/get-started?workflow=lead-lifecycle",
     },
+    visual: null,
   },
   {
     id: "outbound-followup",
@@ -81,13 +83,14 @@ const tabData = [
       "Sequence pause and next-step recommendations",
     ],
     primaryCta: {
-      label: "Fix outbound follow-up",
-      href: "/design-partners?workflow=outbound-followup",
+      label: "Explore more",
+      href: "/workflows/outbound-followup",
     },
     secondaryCta: {
-      label: "See follow-up flow",
+      label: "Book a walkthrough",
       href: "/get-started?workflow=outbound-followup",
     },
+    visual: null,
   },
   {
     id: "post-sales",
@@ -109,12 +112,16 @@ const tabData = [
       "Handoff from sales to delivery",
     ],
     primaryCta: {
-      label: "Explore onboarding",
-      href: "/design-partners?workflow=post-sales-onboarding",
+      label: "Explore more",
+      href: "/workflows/post-sales-onboarding",
     },
     secondaryCta: {
       label: "Become a design partner",
       href: "/design-partners?workflow=post-sales-onboarding",
+    },
+    visual: {
+      src: "/hero/onboarding.png",
+      alt: "CaltAI post-sales onboarding workflow from sale closed to first value delivered",
     },
   },
 ];
@@ -201,29 +208,46 @@ const WorkflowTabsSection = () => {
             </AnimatePresence>
           </div>
 
-          <div className="relative aspect-[1.15/1] w-full flex-shrink-0 overflow-hidden border border-[#BFC0C2] bg-[#F8F8F8] md:aspect-square lg:h-[535px] lg:w-[535px]">
-            <svg
-              className="absolute inset-0 h-full w-full text-[#C9C9C9]"
-              preserveAspectRatio="none"
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${currentTab.id}-visual`}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="relative aspect-[1.15/1] w-full flex-shrink-0 overflow-hidden border border-[#BFC0C2] bg-[#F8F8F8] md:aspect-square lg:h-[535px] lg:w-[535px]"
             >
-              <line
-                x1="0"
-                y1="0"
-                x2="100%"
-                y2="100%"
-                stroke="currentColor"
-                strokeWidth="1"
-              />
-              <line
-                x1="100%"
-                y1="0"
-                x2="0"
-                y2="100%"
-                stroke="currentColor"
-                strokeWidth="1"
-              />
-            </svg>
-          </div>
+              {currentTab.visual ? (
+                <img
+                  src={currentTab.visual.src}
+                  alt={currentTab.visual.alt}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <svg
+                  className="absolute inset-0 h-full w-full text-[#C9C9C9]"
+                  preserveAspectRatio="none"
+                >
+                  <line
+                    x1="0"
+                    y1="0"
+                    x2="100%"
+                    y2="100%"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                  />
+                  <line
+                    x1="100%"
+                    y1="0"
+                    x2="0"
+                    y2="100%"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                  />
+                </svg>
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
 
