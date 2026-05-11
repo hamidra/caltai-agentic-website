@@ -549,7 +549,7 @@ const Hero = () => {
               </div>
 
               <span className="truncate whitespace-nowrap font-inter text-[11px] font-normal leading-none text-[#443218] sm:text-[13px]">
-                ENTERPRISE QUALITY OPERATION
+                ENTERPRISE GRADE OPERATION
               </span>
             </div>
 

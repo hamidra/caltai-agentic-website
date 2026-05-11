@@ -103,12 +103,12 @@ export default function AboutPage() {
 
                         <div className="grid gap-12 lg:grid-cols-[660px_1fr] lg:gap-[90px]">
                             <div>
-                                <h1 className="font-heading text-[44px] font-semibold leading-[1.06] tracking-[-0.03em] text-[#443218] md:text-[58px] lg:text-[68px]">
+                                <h1 className="font-heading text-[44px] font-semibold leading-[1.06] tracking-[-0.03em] text-[#443218] md:text-[44px] lg:text-[44px]">
                                     We are building the AI operations layer for small teams.
                                 </h1>
                             </div>
 
-                            <div className="pt-2 lg:pt-[92px]">
+                            <div>
                                 <p className="font-sans text-[18px] font-normal leading-[1.65] text-[#695A44] md:text-[20px]">
                                     CaltAI started from a simple frustration: AI can answer questions, write drafts,
                                     and automate tasks, but business owners are still the ones holding the operation

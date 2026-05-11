@@ -16,14 +16,36 @@ const HatchDivider = () => (
 
 const formatDate = (date: string) =>
     new Date(date).toLocaleDateString("en-US", {
+        weekday: "short",
         month: "long",
         day: "numeric",
         year: "numeric",
     });
 
+const BlogVisual = ({ category }: { category: string }) => (
+    <div className="relative h-full min-h-[210px] overflow-hidden rounded-[8px] border border-[#D5D4CF] bg-[#F6F3EF]">
+        <div className="absolute inset-0 hatch-pattern opacity-20" />
+
+        <div className="absolute left-5 top-5 rounded-full bg-[#FF5A1F] px-4 py-2 font-sans text-[14px] font-medium text-white">
+            {category}
+        </div>
+
+        <div className="absolute bottom-5 left-5 right-5 h-[72px] rounded-[10px] bg-[#FBF9F4]/90" />
+        <div className="absolute bottom-[52px] left-9 h-[9px] w-[48%] rounded-full bg-[#D5D4CF]" />
+        <div className="absolute bottom-[52px] right-9 h-[9px] w-[24%] rounded-full bg-[#FF5A1F]" />
+        <div className="absolute bottom-[31px] left-9 h-[8px] w-[34%] rounded-full bg-[#D5D4CF]" />
+    </div>
+);
+
 export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
     const [activeCategory, setActiveCategory] = useState("All");
     const [query, setQuery] = useState("");
+
+    const sortedPosts = useMemo(() => {
+        return [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
+    }, [posts]);
+
+    const featuredPost = sortedPosts[0];
 
     const categories = useMemo(() => {
         const uniqueCategories = Array.from(
@@ -34,7 +56,11 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
     }, [posts]);
 
     const filteredPosts = useMemo(() => {
-        return posts.filter((post) => {
+        return sortedPosts.filter((post) => {
+            if (featuredPost && post.slug === featuredPost.slug) {
+                return false;
+            }
+
             const matchesCategory =
                 activeCategory === "All" || post.category === activeCategory;
 
@@ -48,7 +74,7 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
 
             return matchesCategory && matchesSearch;
         });
-    }, [activeCategory, query, posts]);
+    }, [activeCategory, query, sortedPosts, featuredPost]);
 
     const jsonLd = {
         "@context": "https://schema.org",
@@ -99,28 +125,47 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
                         <div className="h-full w-full hatch-pattern opacity-40" />
                     </div>
 
-                    <header className="px-6 pb-14 pt-16 md:px-10 md:pt-20 lg:px-[55px] lg:pb-[72px] lg:pt-[82px]">
-                        <div className="mb-12 inline-flex h-[40px] items-center gap-2 rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4 md:mb-[72px]">
-                            <span className="font-sans text-[14px] font-medium text-[#443218]">
-                                Blog
-                            </span>
-                        </div>
+                    {/* Featured latest post */}
+                    {featuredPost ? (
+                        <section className="border-b border-[#D5D4CF] px-6 py-10 md:px-10 md:py-12 lg:px-[55px] lg:py-[56px]">
+                            <Link
+                                href={`/blog/${featuredPost.slug}`}
+                                className="group grid gap-9 lg:grid-cols-[390px_1fr] lg:gap-[56px]"
+                            >
+                                <div className="h-[230px] md:h-[260px] lg:h-[230px]">
+                                    <BlogVisual category={featuredPost.category} />
+                                </div>
 
-                        <div className="grid gap-10 lg:grid-cols-[700px_1fr] lg:gap-[90px]">
-                            <h1 className="font-heading text-[44px] font-semibold leading-[1.06] tracking-[-0.03em] text-[#443218] md:text-[58px] lg:text-[68px]">
-                                Field notes on AI, operations, and the work between tools.
-                            </h1>
+                                <div className="flex flex-col justify-center">
+                                    <p className="font-sans text-[16px] font-medium text-[#8D8177]">
+                                        {formatDate(featuredPost.date)} ·{" "}
+                                        <span className="font-semibold text-[#FF5A1F]">Featured</span>
+                                    </p>
 
-                            <div className="pt-2 lg:pt-[105px]">
-                                <p className="font-sans text-[18px] font-normal leading-[1.65] text-[#695A44] md:text-[20px]">
-                                    Practical writing from CaltAI on onboarding, operational ownership,
-                                    human approval, and how AI can help small teams move work forward.
-                                </p>
-                            </div>
-                        </div>
-                    </header>
+                                    <h1 className="mt-5 max-w-[820px] font-heading text-[38px] font-semibold leading-[1.08] tracking-[-0.03em] text-[#262626] md:text-[38px] lg:text-[38px]">
+                                        {featuredPost.title}
+                                    </h1>
 
-                    <div className="border-t border-[#D5D4CF] px-6 py-7 md:px-10 lg:px-[55px]">
+                                    <p className="mt-5 max-w-[850px] font-sans text-[18px] font-normal leading-[1.65] text-[#695A44] md:text-[20px]">
+                                        {featuredPost.description}
+                                    </p>
+
+                                    <p className="mt-7 font-sans text-[16px] font-semibold text-[#443218]">
+                                        Read featured article →
+                                    </p>
+                                </div>
+                            </Link>
+                        </section>
+                    ) : (
+                        <section className="border-b border-[#D5D4CF] px-6 py-16 text-center md:px-10 lg:px-[55px]">
+                            <p className="font-sans text-[18px] font-medium text-[#695A44]">
+                                No blog posts yet.
+                            </p>
+                        </section>
+                    )}
+
+                    {/* Search */}
+                    <div className="border-b border-[#D5D4CF] px-6 py-7 md:px-10 lg:px-[55px] hatch-pattern">
                         <label htmlFor="blog-search" className="sr-only">
                             Search the CaltAI blog
                         </label>
@@ -146,14 +191,15 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
                                 value={query}
                                 onChange={(event) => setQuery(event.target.value)}
                                 placeholder="Search the CaltAI blog..."
-                                className="h-[58px] w-full rounded-[14px] border border-[#D5D4CF] bg-[#FBF9F4] pl-14 pr-5 font-sans text-[18px] font-medium text-[#443218] outline-none placeholder:text-[#8D8177] focus:border-[#8D8177]"
+                                className="h-[52px] w-full rounded-full border border-[#D5D4CF] bg-[#FBF9F4] pl-14 pr-5 font-sans text-[15px] font-medium text-[#443218] outline-none placeholder:text-[#8D8177] focus:border-[#8D8177]"
                             />
                         </div>
                     </div>
 
+                    {/* Categories */}
                     <nav
                         aria-label="Blog categories"
-                        className="border-t border-[#D5D4CF] px-6 py-6 md:px-10 lg:px-[55px]"
+                        className="border-b border-[#D5D4CF] px-6 py-6 md:px-10 lg:px-[55px]"
                     >
                         <div className="flex flex-wrap gap-3">
                             {categories.map((category) => {
@@ -165,9 +211,9 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
                                         type="button"
                                         onClick={() => setActiveCategory(category)}
                                         aria-pressed={isActive}
-                                        className={`h-[42px] rounded-full border px-5 font-sans text-[15px] font-medium transition-colors ${isActive
-                                            ? "border-[#8D8177] bg-[#8D8177] text-white"
-                                            : "border-[#D5D4CF] bg-[#FBF9F4] text-[#695A44] hover:bg-white"
+                                        className={`h-[36px] rounded-full border px-5 font-sans text-[15px] font-medium transition-colors ${isActive
+                                            ? "border-[#FF5A1F] bg-[#FF5A1F] text-white"
+                                            : "border-[#D5D4CF] bg-[#FBF9F4] text-[#695A44] hover:border-[#FF5A1F] hover:text-[#FF5A1F]"
                                             }`}
                                     >
                                         {category}
@@ -177,7 +223,8 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
                         </div>
                     </nav>
 
-                    <section aria-label="Blog posts" className="border-t border-[#D5D4CF]">
+                    {/* Post grid */}
+                    <section aria-label="Blog posts">
                         {filteredPosts.length === 0 ? (
                             <div className="px-6 py-20 text-center md:px-10 lg:px-[55px]">
                                 <p className="font-sans text-[18px] font-medium text-[#695A44]">
@@ -220,7 +267,7 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
                                                 {post.description}
                                             </p>
 
-                                            <p className="mt-8 font-sans text-[16px] font-semibold text-[#443218]">
+                                            <p className="mt-auto pt-8 font-sans text-[16px] font-semibold text-[#443218]">
                                                 Read article →
                                             </p>
                                         </Link>
@@ -253,7 +300,7 @@ export default function BlogIndexClient({ posts }: BlogIndexClientProps) {
 
                             <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
                                 <Link
-                                    href="/use-cases/post-sales-onboarding"
+                                    href="/solutions/post-sales-onboarding"
                                     className="flex h-[54px] items-center justify-center rounded-full bg-[#FF5A1F] px-9 font-sans text-[17px] font-medium text-white hover:bg-[#E84D14]"
                                 >
                                     Explore the use case

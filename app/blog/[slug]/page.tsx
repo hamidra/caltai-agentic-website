@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { getAllBlogPosts, getBlogPostBySlug } from "@/lib/blog";
 
 type BlogArticlePageProps = {
@@ -20,29 +21,43 @@ export async function generateMetadata({
     params,
 }: BlogArticlePageProps): Promise<Metadata> {
     const { slug } = await params;
-    const post = await getBlogPostBySlug(slug);
 
-    return {
-        title: `${post.title} | CaltAI Blog`,
-        description: post.description,
-        alternates: {
-            canonical: `/blog/${post.slug}`,
-        },
-        openGraph: {
-            title: post.title,
+    try {
+        const post = await getBlogPostBySlug(slug);
+
+        return {
+            title: `${post.title} | CaltAI Blog`,
             description: post.description,
-            url: `/blog/${post.slug}`,
-            siteName: "CaltAI",
-            type: "article",
-            publishedTime: post.date,
-            authors: [post.author],
-        },
-    };
+            alternates: {
+                canonical: `/blog/${post.slug}`,
+            },
+            openGraph: {
+                title: post.title,
+                description: post.description,
+                url: `/blog/${post.slug}`,
+                siteName: "CaltAI",
+                type: "article",
+                publishedTime: post.date,
+                authors: [post.author],
+            },
+        };
+    } catch {
+        return {
+            title: "Blog post not found | CaltAI",
+        };
+    }
 }
 
 export default async function BlogArticlePage({ params }: BlogArticlePageProps) {
     const { slug } = await params;
-    const post = await getBlogPostBySlug(slug);
+
+    let post;
+
+    try {
+        post = await getBlogPostBySlug(slug);
+    } catch {
+        notFound();
+    }
 
     const jsonLd = {
         "@context": "https://schema.org",

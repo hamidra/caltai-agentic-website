@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "Product", href: "/#product" },
-  { label: "How it works", href: "/#how-it-works" },
+  { label: "Product", href: "/" },
+  { label: "How it works", href: "/learn/how-caltai-works" },
   { label: "About us", href: "/about" },
 ];
 
@@ -25,6 +25,19 @@ const useCaseLinks = [
   {
     label: "Outbound follow-up",
     href: "/solutions/outbound-followup",
+  },
+];
+
+const resourceLinks = [
+  {
+    label: "Blog",
+    href: "/blog",
+    description: "Field notes on AI, operations, and workflow ownership.",
+  },
+  {
+    label: "Learn",
+    href: "/learn/start-here",
+    description: "Understand how CaltAI works and how operations run.",
   },
 ];
 
@@ -48,9 +61,27 @@ const Logo = () => (
   </svg>
 );
 
+const Chevron = ({ open }: { open: boolean }) => (
+  <span
+    className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+    aria-hidden="true"
+  >
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path
+        d="M3.5 5.25L7 8.75L10.5 5.25"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </span>
+);
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [useCasesOpen, setUseCasesOpen] = useState(false);
+  const [resourcesOpen, setResourcesOpen] = useState(false);
 
   return (
     <nav
@@ -89,31 +120,11 @@ const Navbar = () => {
                 aria-expanded={useCasesOpen}
               >
                 Solutions
-                <span
-                  className={`transition-transform duration-200 ${useCasesOpen ? "rotate-180" : ""
-                    }`}
-                  aria-hidden="true"
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 14 14"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3.5 5.25L7 8.75L10.5 5.25"
-                      stroke="currentColor"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
+                <Chevron open={useCasesOpen} />
               </button>
 
               {useCasesOpen && (
-                <div className="absolute left-1/2 top-full z-50 pt-5 -translate-x-1/2">
+                <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-5">
                   <div className="w-[310px] border border-[#D5D4CF] bg-[#FBF9F4] shadow-[0_18px_50px_rgba(68,50,24,0.16)]">
                     <div className="p-2">
                       {useCaseLinks.map((item) => (
@@ -125,7 +136,45 @@ const Navbar = () => {
                           <span className="font-sans text-[15px] font-medium text-[#443218]">
                             {item.label}
                           </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
+            <div
+              className="relative"
+              onMouseEnter={() => setResourcesOpen(true)}
+              onMouseLeave={() => setResourcesOpen(false)}
+            >
+              <button
+                type="button"
+                onClick={() => setResourcesOpen((prev) => !prev)}
+                className="flex items-center gap-1 text-[14px] font-medium text-[#443218] transition-colors hover:text-[#FF5A1F]"
+                aria-expanded={resourcesOpen}
+              >
+                Resources
+                <Chevron open={resourcesOpen} />
+              </button>
+
+              {resourcesOpen && (
+                <div className="absolute left-1/2 top-full z-50 -translate-x-1/2 pt-5">
+                  <div className="w-[340px] border border-[#D5D4CF] bg-[#FBF9F4] shadow-[0_18px_50px_rgba(68,50,24,0.16)]">
+                    <div className="p-2">
+                      {resourceLinks.map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          className="block border-b border-[#D5D4CF] px-4 py-4 last:border-b-0 hover:bg-[#F6F3EF]"
+                        >
+                          <span className="block font-sans text-[15px] font-semibold text-[#443218]">
+                            {item.label}
+                          </span>
+                          <span className="mt-1 block font-sans text-[13px] font-normal leading-[1.45] text-[#8D8177]">
+                            {item.description}
+                          </span>
                         </Link>
                       ))}
                     </div>
@@ -215,13 +264,14 @@ const Navbar = () => {
                       className="flex w-full items-center justify-between text-[18px] font-medium text-[#443218]"
                       aria-expanded={useCasesOpen}
                     >
-                      Use cases
+                      Solutions
                       <svg
                         width="18"
                         height="18"
                         viewBox="0 0 18 18"
                         fill="none"
-                        className={`transition-transform duration-200 ${useCasesOpen ? "rotate-180" : ""}`}
+                        className={`transition-transform duration-200 ${useCasesOpen ? "rotate-180" : ""
+                          }`}
                       >
                         <path
                           d="M4.5 6.75L9 11.25L13.5 6.75"
@@ -235,7 +285,6 @@ const Navbar = () => {
 
                     {useCasesOpen && (
                       <div className="mt-4 overflow-hidden border border-[#D5D4CF] bg-[#F6F3EF] shadow-[0_16px_40px_rgba(68,50,24,0.14)]">
-
                         {useCaseLinks.map((item) => (
                           <Link
                             key={item.label}
@@ -249,7 +298,56 @@ const Navbar = () => {
                             <span className="font-sans text-[15px] font-medium text-[#443218]">
                               {item.label}
                             </span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
 
+                  <div className="border-b border-[#D5D4CF] py-4">
+                    <button
+                      type="button"
+                      onClick={() => setResourcesOpen((prev) => !prev)}
+                      className="flex w-full items-center justify-between text-[18px] font-medium text-[#443218]"
+                      aria-expanded={resourcesOpen}
+                    >
+                      Resources
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 18 18"
+                        fill="none"
+                        className={`transition-transform duration-200 ${resourcesOpen ? "rotate-180" : ""
+                          }`}
+                      >
+                        <path
+                          d="M4.5 6.75L9 11.25L13.5 6.75"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+
+                    {resourcesOpen && (
+                      <div className="mt-4 overflow-hidden border border-[#D5D4CF] bg-[#F6F3EF] shadow-[0_16px_40px_rgba(68,50,24,0.14)]">
+                        {resourceLinks.map((item) => (
+                          <Link
+                            key={item.label}
+                            href={item.href}
+                            onClick={() => {
+                              setOpen(false);
+                              setResourcesOpen(false);
+                            }}
+                            className="block border-b border-[#D5D4CF] px-4 py-4 last:border-b-0"
+                          >
+                            <span className="block font-sans text-[15px] font-semibold text-[#443218]">
+                              {item.label}
+                            </span>
+                            <span className="mt-1 block font-sans text-[13px] font-normal leading-[1.45] text-[#8D8177]">
+                              {item.description}
+                            </span>
                           </Link>
                         ))}
                       </div>
@@ -268,7 +366,7 @@ const Navbar = () => {
                   ))}
 
                   <Link
-                    href="/#demo"
+                    href="/get-started?mode=demo"
                     onClick={() => setOpen(false)}
                     className="mt-4 flex h-[48px] items-center justify-center bg-[#FF5A1F] px-6 text-[15px] font-medium text-white sm:hidden"
                   >

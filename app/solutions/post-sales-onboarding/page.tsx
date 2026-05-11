@@ -195,7 +195,7 @@ export default function PostSalesOnboardingPage() {
 
                             <div className="relative h-[505px] w-full max-w-[505px] overflow-hidden bg-[#F5F2ED] lg:ml-auto">
                                 <Image
-                                    src="/hero/onboarding-page-hero.png"
+                                    src="/hero/onboarding-page.png"
                                     alt="Post-sales onboarding workflow from signed client to live client"
                                     fill
                                     priority
