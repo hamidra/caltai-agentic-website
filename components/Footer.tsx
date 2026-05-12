@@ -14,8 +14,9 @@ export default function Footer() {
         {
             title: "Product",
             links: [
-                ["Product", "/#product"],
+                ["Product", "/"],
                 ["How it works", "/#how-it-works"],
+                ["Integrations", "/integrations"],
                 ["Control", "/#control"],
                 ["Book a demo", "/get-started?mode=demo"],
             ],

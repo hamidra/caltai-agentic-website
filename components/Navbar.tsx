@@ -39,6 +39,11 @@ const resourceLinks = [
     href: "/learn/start-here",
     description: "Understand how CaltAI works and how operations run.",
   },
+  {
+    label: "Integrations",
+    href: "/integrations",
+    description: "See how CaltAI connects with the tools your operations already use.",
+  },
 ];
 
 const Logo = () => (
