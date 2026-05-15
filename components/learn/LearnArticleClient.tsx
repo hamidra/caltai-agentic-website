@@ -170,7 +170,7 @@ export default function LearnArticleClient({
                         <aside className="hidden border-[#D5D4CF] bg-[#F6F3EF] lg:sticky lg:top-[64px] lg:block lg:h-[calc(100vh-64px)] lg:overflow-hidden lg:border-r">
                             <div className="flex h-full flex-col">
                                 {/* Fixed search area */}
-                                <div className="shrink-0 border-b border-[#D5D4CF] bg-[#F6F3EF] p-6 lg:p-7">
+                                <div className="shrink-0 border-b border-[#D5D4CF] bg-[#FBF9F4] px-6 py-3 lg:px-7 lg:py-4 hatch-pattern">
                                     <div className="relative">
                                         <label htmlFor="learn-search-desktop" className="sr-only">
                                             Search learn articles

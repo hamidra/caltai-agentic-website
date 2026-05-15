@@ -117,16 +117,14 @@ function MovingSignal({
   type: "healthy" | "failed";
 }) {
   const path =
-    type === "healthy"
-      ? flow.healthyOffsetPath
-      : flow.failedOffsetPath;
+    type === "healthy" ? flow.healthyOffsetPath : flow.failedOffsetPath;
 
   return (
     <motion.div
       key={`${flow.label}-${type}`}
       className={`absolute z-5 h-[8px] w-[8px] rounded-full ${type === "healthy"
-        ? "bg-[#36D399] shadow-[0_0_18px_rgba(54,211,153,0.9)]"
-        : "bg-[#6F4DFF] shadow-[0_0_18px_rgba(111,77,255,0.9)]"
+          ? "bg-[#36D399] shadow-[0_0_18px_rgba(54,211,153,0.9)]"
+          : "bg-[#6F4DFF] shadow-[0_0_18px_rgba(111,77,255,0.9)]"
         }`}
       style={{
         offsetPath: path,
@@ -260,6 +258,7 @@ function ProblemBetweenToolsVisual() {
     </div>
   );
 }
+
 const ProblemSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
@@ -291,13 +290,14 @@ const ProblemSection = () => {
 
   return (
     <>
+      {/* Desktop problem section only */}
       <section
         ref={containerRef}
         className="relative hidden bg-[#FBF9F4] lg:block"
-        style={{ height: "calc(720px + 907px + 3500px)" }}
+        style={{ height: "calc(720px + 3500px)" }}
       >
-        <div className="sticky top-[63px] z-10 h-auto">
-          <div className="relative z-[-1] !bg-[#262626]">
+        <div className="sticky top-[63px] z-10">
+          <div className="relative !bg-[#262626]">
             <div className="page-frame relative flex h-[720px] overflow-hidden !border-[#4C4C4B] !bg-[#262626]">
               <div className="absolute bottom-0 left-1/2 top-0 z-10 w-px bg-[#4C4C4B]" />
 
@@ -362,20 +362,13 @@ const ProblemSection = () => {
               <div className="page-frame h-full hatch-pattern opacity-30" />
             </div>
           </div>
-
-          <div className="relative z-[1] bg-[#FBF9F4]">
-            <CaltAILayer />
-          </div>
         </div>
       </section>
 
+      {/* Mobile problem section only */}
       <section className="block bg-[#FBF9F4] lg:hidden">
         <div className="bg-[#262626]">
           <div className="page-frame !border-[#4C4C4B]">
-            <div className="hidden lg:block h-[520px] overflow-hidden border-b border-[#4C4C4B]">
-              <ProblemBetweenToolsVisual />
-            </div>
-
             <div className="px-5 py-14 sm:px-8 md:px-10 md:py-16">
               <div className="mb-10 inline-flex h-[42px] w-fit items-center gap-[10px] rounded-full border border-[#484746] bg-[#1C1C1C] px-5">
                 <svg width="17" height="18" viewBox="0 0 17 18" fill="none">
@@ -419,9 +412,10 @@ const ProblemSection = () => {
             <div className="page-frame h-full hatch-pattern opacity-30" />
           </div>
         </div>
-
-        <CaltAILayer />
       </section>
+
+      {/* CaltAI Layer must be outside Problem sticky section */}
+      <CaltAILayer />
     </>
   );
 };
