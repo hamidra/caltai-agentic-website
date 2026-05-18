@@ -15,10 +15,7 @@ export default function Footer() {
             title: "Product",
             links: [
                 ["Product", "/"],
-                ["How it works", "/#how-it-works"],
-                ["Integrations", "/integrations"],
-                ["Control", "/#control"],
-                ["Book a demo", "/get-started?mode=demo"],
+                ["How it works", "/learn/how-caltai-works"],
             ],
         },
         {
@@ -35,6 +32,7 @@ export default function Footer() {
             links: [
                 ["Blog", "/blog"],
                 ["Learn", "/learn/start-here"],
+                ["Integrations", "/integrations"],
             ],
         },
         {
@@ -42,6 +40,7 @@ export default function Footer() {
             links: [
                 ["About us", "/about"],
                 ["Design partnership", "/design-partners"],
+                ["Book a demo", "/get-started?mode=demo"],
             ],
         },
         {

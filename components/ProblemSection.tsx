@@ -13,47 +13,91 @@ import CaltAILayer from "./CaltAILayer";
 const problemStates = [
   {
     id: "01",
-    title: "The problem isn't your tools. It's what happens between them.",
-    body: "You've bought the CRM, the inbox automation, the doc system, the task tracker. Each one works.\n\nThe problem is what falls into the cracks between them, every single day.",
+    title: "The problem isn't your tools. It's the work between them.",
+    body: "Your business context is scattered across customer records, inbox threads, analytics dashboards, payment events, operational data, support conversations, vendor messages, files, and internal docs.\n\nEach system holds a signal. None of them understands the whole operation or owns what should happen next.",
+    visualCenter: "Operation Gap",
+    visualLabels: [
+      {
+        label: "Scattered Context",
+        labelPos: "leftTop",
+        healthyOffsetPath: "path('M 325 159 L 130 159 L 130 340')",
+        failedOffsetPath: "path('M 325 159 L 130 159')",
+      },
+      {
+        label: "Missed Signal",
+        labelPos: "rightTop",
+        healthyOffsetPath: "path('M 325 159 L 516 159 L 516 340')",
+        failedOffsetPath: "path('M 325 159 L 516 159')",
+      },
+    ],
   },
   {
     id: "02",
-    title: "It's not one process that breaks. It's every process, in the same way.",
-    body: "Something finishes, nobody starts what comes next. A step needs input, somebody has to chase it. A decision needs approval, it sits in a thread.\n\nEvery workflow in your business has the same breakage pattern. You've just been treating them as separate problems.",
+    title: "Every operation breaks in the same way.",
+    body: "A signal appears, but no one acts on it. A handoff is needed, but no one owns it. A customer, vendor, or team member is waiting, but the next step is buried in another tool.\n\nThe pattern is always the same: something changes, context is scattered, and the next step depends on a human noticing, deciding, and chasing.",
+    visualCenter: "No Owner",
+    visualLabels: [
+      {
+        label: "No Next Step",
+        labelPos: "rightTop",
+        healthyOffsetPath: "path('M 325 159 L 516 159 L 516 340')",
+        failedOffsetPath: "path('M 325 159 L 516 159')",
+      },
+      {
+        label: "Waiting on Someone",
+        labelPos: "leftBottom",
+        healthyOffsetPath: "path('M 325 562 L 130 562 L 130 340')",
+        failedOffsetPath: "path('M 325 562 L 130 562')",
+      },
+      {
+        label: "Handoff Dropped",
+        labelPos: "rightBottom",
+        healthyOffsetPath: "path('M 325 562 L 516 562 L 516 340')",
+        failedOffsetPath: "path('M 325 562 L 516 562')",
+      },
+      {
+        label: "Decision Stuck",
+        labelPos: "leftTop",
+        healthyOffsetPath: "path('M 325 159 L 130 159 L 130 340')",
+        failedOffsetPath: "path('M 325 159 L 130 159')",
+      },
+    ],
   },
   {
     id: "03",
-    title: "Automation moves data. It doesn't move work.",
-    body: "Automation fire when something happens. Chatbots answer when someone asks. Neither of them owns an outcome. Neither notices when a run is stuck. Neither picks up the next step.\n\nThe work between your tools needs something that watches, decides, and acts and stays on the run until it's done.",
+    title: "Task agents complete work. They don’t own operations.",
+    body: "AI coworkers can help with assigned tasks. Automations can move data when rules fire. Dashboards can show what happened.\n\nBut business operations are continuous. They need a system that watches state, understands context, plans the next step, routes judgment, executes through tools or people, and checks whether the outcome actually moved forward.",
+    visualCenter: "No Outcome Owner",
+    visualLabels: [
+      {
+        label: "Task Done",
+        labelPos: "leftTop",
+        healthyOffsetPath: "path('M 325 159 L 130 159 L 130 340')",
+        failedOffsetPath: "path('M 325 159 L 130 159')",
+      },
+      {
+        label: "Outcome Stalled",
+        labelPos: "rightBottom",
+        healthyOffsetPath: "path('M 325 562 L 516 562 L 516 340')",
+        failedOffsetPath: "path('M 325 562 L 516 562')",
+      },
+      {
+        label: "No Replan",
+        labelPos: "leftBottom",
+        healthyOffsetPath: "path('M 325 562 L 130 562 L 130 340')",
+        failedOffsetPath: "path('M 325 562 L 130 562')",
+      },
+      {
+        label: "Signal Ignored",
+        labelPos: "rightTop",
+        healthyOffsetPath: "path('M 325 159 L 516 159 L 516 340')",
+        failedOffsetPath: "path('M 325 159 L 516 159')",
+      },
+    ],
   },
-];
+] as const;
 
-const signalFlows = [
-  {
-    label: "Unlogged Context",
-    labelPos: "rightTop",
-    healthyOffsetPath: "path('M 325 159 L 516 159 L 516 340')",
-    failedOffsetPath: "path('M 325 159 L 516 159')",
-  },
-  {
-    label: "Stale Doc",
-    labelPos: "leftTop",
-    healthyOffsetPath: "path('M 325 159 L 130 159 L 130 340')",
-    failedOffsetPath: "path('M 325 159 L 130 159')",
-  },
-  {
-    label: "Missed Handoff",
-    labelPos: "rightBottom",
-    healthyOffsetPath: "path('M 325 562 L 516 562 L 516 340')",
-    failedOffsetPath: "path('M 325 562 L 516 562')",
-  },
-  {
-    label: "Manual Update",
-    labelPos: "leftBottom",
-    healthyOffsetPath: "path('M 325 562 L 130 562 L 130 340')",
-    failedOffsetPath: "path('M 325 562 L 130 562')",
-  },
-];
+type VisualFlow = (typeof problemStates)[number]["visualLabels"][number];
 
 const labelPositionClass: Record<string, string> = {
   leftTop: "left-[11%] top-[19%]",
@@ -113,7 +157,7 @@ function MovingSignal({
   flow,
   type,
 }: {
-  flow: (typeof signalFlows)[number];
+  flow: VisualFlow;
   type: "healthy" | "failed";
 }) {
   const path =
@@ -123,8 +167,8 @@ function MovingSignal({
     <motion.div
       key={`${flow.label}-${type}`}
       className={`absolute z-5 h-[8px] w-[8px] rounded-full ${type === "healthy"
-          ? "bg-[#36D399] shadow-[0_0_18px_rgba(54,211,153,0.9)]"
-          : "bg-[#6F4DFF] shadow-[0_0_18px_rgba(111,77,255,0.9)]"
+        ? "bg-[#36D399] shadow-[0_0_18px_rgba(54,211,153,0.9)]"
+        : "bg-[#6F4DFF] shadow-[0_0_18px_rgba(111,77,255,0.9)]"
         }`}
       style={{
         offsetPath: path,
@@ -142,15 +186,32 @@ function MovingSignal({
   );
 }
 
-function ProblemBetweenToolsVisual() {
+function ProblemBetweenToolsVisual({
+  activeProblemIndex,
+}: {
+  activeProblemIndex: number;
+}) {
+  const visualState = problemStates[activeProblemIndex];
+  const flows = visualState.visualLabels;
+
   const [step, setStep] = useState(0);
-  const [signalType, setSignalType] = useState<"healthy" | "failed">("healthy");
+  const [signalType, setSignalType] = useState<"healthy" | "failed">(
+    "healthy"
+  );
   const [showFailure, setShowFailure] = useState(false);
 
-  const active = signalFlows[step];
+  const active = flows[step] ?? flows[0];
+
+  useEffect(() => {
+    setStep(0);
+    setSignalType("healthy");
+    setShowFailure(false);
+  }, [activeProblemIndex]);
 
   useEffect(() => {
     setShowFailure(false);
+
+    if (!active) return;
 
     if (signalType === "healthy") {
       const nextTimer = window.setTimeout(() => {
@@ -167,14 +228,14 @@ function ProblemBetweenToolsVisual() {
     const nextTimer = window.setTimeout(() => {
       setShowFailure(false);
       setSignalType("healthy");
-      setStep((prev) => (prev + 1) % signalFlows.length);
+      setStep((prev) => (prev + 1) % flows.length);
     }, 2300);
 
     return () => {
       window.clearTimeout(showTimer);
       window.clearTimeout(nextTimer);
     };
-  }, [step, signalType]);
+  }, [step, signalType, flows.length, active]);
 
   return (
     <div className="flex h-full w-full items-center justify-center overflow-hidden bg-[#1C1C1C]">
@@ -214,42 +275,58 @@ function ProblemBetweenToolsVisual() {
               }}
             />
 
-            <motion.div
-              className="relative z-10 bg-black/80 px-5 py-2 font-inter text-[11px] font-normal text-[#D7C1A4]"
-              animate={{ scale: showFailure ? [1, 1.035, 1] : 1 }}
-              transition={{ duration: 0.4 }}
-            >
-              The Friction Zone
-            </motion.div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={visualState.visualCenter}
+                className="relative z-10 bg-black/80 px-5 py-2 font-inter text-[13px] font-normal text-[#D7C1A4]"
+                initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  filter: "blur(0px)",
+                  scale: showFailure ? [1, 1.035, 1] : 1,
+                }}
+                exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+                transition={{ duration: 0.32 }}
+              >
+                {visualState.visualCenter}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
 
           <ToolBox
             className="left-1/2 top-[17.5%] -translate-x-1/2"
-            eyebrow="PIPELINE"
-            title="CRM"
+            eyebrow="CUSTOMER"
+            title="Records"
           />
           <ToolBox
             className="left-[11%] top-1/2 -translate-y-1/2"
-            eyebrow="KNOWLEDGE"
-            title="Doc"
+            eyebrow="BUSINESS"
+            title="Context"
           />
           <ToolBox
             className="right-[11%] top-1/2 -translate-y-1/2"
             eyebrow="COMMS"
-            title="Inbox"
+            title="Messages"
           />
           <ToolBox
             className="left-1/2 bottom-[17.5%] -translate-x-1/2"
-            eyebrow="EXECUTION"
-            title="Task tracker"
+            eyebrow="OPERATIONS"
+            title="Data"
           />
 
           <AnimatePresence mode="wait">
-            <MovingSignal flow={active} type={signalType} />
+            {active && (
+              <MovingSignal
+                key={`${activeProblemIndex}-${active.label}-${signalType}`}
+                flow={active}
+                type={signalType}
+              />
+            )}
           </AnimatePresence>
 
           <AnimatePresence>
-            {showFailure && signalType === "failed" && (
+            {showFailure && signalType === "failed" && active && (
               <FailureLabel label={active.label} position={active.labelPos} />
             )}
           </AnimatePresence>
@@ -302,15 +379,32 @@ const ProblemSection = () => {
               <div className="absolute bottom-0 left-1/2 top-0 z-10 w-px bg-[#4C4C4B]" />
 
               <div className="relative h-full w-1/2 overflow-hidden bg-[#1C1C1C]">
-                <ProblemBetweenToolsVisual />
+                <ProblemBetweenToolsVisual activeProblemIndex={index} />
               </div>
 
               <div className="relative flex h-full w-1/2 flex-col bg-[#262626] pb-0 pl-20 pr-[60px] pt-[90px]">
                 <div className="mb-[56px] inline-flex h-[44px] w-fit items-center gap-[10px] rounded-full border border-[#484746] bg-[#1C1C1C] px-5">
                   <svg width="17" height="18" viewBox="0 0 17 18" fill="none">
-                    <rect width="16.918" height="5.71875" rx="2.85938" fill="#FB631C" />
-                    <rect y="5.71875" width="11.7969" height="5.71875" rx="2.85938" fill="#FB9F72" />
-                    <rect y="11.4375" width="5.72" height="5.71875" rx="2.85938" fill="#FBCCB3" />
+                    <rect
+                      width="16.918"
+                      height="5.71875"
+                      rx="2.85938"
+                      fill="#FB631C"
+                    />
+                    <rect
+                      y="5.71875"
+                      width="11.7969"
+                      height="5.71875"
+                      rx="2.85938"
+                      fill="#FB9F72"
+                    />
+                    <rect
+                      y="11.4375"
+                      width="5.72"
+                      height="5.71875"
+                      rx="2.85938"
+                      fill="#FBCCB3"
+                    />
                   </svg>
                   <span className="font-inter text-[16px] font-medium text-[#F6F3EF]">
                     Problem
@@ -372,9 +466,26 @@ const ProblemSection = () => {
             <div className="px-5 py-14 sm:px-8 md:px-10 md:py-16">
               <div className="mb-10 inline-flex h-[42px] w-fit items-center gap-[10px] rounded-full border border-[#484746] bg-[#1C1C1C] px-5">
                 <svg width="17" height="18" viewBox="0 0 17 18" fill="none">
-                  <rect width="16.918" height="5.71875" rx="2.85938" fill="#FB631C" />
-                  <rect y="5.71875" width="11.7969" height="5.71875" rx="2.85938" fill="#FB9F72" />
-                  <rect y="11.4375" width="5.72" height="5.71875" rx="2.85938" fill="#FBCCB3" />
+                  <rect
+                    width="16.918"
+                    height="5.71875"
+                    rx="2.85938"
+                    fill="#FB631C"
+                  />
+                  <rect
+                    y="5.71875"
+                    width="11.7969"
+                    height="5.71875"
+                    rx="2.85938"
+                    fill="#FB9F72"
+                  />
+                  <rect
+                    y="11.4375"
+                    width="5.72"
+                    height="5.71875"
+                    rx="2.85938"
+                    fill="#FBCCB3"
+                  />
                 </svg>
                 <span className="font-inter text-[15px] font-medium text-[#F6F3EF]">
                   Problem

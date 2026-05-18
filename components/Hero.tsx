@@ -1,35 +1,28 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
-const rotatingWords = [
-  "client onboarding",
-  "outbound follow-up",
-  "lead lifecycle",
-  "client intake",
+const nextActionStatuses = [
+  "Next step selected",
+  "Draft prepared",
+  "Approval needed",
+  "Blocker detected",
 ];
 
-const clientStatuses = [
-  "Update prepared",
-  "Reminder queued",
-  "Asset requested",
-  "Follow-up sent",
-];
-
-const toolStatuses = [
-  "Timeline logged",
+const toolExecutionStatuses = [
+  "Action routed",
+  "Systems updated",
   "Task created",
-  "CRM updated",
   "Record synced",
 ];
 
-const handoffStatuses = [
-  "Escalation routed",
-  "Next step routed",
-  "Owner assigned",
-  "Brief shared",
+const outcomeStatuses = [
+  "Outcome checked",
+  "Run on track",
+  "Replan triggered",
+  "Risk reduced",
 ];
 
 const ARTBOARD_WIDTH = 600;
@@ -38,7 +31,12 @@ const ARTBOARD_HEIGHT = 607;
 const pxToPercentX = (x: number) => `${(x / ARTBOARD_WIDTH) * 100}%`;
 const pxToPercentY = (y: number) => `${(y / ARTBOARD_HEIGHT) * 100}%`;
 
-const boxStyle = (x: number, y: number, w: number, h: number): React.CSSProperties => ({
+const boxStyle = (
+  x: number,
+  y: number,
+  w: number,
+  h: number
+): React.CSSProperties => ({
   left: pxToPercentX(x),
   top: pxToPercentY(y),
   width: pxToPercentX(w),
@@ -63,39 +61,6 @@ function useRotatingText(items: string[], delay: number) {
   const index = useRotatingIndex(items.length, delay);
   return items[index];
 }
-
-const RollingWord = ({ word }: { word: string }) => {
-  return (
-    <span className="inline-flex whitespace-nowrap text-[#4209DF]">
-      {word.split("").map((char, i) => (
-        <span
-          key={`${word}-${i}`}
-          className="relative inline-block h-[1.2em] overflow-hidden"
-          style={{
-            minWidth: char === " " ? "0.3em" : "auto",
-          }}
-        >
-          <AnimatePresence mode="popLayout">
-            <motion.span
-              key={char + i}
-              initial={{ y: "100%", rotateX: -90, opacity: 0 }}
-              animate={{ y: 0, rotateX: 0, opacity: 1 }}
-              exit={{ y: "-100%", rotateX: 90, opacity: 0 }}
-              transition={{
-                duration: 0.6,
-                ease: [0.23, 1, 0.32, 1],
-                delay: i * 0.03,
-              }}
-              className="inline-block whitespace-pre text-[#4209DF]"
-            >
-              {char}
-            </motion.span>
-          </AnimatePresence>
-        </span>
-      ))}
-    </span>
-  );
-};
 
 function AnimatedChipText({
   text,
@@ -132,7 +97,7 @@ function StatusChip({
 }) {
   return (
     <motion.div
-      style={boxStyle(x, y, 120, 21)}
+      style={boxStyle(x - 5, y, 130, 23)}
       animate={{
         boxShadow: [
           "0 0 0 rgba(96,35,250,0)",
@@ -219,51 +184,6 @@ function SignalPath({
   );
 }
 
-function CaltAILogo() {
-  return (
-    <svg viewBox="0 0 63 63" className="h-full w-full" fill="none">
-      <defs>
-        <filter
-          id="caltai-logo-shadow"
-          x="0"
-          y="0"
-          width="62.7031"
-          height="62.7031"
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feColorMatrix
-            in="SourceAlpha"
-            type="matrix"
-            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-            result="hardAlpha"
-          />
-          <feOffset />
-          <feGaussianBlur stdDeviation="3" />
-          <feComposite in2="hardAlpha" operator="out" />
-          <feColorMatrix
-            type="matrix"
-            values="0 0 0 0 0.266667 0 0 0 0 0.196078 0 0 0 0 0.0941176 0 0 0 0.25 0"
-          />
-          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
-          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
-        </filter>
-      </defs>
-
-      <g filter="url(#caltai-logo-shadow)">
-        <circle cx="31.3516" cy="31.3516" r="25.3516" fill="white" />
-        <circle cx="31.3516" cy="31.3516" r="24.8516" stroke="#443218" strokeOpacity="0.27" />
-      </g>
-
-      <path
-        d="M33.5388 20.4087C33.5388 21.2818 33.7109 22.1465 34.045 22.9532C34.3791 23.7598 34.8689 24.4929 35.4862 25.1103C36.1036 25.7277 36.8367 26.2174 37.6434 26.5516C38.4239 26.8748 39.2587 27.0456 40.1029 27.0564V24.5328H44.4806V27.2268H40.2723V31.2663H44.4806V42.3771H40.1029V35.6449C39.2587 35.6557 38.4239 35.8268 37.6434 36.1501C36.8367 36.4842 36.1036 36.974 35.4862 37.5914C34.8689 38.2088 34.3791 38.9419 34.045 39.7485C33.7109 40.5551 33.5388 41.4198 33.5388 42.2929V42.3775H29.1612V42.3761C26.2671 42.3541 23.4964 41.1959 21.4483 39.1479C19.3805 37.08 18.2187 34.2752 18.2188 31.3508C18.2188 28.4265 19.3805 25.6219 21.4483 23.5541C23.4964 21.5061 26.2672 20.3473 29.1612 20.3252V20.3242H33.5388V20.4087ZM29.3299 24.7018H29.2454C27.482 24.7018 25.7908 25.4024 24.5438 26.6493C23.2969 27.8962 22.5964 29.5875 22.5964 31.3508L22.5984 31.5159C22.6406 33.2195 23.3359 34.8444 24.5438 36.0524C25.7908 37.2993 27.4819 37.9998 29.2454 37.9998H29.3299V40.3722C29.721 38.1611 30.7813 36.1053 32.3907 34.4959C34.1349 32.7518 36.4032 31.652 38.8254 31.3505C36.4032 31.049 34.1349 29.9499 32.3907 28.2058C30.7812 26.5962 29.721 24.5402 29.3299 22.3288V24.7018Z"
-        fill="#443218"
-      />
-    </svg>
-  );
-}
-
 function HeroImage({
   src,
   x,
@@ -271,6 +191,7 @@ function HeroImage({
   w,
   h,
   className = "",
+  alt = "",
 }: {
   src: string;
   x: number;
@@ -278,11 +199,12 @@ function HeroImage({
   w: number;
   h: number;
   className?: string;
+  alt?: string;
 }) {
   return (
     <img
       src={src}
-      alt=""
+      alt={alt}
       draggable={false}
       className={`absolute select-none ${className}`}
       style={boxStyle(x, y, w, h)}
@@ -290,28 +212,56 @@ function HeroImage({
   );
 }
 
+function OutputCard({
+  x,
+  y,
+  title,
+}: {
+  x: number;
+  y: number;
+  title: string;
+}) {
+  return (
+    <div
+      style={boxStyle(x, y, 156, 76)}
+      className="absolute z-[7] rounded-[10px] border border-[#D8D8D8] bg-[#FBF9F4] shadow-[0_2px_8px_rgba(68,50,24,0.06)]"
+    >
+      <div className="flex h-full w-full items-start justify-center pt-[8px] text-center font-inter text-[13px] font-semibold text-[#443218]">
+        {title}
+      </div>
+    </div>
+  );
+}
+
 function CaltAILayerVisual() {
   const activeStage = useRotatingIndex(3, 1500);
-  const clientStatus = useRotatingText(clientStatuses, 2200);
-  const toolStatus = useRotatingText(toolStatuses, 2450);
-  const handoffStatus = useRotatingText(handoffStatuses, 2700);
+  const nextActionStatus = useRotatingText(nextActionStatuses, 2200);
+  const toolExecutionStatus = useRotatingText(toolExecutionStatuses, 2450);
+  const outcomeStatus = useRotatingText(outcomeStatuses, 2700);
 
   return (
     <div className="relative aspect-[600/607] w-full max-w-[540px] overflow-hidden bg-[#FBF9F4]">
       <img
         src="/hero/caltai-layer-base.png"
-        alt="CaltAI layer visual"
+        alt="CaltAI operations layer visual"
         className="absolute inset-0 h-full w-full object-fill"
         draggable={false}
       />
 
-      {/* Tools */}
-      <HeroImage src="/hero/tool-gmail.png" x={78} y={122} w={43} h={43} />
-      <HeroImage src="/hero/tool-calendar.png" x={138} y={76} w={43} h={43} />
-      <HeroImage src="/hero/tool-hubspot.png" x={198} y={28} w={43} h={43} />
-      <HeroImage src="/hero/tool-slack.png" x={359} y={28} w={43} h={43} />
-      <HeroImage src="/hero/tool-docs.png" x={419} y={76} w={43} h={43} />
-      <HeroImage src="/hero/tool-todo.png" x={478} y={122} w={43} h={43} />
+      {/* Business tools and signals */}
+      <HeroImage src="/hero/tool-gmail.png" x={78} y={122} w={43} h={43} alt="Email" />
+      <HeroImage src="/hero/tool-calendar.png" x={138} y={76} w={43} h={43} alt="Calendar" />
+      <HeroImage src="/hero/tool-hubspot.png" x={198} y={28} w={43} h={43} alt="CRM" />
+      <HeroImage src="/hero/tool-slack.png" x={359} y={28} w={43} h={43} alt="Team chat" />
+      <HeroImage src="/hero/tool-docs.png" x={419} y={76} w={43} h={43} alt="Documents" />
+      <HeroImage src="/hero/tool-todo.png" x={478} y={122} w={43} h={43} alt="Tasks" />
+
+      {/* Optional: replace one of the icons above with analytics or commerce icons once assets exist */}
+      {/* Suggested future assets:
+          /hero/tool-analytics.png
+          /hero/tool-shopify.png
+          /hero/tool-stripe.png
+      */}
 
       {/* CaltAI layer body */}
       <HeroImage
@@ -321,33 +271,13 @@ function CaltAILayerVisual() {
         w={326}
         h={172}
         className="z-[11]"
+        alt="CaltAI Layer"
       />
 
-      {/* Cards */}
-      <HeroImage
-        src="/hero/card-client-followup.png"
-        x={42}
-        y={477}
-        w={156}
-        h={76}
-        className="z-[7]"
-      />
-      <HeroImage
-        src="/hero/card-tool-updates.png"
-        x={222}
-        y={508}
-        w={156}
-        h={76}
-        className="z-[7]"
-      />
-      <HeroImage
-        src="/hero/card-internal-handoff.png"
-        x={398}
-        y={477}
-        w={156}
-        h={76}
-        className="z-[7]"
-      />
+      {/* Output cards */}
+      <OutputCard x={42} y={477} title="Next action" />
+      <OutputCard x={222} y={508} title="Tool execution" />
+      <OutputCard x={398} y={477} title="Outcome loop" />
 
       {/* Glow behind logo */}
       <motion.div
@@ -376,7 +306,6 @@ function CaltAILayerVisual() {
         transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Logo PNG */}
       <motion.img
         src="/hero/caltai-logo.png"
         alt=""
@@ -392,70 +321,45 @@ function CaltAILayerVisual() {
         transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Signals from tools to center, then down */}
-      <SignalPath
-        d="M 124 143 H 298.5 V 405"
-        duration={4.8}
-        delay={0}
-      />
+      {/* Signals from tools to CaltAI layer */}
+      <SignalPath d="M 124 143 H 298.5 V 405" duration={4.8} delay={0} />
+      <SignalPath d="M 238 48 H 298.5 V 405" duration={5} delay={1.4} />
+      <SignalPath d="M 405 97 H 298.5 V 405" duration={5} delay={2.8} />
+      <SignalPath d="M 470 143 H 298.5 V 405" duration={2.8} delay={0} />
 
-      <SignalPath
-        d="M 238 48 H 298.5 V 405"
-        duration={5}
-        delay={1.4}
-      />
-
-      <SignalPath
-        d="M 405 97 H 298.5 V 405"
-        duration={5}
-        delay={2.8}
-      />
-
-      <SignalPath
-        d="M 470 143 H 298.5 V 405"
-        duration={2.8}
-        delay={0}
-      />
-
-      {/* Signals from Human Approval to output cards */}
-
+      {/* Signals from approval to output cards */}
       <SignalPath
         d="M 281 405
-     V 430
-     C 280 451 260 451 240 451
-     H 130
-     C 118 460 118 480 118 500
-     V 525"
+        V 430
+        C 280 451 260 451 240 451
+        H 130
+        C 118 460 118 480 118 500
+        V 525"
         duration={3.2}
         delay={3.2}
         size={4}
       />
 
-      <SignalPath
-        d="M 298.5 405 V 535"
-        duration={3}
-        delay={3.5}
-        size={4}
-      />
+      <SignalPath d="M 298.5 405 V 535" duration={3} delay={3.5} size={4} />
 
       <SignalPath
         d="M 315 405
-     V 430
-     C 319 451 322 451 350 451
-     H 461
-     C 480 460 475 480 475 500
-     V 525"
+        V 430
+        C 319 451 322 451 350 451
+        H 461
+        C 480 460 475 480 475 500
+        V 525"
         duration={3.4}
         delay={5}
         size={4}
       />
 
-      {/* Context / Plan / Route */}
+      {/* Understand / Plan / Act */}
       <div
         style={boxStyle(165, 289, 269, 38)}
-        className="absolute z-[15] grid grid-cols-3 overflow-hidden rounded-full border border-[#BCA4FA] bg-[#F2EDFF]"
+        className="absolute z-[15] grid grid-cols-[1.25fr_1fr_1fr] overflow-hidden rounded-full border border-[#BCA4FA] bg-[#F2EDFF]"
       >
-        {["Context", "Plan", "Route"].map((label, i) => {
+        {["Understand", "Plan", "Act"].map((label, i) => {
           const active = activeStage === i;
 
           return (
@@ -471,7 +375,7 @@ function CaltAILayerVisual() {
               }}
               transition={{ duration: 0.35, ease: "easeOut" }}
             >
-              <span className="text-[clamp(12px,1.85vw,12px)] font-medium text-[#6023FA]">
+              <span className="text-[clamp(11px,1.65vw,12px)] font-medium text-[#6023FA]">
                 {label}
               </span>
             </motion.div>
@@ -498,24 +402,14 @@ function CaltAILayerVisual() {
       </motion.div>
 
       {/* Bottom status chips */}
-      <StatusChip x={59.9} y={519.3} text={clientStatus} />
-      <StatusChip x={239.5} y={550.2} text={toolStatus} />
-      <StatusChip x={415.5} y={519.3} text={handoffStatus} />
+      <StatusChip x={59.9} y={519.3} text={nextActionStatus} />
+      <StatusChip x={239.5} y={550.2} text={toolExecutionStatus} />
+      <StatusChip x={415.5} y={519.3} text={outcomeStatus} />
     </div>
   );
 }
 
 const Hero = () => {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setIndex((prev) => (prev + 1) % rotatingWords.length);
-    }, 3400);
-
-    return () => window.clearInterval(timer);
-  }, []);
-
   return (
     <div className="bg-[#FBF9F4]">
       <div className="page-frame relative min-h-auto lg:min-h-[700px]">
@@ -549,35 +443,25 @@ const Hero = () => {
               </div>
 
               <span className="truncate whitespace-nowrap font-inter text-[11px] font-normal leading-none text-[#443218] sm:text-[13px]">
-                ENTERPRISE GRADE OPERATION
+                AI OPERATIONS LAYER
               </span>
             </div>
 
             {/* Headline */}
             <h1
-              className="w-full max-w-[500px] font-heading font-semibold tracking-tight text-[#443218]"
+              className="w-full max-w-[620px] font-heading font-semibold tracking-tight text-[#443218]"
               style={{
                 fontSize: "clamp(25px, 5.4vw, 45px)",
-                lineHeight: "1.1",
+                lineHeight: "1.05",
               }}
             >
-              <span className="block whitespace-nowrap">An operation system</span>
-
-              <span className="block whitespace-nowrap">
-                that runs{" "}
-                <span className="inline-block whitespace-nowrap align-baseline text-[#4209DF]">
-                  <RollingWord word={rotatingWords[index]} />
-                </span>
-              </span>
-
-              <span className="block whitespace-nowrap">across your tools</span>
+              The AI operations layer that watches your business and moves work
+              forward.
             </h1>
 
             {/* Subtext */}
-            <p className="mt-7 w-full max-w-[580px] font-inter text-[16px] font-light leading-[1.5] text-[#695A44] sm:mt-9 sm:text-[17px] md:text-[18px] md:leading-[1.45] lg:mt-10 lg:leading-[1.4]">
-              For agencies tired of manual chasing across their CRM, inbox,
-              calendar, and docs. CaltAI watches for signals, drafts actions,
-              routes approvals, and keeps work moving until it&apos;s done.
+            <p className="mt-7 w-full max-w-[620px] font-inter text-[16px] font-light leading-[1.5] text-[#695A44] sm:mt-9 sm:text-[17px] md:text-[18px] md:leading-[1.45] lg:mt-10 lg:leading-[1.45]">
+              CaltAI connects to your tools, analytics, and business context to run defined business operations, not one-off tasks. It detects signals, plans next actions, routes approvals, executes through your systems or people, and learns from outcomes.
             </p>
 
             {/* CTA Buttons */}
@@ -586,16 +470,19 @@ const Hero = () => {
                 href="/design-partners"
                 className="flex h-[52px] w-full items-center justify-center rounded-full bg-[#FF5A1F] px-8 font-inter text-[16px] font-medium text-white shadow-sm transition-all hover:bg-[#E84D14] sm:w-auto"
               >
-                Become a design partner
+                Apply as a design partner
               </Link>
 
               <Link
-                href="/get-started?mode=demo"
+                href="#caltai-layer"
                 className="flex h-[52px] w-full items-center justify-center rounded-full border border-[#D5D4CF] px-8 font-inter text-[16px] font-medium text-[#443218] transition-all hover:bg-white sm:w-auto"
               >
-                Book a demo
+                See how it works
               </Link>
             </div>
+            <p className="mt-5 max-w-[560px] font-inter text-[14px] font-normal leading-[1.5] text-[#8D8176] md:text-[15px]">
+              Starting with focused operation packages, built to run inside your rules and approval flow.
+            </p>
           </div>
 
           {/* Right Column */}
