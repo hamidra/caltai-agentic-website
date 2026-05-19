@@ -205,8 +205,8 @@ function getVisualSettings(width: number): VisualSettings {
     stackBaseY: 48,
     layerOffset: 20,
     dropDistance: 54,
-    normalScale: 0.52,
-    operationScale: 0.88,
+    normalScale: 0.55,
+    operationScale: 0.91,
     operationTranslateX: "-12%",
     operationTranslateY: "-2%",
     operationStackShift: 2.25,
@@ -241,6 +241,31 @@ function useViewportWidth() {
   }, []);
 
   return width;
+}
+
+function useIsMobileLandscape() {
+  const [isMobileLandscape, setIsMobileLandscape] = useState(false);
+
+  useEffect(() => {
+    const update = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      setIsMobileLandscape(width < 1024 && width > height && height < 520);
+    };
+
+    update();
+
+    window.addEventListener("resize", update);
+    window.addEventListener("orientationchange", update);
+
+    return () => {
+      window.removeEventListener("resize", update);
+      window.removeEventListener("orientationchange", update);
+    };
+  }, []);
+
+  return isMobileLandscape;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -543,6 +568,7 @@ export default function CaltAILayer() {
 
   const viewportWidth = useViewportWidth();
   const visualSettings = getVisualSettings(viewportWidth);
+  const isMobileLandscape = useIsMobileLandscape();
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [showIntro, setShowIntro] = useState(true);
@@ -652,20 +678,34 @@ export default function CaltAILayer() {
                     duration: 0.42,
                     ease: [0.22, 1, 0.36, 1],
                   }}
-                  className="flex min-h-[calc(100vh-132px)] items-center justify-center px-5 py-8 text-center sm:px-6 md:px-10 lg:px-0 lg:py-0"
+                  className={`flex min-h-[calc(100vh-132px)] px-5 text-center sm:px-6 md:px-10 lg:px-0 ${isMobileLandscape
+                      ? "items-start justify-center overflow-y-auto py-6"
+                      : "items-center justify-center py-8 lg:py-0"
+                    }`}
                 >
                   <div className="mx-auto max-w-[980px]">
-                    <div className="mx-auto mb-10 inline-flex h-[40px] items-center rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4 md:mb-[60px]">
+                    <div
+                      className={`mx-auto inline-flex h-[40px] items-center rounded-full border border-[#CDBBFF] bg-[#FBF9F4] px-4 md:mb-[60px] ${isMobileLandscape ? "mb-5" : "mb-10"
+                        }`}
+                    >
                       <span className="font-sans text-[14px] font-medium text-[#443218]">
                         How CaltAI works
                       </span>
                     </div>
 
-                    <h2 className="mx-auto w-[92%] font-heading text-[36px] font-semibold leading-[1.06] tracking-[-0.035em] text-[#443218] md:text-[52px] lg:text-[64px]">
+                    <h2
+                      className={`mx-auto w-[92%] font-heading font-semibold leading-[1.06] tracking-[-0.035em] text-[#443218] md:text-[52px] lg:text-[64px] ${isMobileLandscape ? "text-[34px]" : "text-[36px]"
+                        }`}
+                    >
                       From business signal to next action to outcome.
                     </h2>
 
-                    <p className="mx-auto mt-8 max-w-[760px] font-sans text-[16px] font-normal leading-[1.7] text-[#695A44] md:text-[20px]">
+                    <p
+                      className={`mx-auto max-w-[760px] font-sans font-normal text-[#695A44] md:text-[20px] ${isMobileLandscape
+                          ? "mt-5 text-[15px] leading-[1.45]"
+                          : "mt-8 text-[16px] leading-[1.7]"
+                        }`}
+                    >
                       CaltAI connects to the systems where your business runs,
                       then keeps an operation moving through a continuous loop.
                       It observes signals, assembles context, plans the next
@@ -687,16 +727,24 @@ export default function CaltAILayer() {
                   className="min-h-[calc(100vh-132px)]"
                 >
                   {/* Mobile and tablet layout */}
-                  <div className="relative flex min-h-[calc(100vh-64px)] flex-col justify-end lg:hidden">
-                    <div className="absolute inset-x-[-14%] top-[-5%] z-0 flex h-[61%] items-center justify-center sm:inset-x-[-8%] sm:h-[62%] md:top-[-3%] md:h-[64%]">
-                      <LayerStackVisual
-                        activeIndex={activeIndex}
-                        visualSettings={visualSettings}
-                        mobile
-                      />
-                    </div>
+                  <div
+                    className={`relative flex min-h-[calc(100vh-64px)] flex-col lg:hidden ${isMobileLandscape ? "justify-center" : "justify-end"
+                      }`}
+                  >
+                    {!isMobileLandscape && (
+                      <div className="absolute inset-x-[-14%] top-[-5%] z-0 flex h-[61%] items-center justify-center sm:inset-x-[-8%] sm:h-[62%] md:top-[-3%] md:h-[64%]">
+                        <LayerStackVisual
+                          activeIndex={activeIndex}
+                          visualSettings={visualSettings}
+                          mobile
+                        />
+                      </div>
+                    )}
 
-                    <div className="relative z-20">
+                    <div
+                      className={`relative z-20 ${isMobileLandscape ? "mx-auto w-full max-w-[760px]" : ""
+                        }`}
+                    >
                       <MobileLayerText activeIndex={activeIndex} />
                       <MobileLayerNav
                         activeIndex={activeIndex}
@@ -724,10 +772,10 @@ export default function CaltAILayer() {
                               <div className="flex items-start gap-5">
                                 <span
                                   className={`mt-[1px] w-[28px] shrink-0 font-sans text-[26px] font-light leading-none transition-colors ${isActive
-                                    ? "text-[#443218]"
-                                    : isPast
-                                      ? "text-[#8D8177]"
-                                      : "text-[#695A44]"
+                                      ? "text-[#443218]"
+                                      : isPast
+                                        ? "text-[#8D8177]"
+                                        : "text-[#695A44]"
                                     }`}
                                 >
                                   {isActive ? "−" : "+"}
@@ -737,8 +785,8 @@ export default function CaltAILayer() {
                                   <div className="flex items-center gap-3">
                                     <span
                                       className={`hidden font-sans text-[15px] font-semibold tracking-[0.12em] sm:inline ${isActive
-                                        ? "text-[#FF5A1F]"
-                                        : "text-[#8D8177]"
+                                          ? "text-[#FF5A1F]"
+                                          : "text-[#8D8177]"
                                         }`}
                                     >
                                       {layer.number}
@@ -746,8 +794,8 @@ export default function CaltAILayer() {
 
                                     <h3
                                       className={`font-sans text-[18px] font-medium leading-[1.15] transition-colors md:text-[21px] ${isActive
-                                        ? "text-[#443218]"
-                                        : "text-[#695A44] group-hover:text-[#443218]"
+                                          ? "text-[#443218]"
+                                          : "text-[#695A44] group-hover:text-[#443218]"
                                         }`}
                                     >
                                       {layer.title}
