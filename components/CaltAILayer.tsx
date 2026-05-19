@@ -206,8 +206,8 @@ function getVisualSettings(width: number): VisualSettings {
     layerOffset: 20,
     dropDistance: 54,
     normalScale: 0.52,
-    operationScale: 0.8,
-    operationTranslateX: "-11%",
+    operationScale: 0.88,
+    operationTranslateX: "-12%",
     operationTranslateY: "-2%",
     operationStackShift: 2.25,
   };
