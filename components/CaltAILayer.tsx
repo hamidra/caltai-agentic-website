@@ -615,12 +615,9 @@ export default function CaltAILayer() {
 
     const targetScrollY = top + targetProgress * scrollable;
 
-    setShowIntro(false);
-    setActiveIndex(index);
-
     window.scrollTo({
       top: targetScrollY,
-      behavior: "auto",
+      behavior: "smooth",
     });
   };
 
@@ -757,7 +754,7 @@ export default function CaltAILayer() {
                                     </h3>
                                   </div>
 
-                                  <AnimatePresence initial={false}>
+                                  <AnimatePresence initial={false} mode="popLayout">
                                     {isActive && (
                                       <motion.div
                                         initial={{
