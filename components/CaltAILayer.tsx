@@ -117,12 +117,12 @@ const layers: LayerItem[] = [
     id: "operation-package",
     number: "07",
     title: "Run a business operation",
-    visualLabel: "Business operation package",
+    visualLabel: "Business operation \n package",
     description:
       "The full loop is packaged around a defined business operation with an objective, connected systems, rules, approval paths, allowed actions, and outcome checks. Start with one operation, then add more as the business grows.",
     image: "/layers/show-caltai.svg",
     labelTop: "53%",
-    labelRight: "-25px",
+    labelRight: "-6px",
     lineWidth: 132,
   },
 ];
@@ -152,50 +152,63 @@ function getVisualSettings(width: number): VisualSettings {
   if (width >= 1280) {
     return {
       stackBaseY: 118,
-      layerOffset: 38,
+      layerOffset: 36,
       dropDistance: 118,
       normalScale: 1,
-      operationScale: 1.54,
-      operationTranslateX: "-7%",
-      operationTranslateY: "0%",
+      operationScale: 1.57,
+      operationTranslateX: "-21.5%",
+      operationTranslateY: "-2%",
       operationStackShift: 2.5,
+    };
+  }
+
+  if (width >= 1084) {
+    return {
+      stackBaseY: 106,
+      layerOffset: 27,
+      dropDistance: 96,
+      normalScale: 0.9,
+      operationScale: 1.48,
+      operationTranslateX: "-20.5%",
+      operationTranslateY: "-2%",
+      operationStackShift: 2.45,
     };
   }
 
   if (width >= 1024) {
     return {
       stackBaseY: 106,
-      layerOffset: 32,
+      layerOffset: 22,
       dropDistance: 96,
-      normalScale: 0.96,
-      operationScale: 1.38,
-      operationTranslateX: "-7%",
-      operationTranslateY: "0%",
+      normalScale: 0.9,
+      operationScale: 1.48,
+      operationTranslateX: "-20.5%",
+      operationTranslateY: "-2%",
       operationStackShift: 2.45,
     };
   }
 
-  if (width >= 768) {
+  if (width >= 568) {
     return {
-      stackBaseY: 68,
-      layerOffset: 23,
+      stackBaseY: 88,
+      layerOffset: 28,
       dropDistance: 72,
-      normalScale: 0.9,
-      operationScale: 1.15,
-      operationTranslateX: "-2%",
-      operationTranslateY: "0%",
+      normalScale: 0.6,
+      operationScale: 0.96,
+      operationTranslateX: "-13%",
+      operationTranslateY: "-2.5%",
       operationStackShift: 2.35,
     };
   }
 
   return {
     stackBaseY: 48,
-    layerOffset: 16,
+    layerOffset: 20,
     dropDistance: 54,
-    normalScale: 0.82,
-    operationScale: 1.02,
-    operationTranslateX: "0%",
-    operationTranslateY: "0%",
+    normalScale: 0.52,
+    operationScale: 0.8,
+    operationTranslateX: "-11%",
+    operationTranslateY: "-2%",
     operationStackShift: 2.25,
   };
 }
